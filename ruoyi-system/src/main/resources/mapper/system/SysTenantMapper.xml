@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysTenantMapper">
+
+    <resultMap type="com.ruoyi.system.domain.SysTenant" id="SysTenantResult">
+        <id     property="tenantId" column="tenant_id"/>
+        <result property="tenantCode" column="tenant_code"/>
+        <result property="tenantName" column="tenant_name"/>
+        <result property="status" column="status"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectTenantVo">
+        select tenant_id, tenant_code, tenant_name, status, del_flag,
+               create_by, create_time, update_by, update_time, remark
+        from sys_tenant
+    </sql>
+
+    <select id="selectTenantList" parameterType="com.ruoyi.system.domain.SysTenant" resultMap="SysTenantResult">
+        <include refid="selectTenantVo"/>
+        <where>
+            <if test="tenantCode != null and tenantCode != ''">
+                and tenant_code = #{tenantCode}
+            </if>
+            <if test="tenantName != null and tenantName != ''">
+                and tenant_name like concat('%', #{tenantName}, '%')
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+            and del_flag = '0'
+        </where>
+        order by tenant_id desc
+    </select>
+
+    <select id="selectTenantByCode" parameterType="String" resultMap="SysTenantResult">
+        <include refid="selectTenantVo"/>
+        where tenant_code = #{tenantCode} and del_flag = '0'
+        limit 1
+    </select>
+
+    <insert id="insertTenant" parameterType="com.ruoyi.system.domain.SysTenant" useGeneratedKeys="true" keyProperty="tenantId">
+        insert into sys_tenant(
+            tenant_code, tenant_name, status, del_flag,
+            create_by, create_time, update_by, update_time, remark
+        ) values (
+                     #{tenantCode}, #{tenantName}, #{status}, #{delFlag},
+                     #{createBy}, now(), #{updateBy}, now(), #{remark}
+                 )
+    </insert>
+
+    <select id="selectTenantById" parameterType="Long" resultMap="SysTenantResult">
+        select tenant_id, tenant_code, tenant_name, status, del_flag, create_by, create_time, update_by, update_time, remark
+        from sys_tenant
+        where tenant_id = #{tenantId}
+    </select>
+
+    <update id="updateTenantStatus" parameterType="com.ruoyi.system.domain.SysTenant">
+        update sys_tenant
+        set status = #{status}
+        where tenant_id = #{tenantId}
+    </update>
+
+</mapper>
