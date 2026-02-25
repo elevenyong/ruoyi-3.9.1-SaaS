@@ -51,6 +51,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectOperLogList" parameterType="SysOperLog" resultMap="SysOperLogResult">
 		<include refid="selectOperLogVo"/>
 		<where>
+			<if test="tenantId != null and tenantId != 0">
+				and tenant_id = #{tenantId}
+			</if>
 			<if test="operIp != null and operIp != ''">
 				AND oper_ip like concat('%', #{operIp}, '%')
 			</if>
