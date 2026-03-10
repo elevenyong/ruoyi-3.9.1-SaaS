@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TDesignedFlushingMapper">
+    
+    <resultMap type="TDesignedFlushing" id="TDesignedFlushingResult">
+        <result property="id"    column="id"    />
+        <result property="boreholeId"    column="borehole_id"    />
+        <result property="designedLengthFlushing"    column="designed_length_flushing"    />
+        <result property="designedSectionFlushing1"    column="designed_section_flushing1"    />
+        <result property="designedSectionFlushing2"    column="designed_section_flushing2"    />
+        <result property="designedCoalAmountFlush"    column="designed_coal_amount_flush"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTDesignedFlushingVo">
+            select r.roadway, b.group_no,b.borehole_no,d.id, d.borehole_id, d.designed_length_flushing, d.designed_section_flushing1,
+        d.designed_section_flushing2, d.designed_coal_amount_flush, d.create_by, d.create_time, d.update_by, d.update_time, d.remark
+        from t_designed_flushing d
+        LEFT JOIN t_designed_borehole b ON b.id=d.borehole_id
+        LEFT JOIN t_roadway r ON r.id =b.roadway_id
+    </sql>
+
+    <select id="selectTDesignedFlushingList" parameterType="TDesignedFlushing" resultMap="TDesignedFlushingResult">
+        <include refid="selectTDesignedFlushingVo"/>
+        <where>
+            <if test="id!=null and id!=0">and d.id=#{id}</if>
+            <if test="boreholeId != null and boreholeId != 0 "> and d.borehole_id = #{boreholeId}</if>
+            <if test="designedLengthFlushing != null "> and designed_length_flushing = #{designedLengthFlushing}</if>
+            <if test="designedSectionFlushing1 != null and designedSectionFlushing1 != ''"> and d.designed_section_flushing1 = #{designedSectionFlushing1}</if>
+            <if test="designedSectionFlushing2 != null  and d.designedSectionFlushing2 != ''"> and d.designed_section_flushing2 = #{designedSectionFlushing2}</if>
+            <if test="designedCoalAmountFlush != null "> and d.designed_coal_amount_flush = #{designedCoalAmountFlush}</if>
+        </where>
+    </select>
+    
+    <select id="selectTDesignedFlushingById" parameterType="Integer" resultMap="TDesignedFlushingResult">
+        <include refid="selectTDesignedFlushingVo"/>
+        where d.Id = #{id}
+    </select>
+        
+    <insert id="insertTDesignedFlushing" parameterType="TDesignedFlushing" useGeneratedKeys="true" keyProperty="id">
+        insert into t_designed_flushing
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="boreholeId != null and boreholeId != 0">borehole_id,</if>
+            <if test="designedLengthFlushing != null">designed_length_flushing,</if>
+            <if test="designedSectionFlushing1 != null">designed_section_flushing1,</if>
+            <if test="designedSectionFlushing2 != null">designed_section_flushing2,</if>
+            <if test="designedCoalAmountFlush != null">designed_coal_amount_flush,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="boreholeId != null and boreholeId != 0">#{boreholeId},</if>
+            <if test="designedLengthFlushing != null">#{designedLengthFlushing},</if>
+            <if test="designedSectionFlushing1 != null">#{designedSectionFlushing1},</if>
+            <if test="designedSectionFlushing2 != null">#{designedSectionFlushing2},</if>
+            <if test="designedCoalAmountFlush != null">#{designedCoalAmountFlush},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+         </trim>
+    </insert>
+
+    <update id="updateTDesignedFlushing" parameterType="TDesignedFlushing">
+        update t_designed_flushing
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="boreholeId != null and boreholeId != 0">borehole_id = #{boreholeId},</if>
+            <if test="designedLengthFlushing != null">designed_length_flushing = #{designedLengthFlushing},</if>
+            <if test="designedSectionFlushing1 != null">designed_section_flushing1 = #{designedSectionFlushing1},</if>
+            <if test="designedSectionFlushing2 != null">designed_section_flushing2 = #{designedSectionFlushing2},</if>
+            <if test="designedCoalAmountFlush != null">designed_coal_amount_flush = #{designedCoalAmountFlush},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where Id = #{id}
+    </update>
+
+    <!--删除所有数据-->
+    <delete id="delAll">
+        delete  from t_designed_flushing
+    </delete>
+
+    <delete id="deleteTDesignedFlushingById" parameterType="Integer">
+        delete from t_designed_flushing where id = #{id}
+    </delete>
+
+    <delete id="deleteTDesignedFlushingByIds" parameterType="java.util.List">
+        delete from t_designed_flushing where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!--根据设计钻孔ID删除设计冲孔信息-->
+    <delete id="delByBoreholeId" parameterType="java.lang.Integer">
+        delete from t_designed_flushing where boreholeId =#{boreholeId}
+    </delete>
+    <delete id="delByBoreholeIds" parameterType="java.util.List">
+        delete from t_designed_flushing where boreholeId in
+        <foreach item="boreholeIds" collection="list" open="(" separator="," close=")">
+            #{boreholeIds}
+        </foreach>
+    </delete>
+    <!--查询所有数据-->
+    <select id="getPageList" resultType="com.ruoyi.hh.physical.domain.TDesignedFlushing">
+        <include refid="selectTDesignedFlushingVo"/>
+    </select>
+</mapper>

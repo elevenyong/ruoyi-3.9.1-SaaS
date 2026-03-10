@@ -1,19 +1,27 @@
 <template>
-  <div class="sidebar-logo-container" :class="{'collapse':collapse}" :style="{ backgroundColor: sideTheme === 'theme-dark' && navType !== 3 ? variables.menuBackground : variables.menuLightBackground }">
+  <div class="sidebar-logo-container" :class="{ 'collapse': collapse }"
+       :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }">
     <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 v-else class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' && navType !== 3 ? variables.logoTitleColor : variables.logoLightTitleColor }">{{ title }} </h1>
+        <img v-if="logo" :src="logoNoText" class="sidebar-logo"/>
+        <h1 v-else class="sidebar-title"
+            :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }">{{
+            title
+          }} </h1>
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' && navType !== 3 ? variables.logoTitleColor : variables.logoLightTitleColor }">{{ title }} </h1>
+        <img v-if="logo" :src="logo" class="sidebar-logo"/>
+        <h1 class="sidebar-title"
+            :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }">{{
+            title
+          }} </h1>
       </router-link>
     </transition>
   </div>
 </template>
 
 <script>
+import logoNoText from '@/assets/logo/logoNoText.png'
 import logoImg from '@/assets/logo/logo.png'
 import variables from '@/assets/styles/variables.scss'
 
@@ -31,15 +39,14 @@ export default {
     },
     sideTheme() {
       return this.$store.state.settings.sideTheme
-    },
-    navType() {
-      return this.$store.state.settings.navType
     }
   },
   data() {
     return {
-      title: process.env.VUE_APP_TITLE,
-      logo: logoImg
+      //title: '数字孪生智能抽采后台管理系统',
+      title: '矿井瓦斯多元信息数据中心',
+      logo: logoImg,
+      logoNoText: logoNoText
     }
   }
 }
@@ -57,8 +64,10 @@ export default {
 
 .sidebar-logo-container {
   position: relative;
-  height: 50px;
-  line-height: 50px;
+  width: 100%;
+  height: 159px;
+  //height: 100px;
+  //line-height: 50px;
   background: #2b2f3a;
   text-align: center;
   overflow: hidden;
@@ -68,19 +77,28 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      width: 32px;
-      height: 32px;
+      width: 75%;
+      //height: 32px;
       vertical-align: middle;
       margin-right: 12px;
+      margin-top: 20px;
     }
 
     & .sidebar-title {
       display: inline-block;
       margin: 0;
-      color: #fff;
+      color: rgb(111, 158, 205);
       font-weight: 600;
-      line-height: 50px;
-      font-size: 14px;
+      //width: 170px;
+      width: 133px;
+      margin-left: 10px;
+      margin-right: 10px;
+      margin-top: 15px;
+      line-height: 1.4;
+      font-size: 15px;
+      //margin-top: 10px;
+      //line-height: 50px;
+      //font-size: 20px;
       font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
       vertical-align: middle;
     }

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TDrivingWorkMapper">
+
+    <resultMap type="TDrivingWork" id="TDrivingWorkResult">
+        <result property="id" column="id"/>
+        <result property="workfaceId" column="workface_id"/>
+        <result property="drivingRate" column="driving_rate"/>
+        <result property="drivingShift" column="driving_shift"/>
+    </resultMap>
+
+    <sql id="selectTDrivingWorkVo">
+        select id,
+               workface_id,
+               driving_rate,
+               driving_shift
+        from t_driving_work
+    </sql>
+
+    <select id="selectTDrivingWorkList" parameterType="TDrivingWork"
+            resultMap="TDrivingWorkResult">
+        <include refid="selectTDrivingWorkVo"/>
+        <where>
+            <if test="workfaceId != null ">and workface_id = #{workfaceId}</if>
+            <if test="drivingRate != null ">and driving_rate = #{drivingRate}</if>
+            <if test="drivingShift != null ">and driving_shift = #{drivingShift}</if>
+        </where>
+        order by driving_shift desc
+    </select>
+
+    <select id="selectTDrivingWorkById" parameterType="Integer"
+            resultMap="TDrivingWorkResult">
+        <include refid="selectTDrivingWorkVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTDrivingWork" parameterType="TDrivingWork" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_driving_work
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="workfaceId != null">workface_id,</if>
+            <if test="drivingRate != null">driving_rate,</if>
+            <if test="drivingShift != null">driving_shift</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="workfaceId != null">#{workfaceId},</if>
+            <if test="drivingRate != null">#{drivingRate},</if>
+            <if test="drivingShift != null">#{drivingShift}</if>
+        </trim>
+    </insert>
+
+    <update id="updateTDrivingWork" parameterType="TDrivingWork">
+        update t_driving_work
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workfaceId != null">workface_id = #{workfaceId},</if>
+            <if test="drivingRate != null">driving_rate = #{drivingRate},</if>
+            <if test="drivingShift != null">driving_shift = #{drivingShift}</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTDrivingWorkById" parameterType="Integer">
+        delete
+        from t_driving_work
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTDrivingWorkByIds" parameterType="String">
+        delete from t_driving_work where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

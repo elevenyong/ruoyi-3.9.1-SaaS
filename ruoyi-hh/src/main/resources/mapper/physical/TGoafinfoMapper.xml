@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TGoafinfoMapper">
+    
+    <resultMap type="TGoafinfo" id="TGoafinfoResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="miningAreaId"    column="mining_area_id"    />
+        <result property="formedDate"    column="formed_date"    />
+        <result property="beginDrainageDate"    column="begin_drainage_date"    />
+        <result property="predictFinishDays"    column="predict_finish_days"    />
+        <result property="mainlineDia"    column="mainline_dia"    />
+        <result property="branchlineDia"    column="branchline_dia"    />
+        <result property="pipeLength"    column="pipe_length"    />
+    </resultMap>
+
+    <sql id="selectTGoafinfoVo">
+        select g.id, g.name, g.mining_area_id,m.mining_area, g.formed_date, g.begin_drainage_date, g.predict_finish_days, g.mainline_dia, g.branchline_dia, g.pipe_length
+        from t_goafinfo g
+        LEFT JOIN
+        t_mining_area m ON g.mining_area_id=m.id
+    </sql>
+
+    <select id="selectTGoafinfoList" parameterType="TGoafinfo" resultMap="TGoafinfoResult">
+        <include refid="selectTGoafinfoVo"/>
+        <where>
+            <if test="id != null "> and g.id = #{id}</if>
+            <if test="name != null  and name != ''"> and g.name like concat('%', #{name}, '%')</if>
+            <if test="miningAreaId != null and miningAreaId != 0 "> and g.mining_area_id = #{miningAreaId}</if>
+            <if test="formedDate != null "> and g.formed_date = #{formedDate}</if>
+            <if test="beginDrainageDate != null "> and g.begin_drainage_date = #{beginDrainageDate}</if>
+            <if test="predictFinishDays != null "> and g.predict_finish_days = #{predictFinishDays}</if>
+            <if test="mainlineDia != null "> and g.mainline_dia = #{mainlineDia}</if>
+            <if test="branchlineDia != null "> and g.branchline_dia = #{branchlineDia}</if>
+            <if test="pipeLength != null "> and g.pipe_length = #{pipeLength}</if>
+        </where>
+    </select>
+    
+    <select id="selectTGoafinfoById" parameterType="Integer" resultMap="TGoafinfoResult">
+        <include refid="selectTGoafinfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTGoafinfo" parameterType="TGoafinfo" useGeneratedKeys="true" keyProperty="id">
+        insert into t_goafinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="miningAreaId != null and miningAreaId != 0">mining_area_id,</if>
+            <if test="formedDate != null">formed_date,</if>
+            <if test="beginDrainageDate != null">begin_drainage_date,</if>
+            <if test="predictFinishDays != null">predict_finish_days,</if>
+            <if test="mainlineDia != null">mainline_dia,</if>
+            <if test="branchlineDia != null">branchline_dia,</if>
+            <if test="pipeLength != null">pipe_length,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="miningAreaId != null and miningAreaId != 0">#{miningAreaId},</if>
+            <if test="formedDate != null">#{formedDate},</if>
+            <if test="beginDrainageDate != null">#{beginDrainageDate},</if>
+            <if test="predictFinishDays != null">#{predictFinishDays},</if>
+            <if test="mainlineDia != null">#{mainlineDia},</if>
+            <if test="branchlineDia != null">#{branchlineDia},</if>
+            <if test="pipeLength != null">#{pipeLength},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTGoafinfo" parameterType="TGoafinfo">
+        update t_goafinfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="miningAreaId != null and miningAreaId != 0">mining_area_id = #{miningAreaId},</if>
+            <if test="formedDate != null">formed_date = #{formedDate},</if>
+            <if test="beginDrainageDate != null">begin_drainage_date = #{beginDrainageDate},</if>
+            <if test="predictFinishDays != null">predict_finish_days = #{predictFinishDays},</if>
+            <if test="mainlineDia != null">mainline_dia = #{mainlineDia},</if>
+            <if test="branchlineDia != null">branchline_dia = #{branchlineDia},</if>
+            <if test="pipeLength != null">pipe_length = #{pipeLength},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTGoafinfoById" parameterType="Integer">
+        delete from t_goafinfo where id = #{id}
+    </delete>
+
+    <delete id="deleteTGoafinfoByIds" parameterType="String">
+        delete from t_goafinfo where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

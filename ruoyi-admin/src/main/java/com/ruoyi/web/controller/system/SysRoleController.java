@@ -1,7 +1,11 @@
 package com.ruoyi.web.controller.system;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.constant.UserConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -91,17 +95,24 @@ public class SysRoleController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:role:add')")
     @Log(title = "角色管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody SysRole role)
-    {
-        if (!roleService.checkRoleNameUnique(role))
-        {
-            return error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
-        }
-        else if (!roleService.checkRoleKeyUnique(role))
-        {
-            return error("新增角色'" + role.getRoleName() + "'失败，角色权限已存在");
+    public AjaxResult add(@Validated @RequestBody SysRole role) {
+        if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role))) {
+            return AjaxResult.error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
+        } else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role))) {
+            return AjaxResult.error("新增角色'" + role.getRoleName() + "'失败，角色权限已存在");
         }
         role.setCreateBy(getUsername());
+        // 所有人都拥有角色||权限管理的功能
+        Long[] menuIds = role.getMenuIds();
+        List<Long> ids = new ArrayList<>(Arrays.asList(menuIds));
+        if (!ids.contains(101L)) ids.add(101L);
+        if (!ids.contains(1008L)) ids.add(1008L);
+        if (!ids.contains(1009L)) ids.add(1009L);
+        if (!ids.contains(1010L)) ids.add(1010L);
+        if (!ids.contains(1011L)) ids.add(1011L);
+        if (!ids.contains(1012L)) ids.add(1012L);
+
+        role.setMenuIds(ids.toArray(new Long[0]));
         return toAjax(roleService.insertRole(role));
 
     }
@@ -112,33 +123,39 @@ public class SysRoleController extends BaseController
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@Validated @RequestBody SysRole role)
-    {
+    public AjaxResult edit(@Validated @RequestBody SysRole role) {
         roleService.checkRoleAllowed(role);
         roleService.checkRoleDataScope(role.getRoleId());
-        if (!roleService.checkRoleNameUnique(role))
-        {
-            return error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
-        }
-        else if (!roleService.checkRoleKeyUnique(role))
-        {
-            return error("修改角色'" + role.getRoleName() + "'失败，角色权限已存在");
+        if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleNameUnique(role))) {
+            return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
+        } else if (UserConstants.NOT_UNIQUE.equals(roleService.checkRoleKeyUnique(role))) {
+            return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，角色权限已存在");
         }
         role.setUpdateBy(getUsername());
-        
-        if (roleService.updateRole(role) > 0)
-        {
+
+        // 所有人都拥有角色||权限管理的功能
+        Long[] menuIds = role.getMenuIds();
+        List<Long> ids = new ArrayList<>(Arrays.asList(menuIds));
+        if (!ids.contains(101L)) ids.add(101L);
+        if (!ids.contains(1008L)) ids.add(1008L);
+        if (!ids.contains(1009L)) ids.add(1009L);
+        if (!ids.contains(1010L)) ids.add(1010L);
+        if (!ids.contains(1011L)) ids.add(1011L);
+        if (!ids.contains(1012L)) ids.add(1012L);
+
+        role.setMenuIds(ids.toArray(new Long[0]));
+
+        if (roleService.updateRole(role) > 0) {
             // 更新缓存用户权限
             LoginUser loginUser = getLoginUser();
-            if (StringUtils.isNotNull(loginUser.getUser()) && !loginUser.getUser().isAdmin())
-            {
-                loginUser.setUser(userService.selectUserByUserName(loginUser.getUser().getUserName()));
+            if (StringUtils.isNotNull(loginUser.getUser()) && !loginUser.getUser().isAdmin()) {
                 loginUser.setPermissions(permissionService.getMenuPermission(loginUser.getUser()));
+                loginUser.setUser(userService.selectUserByUserName(loginUser.getUser().getUserName()));
                 tokenService.setLoginUser(loginUser);
             }
-            return success();
+            return AjaxResult.success();
         }
-        return error("修改角色'" + role.getRoleName() + "'失败，请联系管理员");
+        return AjaxResult.error("修改角色'" + role.getRoleName() + "'失败，请联系管理员");
     }
 
     /**

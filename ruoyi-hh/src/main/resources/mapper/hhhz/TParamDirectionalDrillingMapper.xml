@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.hhhz.mapper.TParamDirectionalDrillingMapper">
+
+    <resultMap type="TParamDirectionalDrilling" id="TParamDirectionalDrillingResult">
+        <result property="id"    column="id"    />
+        <result property="uid"    column="uid"    />
+        <result property="workingFaceId"    column="working_face_id"    />
+        <result property="roadId"    column="road_id"    />
+        <result property="type"    column="type"    />
+        <result property="radius"    column="radius"    />
+        <result property="controlLengthMin"    column="control_length_min"    />
+        <result property="controlLengthMax"    column="control_length_max"    />
+        <result property="topOrBottom"    column="top_or_bottom"    />
+        <result property="distanceOfRoadStart"    column="distance_of_road_start"    />
+        <result property="heightToTop"    column="height_to_top"    />
+        <result property="distanceFromWindRoadway"    column="distance_from_wind_roadway"    />
+        <result property="distanceFromCutRoadway"    column="distance_from_cut_roadway"    />
+        <result property="inOrOut"    column="in_or_out"    />
+        <result property="controlLength"    column="control_length"    />
+        <result property="endAzimuth"    column="end_azimuth"    />
+        <result property="endTilt"    column="end_tilt"    />
+        <result property="perDrillLength"    column="per_drill_length"    />
+        <result property="measureingDistance"    column="measureing_distance"    />
+        <result property="openingAngleMax"    column="opening_angle_max"    />
+        <result property="curvatureMax"    column="curvature_max"    />
+        <result property="drillHoleSize"    column="drill_hole_size"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="sign"    column="sign"    />
+        <result property="schemeId"    column="scheme_id"    />
+    </resultMap>
+
+    <sql id="selectTParamDirectionalDrillingVo">
+        select id, uid, working_face_id, road_id, type, radius, control_length_min, control_length_max, top_or_bottom, distance_of_road_start, height_to_top, distance_from_wind_roadway, distance_from_cut_roadway, in_or_out, control_length, end_azimuth, end_tilt, per_drill_length, measureing_distance, opening_angle_max, curvature_max, drill_hole_size,sign,scheme_id from t_param_directional_drilling
+    </sql>
+
+    <select id="selectTParamDirectionalDrillingList" parameterType="TParamDirectionalDrilling" resultMap="TParamDirectionalDrillingResult">
+        <include refid="selectTParamDirectionalDrillingVo"/>
+        <where>
+            <if test="uid != null "> and uid = #{uid}</if>
+            <if test="workingFaceId != null "> and working_face_id = #{workingFaceId}</if>
+            <if test="roadId != null "> and road_id = #{roadId}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="radius != null "> and radius = #{radius}</if>
+            <if test="controlLengthMin != null "> and control_length_min = #{controlLengthMin}</if>
+            <if test="controlLengthMax != null "> and control_length_max = #{controlLengthMax}</if>
+            <if test="topOrBottom != null "> and top_or_bottom = #{topOrBottom}</if>
+            <if test="distanceOfRoadStart != null "> and distance_of_road_start = #{distanceOfRoadStart}</if>
+            <if test="heightToTop != null "> and height_to_top = #{heightToTop}</if>
+            <if test="distanceFromWindRoadway != null "> and distance_from_wind_roadway = #{distanceFromWindRoadway}</if>
+            <if test="distanceFromCutRoadway != null "> and distance_from_cut_roadway = #{distanceFromCutRoadway}</if>
+            <if test="inOrOut != null "> and in_or_out = #{inOrOut}</if>
+            <if test="controlLength != null "> and control_length = #{controlLength}</if>
+            <if test="endAzimuth != null "> and end_azimuth = #{endAzimuth}</if>
+            <if test="endTilt != null "> and end_tilt = #{endTilt}</if>
+            <if test="perDrillLength != null "> and per_drill_length = #{perDrillLength}</if>
+            <if test="measureingDistance != null "> and measureing_distance = #{measureingDistance}</if>
+            <if test="openingAngleMax != null "> and opening_angle_max = #{openingAngleMax}</if>
+            <if test="curvatureMax != null "> and curvature_max = #{curvatureMax}</if>
+            <if test="drillHoleSize != null "> and drill_hole_size = #{drillHoleSize}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="sign != null "> and sign = #{sign}</if>
+            <if test="schemeId != null ">and scheme_id = #{schemeId}</if>
+        </where>
+    </select>
+
+    <select id="selectTParamDirectionalDrillingById" parameterType="Integer" resultMap="TParamDirectionalDrillingResult">
+        <include refid="selectTParamDirectionalDrillingVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTParamDirectionalDrilling" parameterType="TParamDirectionalDrilling" useGeneratedKeys="true" keyProperty="id">
+        insert into t_param_directional_drilling
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">uid,</if>
+            <if test="workingFaceId != null">working_face_id,</if>
+            <if test="roadId != null">road_id,</if>
+            <if test="type != null">type,</if>
+            <if test="radius != null">radius,</if>
+            <if test="controlLengthMin != null">control_length_min,</if>
+            <if test="controlLengthMax != null">control_length_max,</if>
+            <if test="topOrBottom != null">top_or_bottom,</if>
+            <if test="distanceOfRoadStart != null">distance_of_road_start,</if>
+            <if test="heightToTop != null">height_to_top,</if>
+            <if test="distanceFromWindRoadway != null">distance_from_wind_roadway,</if>
+            <if test="distanceFromCutRoadway != null">distance_from_cut_roadway,</if>
+            <if test="inOrOut != null">in_or_out,</if>
+            <if test="controlLength != null">control_length,</if>
+            <if test="endAzimuth != null">end_azimuth,</if>
+            <if test="endTilt != null">end_tilt,</if>
+            <if test="perDrillLength != null">per_drill_length,</if>
+            <if test="measureingDistance != null">measureing_distance,</if>
+            <if test="openingAngleMax != null">opening_angle_max,</if>
+            <if test="curvatureMax != null">curvature_max,</if>
+            <if test="drillHoleSize != null">drill_hole_size,</if>
+            <if test="sign != null">sign,</if>
+            <if test="schemeId != null">scheme_id,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">#{uid},</if>
+            <if test="workingFaceId != null">#{workingFaceId},</if>
+            <if test="roadId != null">#{roadId},</if>
+            <if test="type != null">#{type},</if>
+            <if test="radius != null">#{radius},</if>
+            <if test="controlLengthMin != null">#{controlLengthMin},</if>
+            <if test="controlLengthMax != null">#{controlLengthMax},</if>
+            <if test="topOrBottom != null">#{topOrBottom},</if>
+            <if test="distanceOfRoadStart != null">#{distanceOfRoadStart},</if>
+            <if test="heightToTop != null">#{heightToTop},</if>
+            <if test="distanceFromWindRoadway != null">#{distanceFromWindRoadway},</if>
+            <if test="distanceFromCutRoadway != null">#{distanceFromCutRoadway},</if>
+            <if test="inOrOut != null">#{inOrOut},</if>
+            <if test="controlLength != null">#{controlLength},</if>
+            <if test="endAzimuth != null">#{endAzimuth},</if>
+            <if test="endTilt != null">#{endTilt},</if>
+            <if test="perDrillLength != null">#{perDrillLength},</if>
+            <if test="measureingDistance != null">#{measureingDistance},</if>
+            <if test="openingAngleMax != null">#{openingAngleMax},</if>
+            <if test="curvatureMax != null">#{curvatureMax},</if>
+            <if test="drillHoleSize != null">#{drillHoleSize},</if>
+            <if test="sign != null">#{sign},</if>
+            <if test="schemeId != null">#{schemeId},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTParamDirectionalDrilling" parameterType="TParamDirectionalDrilling">
+        update t_param_directional_drilling
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="workingFaceId != null">working_face_id = #{workingFaceId},</if>
+            <if test="roadId != null">road_id = #{roadId},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="radius != null">radius = #{radius},</if>
+            <if test="controlLengthMin != null">control_length_min = #{controlLengthMin},</if>
+            <if test="controlLengthMax != null">control_length_max = #{controlLengthMax},</if>
+            <if test="topOrBottom != null">top_or_bottom = #{topOrBottom},</if>
+            <if test="distanceOfRoadStart != null">distance_of_road_start = #{distanceOfRoadStart},</if>
+            <if test="heightToTop != null">height_to_top = #{heightToTop},</if>
+            <if test="distanceFromWindRoadway != null">distance_from_wind_roadway = #{distanceFromWindRoadway},</if>
+            <if test="distanceFromCutRoadway != null">distance_from_cut_roadway = #{distanceFromCutRoadway},</if>
+            <if test="inOrOut != null">in_or_out = #{inOrOut},</if>
+            <if test="controlLength != null">control_length = #{controlLength},</if>
+            <if test="endAzimuth != null">end_azimuth = #{endAzimuth},</if>
+            <if test="endTilt != null">end_tilt = #{endTilt},</if>
+            <if test="perDrillLength != null">per_drill_length = #{perDrillLength},</if>
+            <if test="measureingDistance != null">measureing_distance = #{measureingDistance},</if>
+            <if test="openingAngleMax != null">opening_angle_max = #{openingAngleMax},</if>
+            <if test="curvatureMax != null">curvature_max = #{curvatureMax},</if>
+            <if test="drillHoleSize != null">drill_hole_size = #{drillHoleSize},</if>
+            <if test="sign != null">sign = #{sign},</if>
+            <if test="schemeId != null">scheme_id = #{schemeId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTParamDirectionalDrillingById" parameterType="Integer">
+        delete from t_param_directional_drilling where id = #{id}
+    </delete>
+
+    <delete id="deleteTParamDirectionalDrillingByIds" parameterType="String">
+        delete from t_param_directional_drilling where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!--获取最新一条数据-->
+    <select id="getLastOne" resultMap="TParamDirectionalDrillingResult">
+        select * from t_param_directional_drilling order by id desc limit 0,1
+    </select>
+
+    <!--确定方案：将数据库中的标识由0改成1-->
+    <update id="updateSign" >
+        update t_param_directional_drilling set sign =1 where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+</mapper>

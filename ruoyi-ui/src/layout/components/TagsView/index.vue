@@ -5,7 +5,7 @@
         v-for="tag in visitedViews"
         ref="tag"
         :key="tag.path"
-        :class="{ 'active': isActive(tag), 'has-icon': tagsIcon }"
+        :class="isActive(tag)?'active':''"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         tag="span"
         class="tags-view-item"
@@ -13,7 +13,6 @@
         @click.middle.native="!isAffix(tag)?closeSelectedTag(tag):''"
         @contextmenu.prevent.native="openMenu(tag,$event)"
       >
-        <svg-icon v-if="tagsIcon && tag.meta && tag.meta.icon && tag.meta.icon !== '#'" :icon-class="tag.meta.icon" />
         {{ tag.title }}
         <span v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
@@ -52,10 +51,7 @@ export default {
       return this.$store.state.permission.routes
     },
     theme() {
-      return this.$store.state.settings.theme
-    },
-    tagsIcon() {
-      return this.$store.state.settings.tagsIcon
+      return this.$store.state.settings.theme;
     }
   },
   watch: {
@@ -80,18 +76,18 @@ export default {
       return route.path === this.$route.path
     },
     activeStyle(tag) {
-      if (!this.isActive(tag)) return {}
+      if (!this.isActive(tag)) return {};
       return {
         "background-color": this.theme,
         "border-color": this.theme
-      }
+      };
     },
     isAffix(tag) {
       return tag.meta && tag.meta.affix
     },
     isFirstView() {
       try {
-        return this.selectedTag.fullPath === '/index' || this.selectedTag.fullPath === this.visitedViews[1].fullPath
+        return this.selectedTag.fullPath === this.visitedViews[1].fullPath || this.selectedTag.fullPath === '/index'
       } catch (err) {
         return false
       }
@@ -138,6 +134,7 @@ export default {
       if (name) {
         this.$store.dispatch('tagsView/addView', this.$route)
       }
+      return false
     },
     moveToCurrentTag() {
       const tags = this.$refs.tag
@@ -155,10 +152,7 @@ export default {
       })
     },
     refreshSelectedTag(view) {
-      this.$tab.refreshPage(view)
-      if (this.$route.meta.link) {
-        this.$store.dispatch('tagsView/delIframeView', this.$route)
-      }
+      this.$tab.refreshPage(view);
     },
     closeSelectedTag(view) {
       this.$tab.closePage(view).then(({ visitedViews }) => {
@@ -182,7 +176,7 @@ export default {
       })
     },
     closeOthersTags() {
-      this.$router.push(this.selectedTag.fullPath).catch(()=>{})
+      this.$router.push(this.selectedTag).catch(()=>{});
       this.$tab.closeOtherPage(this.selectedTag).then(() => {
         this.moveToCurrentTag()
       })
@@ -281,11 +275,6 @@ export default {
       }
     }
   }
-
-  .tags-view-item.active.has-icon::before {
-    content: none !important;
-  }
-
   .contextmenu {
     margin: 0;
     background: #fff;

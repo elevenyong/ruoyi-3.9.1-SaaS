@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TSensorTypeMapper">
+    
+    <resultMap type="TSensorType" id="TSensorTypeResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="describe"    column="describe"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTSensorTypeVo">
+        select id, `code`, `describe`, remark from t_sensor_type
+    </sql>
+
+    <select id="selectTSensorTypeList" parameterType="TSensorType" resultMap="TSensorTypeResult">
+        <include refid="selectTSensorTypeVo"/>
+        <where>  
+            <if test="code != null  and code != ''"> and `code` = #{code}</if>
+            <if test="describe != null  and describe != ''"> and `describe` = #{describe}</if>
+        </where>
+    </select>
+    
+    <select id="selectTSensorTypeById" parameterType="Integer" resultMap="TSensorTypeResult">
+        <include refid="selectTSensorTypeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTSensorType" parameterType="TSensorType" useGeneratedKeys="true" keyProperty="id">
+        insert into t_sensor_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null">`code`,</if>
+            <if test="describe != null">`describe`,</if>
+            <if test="remark != null">`remark`,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null">#{code},</if>
+            <if test="describe != null">#{describe},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTSensorType" parameterType="TSensorType">
+        update t_sensor_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">`code` = #{code},</if>
+            <if test="describe != null">`describe` = #{describe},</if>
+            <if test="remark != null">`remark` = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTSensorTypeById" parameterType="Integer">
+        delete from t_sensor_type where id = #{id}
+    </delete>
+
+    <delete id="deleteTSensorTypeByIds" parameterType="String">
+        delete from t_sensor_type where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

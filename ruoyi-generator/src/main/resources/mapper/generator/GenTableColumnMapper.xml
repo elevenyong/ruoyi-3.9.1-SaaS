@@ -85,7 +85,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="dictType != null and dictType != ''">#{dictType},</if>
 			<if test="sort != null">#{sort},</if>
 			<if test="createBy != null and createBy != ''">#{createBy},</if>
-			sysdate()
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
          )
     </insert>
 
@@ -106,6 +108,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="sort != null">sort = #{sort},</if>
             <if test="updateBy != null">update_by = #{updateBy},</if>
             update_time = sysdate()
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
         </set>
         where column_id = #{columnId}
     </update>

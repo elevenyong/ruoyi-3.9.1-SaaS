@@ -1,7 +1,11 @@
 package com.ruoyi.system.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.Date;
 
 /**
  * @Author：zhangHY
@@ -47,6 +51,18 @@ public class TenantCreateReq {
     @NotBlank(message = "adminNickName 不能为空")
     @Size(max = 30, message = "adminNickName 长度不能超过30")
     private String adminNickName;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date adminExpireTime;
+
+    public Date getAdminExpireTime() {
+        return adminExpireTime;
+    }
+
+    public void setAdminExpireTime(Date adminExpireTime) {
+        this.adminExpireTime = adminExpireTime;
+    }
 
     private String adminPhone;
     private String adminEmail;

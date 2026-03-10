@@ -26,7 +26,7 @@ const permission = {
     },
     SET_SIDEBAR_ROUTERS: (state, routes) => {
       state.sidebarRouters = routes
-    },
+    }
   },
   actions: {
     // 生成路由
@@ -36,6 +36,16 @@ const permission = {
         getRouters().then(res => {
           const sdata = JSON.parse(JSON.stringify(res.data))
           const rdata = JSON.parse(JSON.stringify(res.data))
+          for (let i = 0; i < sdata.length; i++) {
+            if ((!(sdata[i].children)) && sdata[i].name === 'System' && sdata[i].meta && sdata[i].meta.title === '系统管理') {
+              sdata[i].hidden = true
+            }
+          }
+          for (let j = 0; j < rdata.length; j++) {
+            if ((!(rdata[j].children)) && rdata[j].name === 'System' && rdata[j].meta && rdata[j].meta.title === '系统管理') {
+              rdata[j].hidden = true
+            }
+          }
           const sidebarRoutes = filterAsyncRouter(sdata)
           const rewriteRoutes = filterAsyncRouter(rdata, false, true)
           const asyncRoutes = filterDynamicRoutes(dynamicRoutes)
@@ -82,13 +92,24 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
 
 function filterChildren(childrenMap, lastRouter = false) {
   var children = []
-  childrenMap.forEach(el => {
-    el.path = lastRouter ? lastRouter.path + '/' + el.path : el.path
-    if (el.children && el.children.length && el.component === 'ParentView') {
-      children = children.concat(filterChildren(el.children, el))
-    } else {
-      children.push(el)
+  childrenMap.forEach((el, index) => {
+    if (el.children && el.children.length) {
+      if (el.component === 'ParentView' && !lastRouter) {
+        el.children.forEach(c => {
+          c.path = el.path + '/' + c.path
+          if (c.children && c.children.length) {
+            children = children.concat(filterChildren(c.children, c))
+            return
+          }
+          children.push(c)
+        })
+        return
+      }
     }
+    if (lastRouter) {
+      el.path = lastRouter.path + '/' + el.path
+    }
+    children = children.concat(el)
   })
   return children
 }

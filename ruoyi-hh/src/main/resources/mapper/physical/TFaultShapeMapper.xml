@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TFaultShapeMapper">
+
+    <resultMap type="TFaultShape" id="TFaultShapeResult">
+        <result property="id" column="id"/>
+        <result property="shape" column="shape"/>
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTFaultShapeVo">
+        select id, shape,create_by,create_time,update_by,update_time,remark from t_fault_shape
+    </sql>
+
+    <select id="selectTFaultShapeList" parameterType="TFaultShape" resultMap="TFaultShapeResult">
+        <include refid="selectTFaultShapeVo"/>
+        <where>
+            <if test="id!=null and id!=0">and id=#{id}</if>
+            <if test="shape != null  and shape != ''">and shape = #{shape}</if>
+        </where>
+    </select>
+
+    <select id="selectTFaultShapeById" parameterType="Integer" resultMap="TFaultShapeResult">
+        <include refid="selectTFaultShapeVo"/>
+        where Id = #{id}
+    </select>
+
+    <insert id="insertTFaultShape" parameterType="TFaultShape" useGeneratedKeys="true" keyProperty="id">
+        insert into t_fault_shape
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shape != null">shape,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="shape != null">#{shape},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTFaultShape" parameterType="TFaultShape">
+        update t_fault_shape
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="shape != null">shape = #{shape},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where Id = #{id}
+    </update>
+
+    <delete id="deleteTFaultShapeById" parameterType="Integer">
+        delete from t_fault_shape where id = #{id}
+    </delete>
+
+    <delete id="deleteTFaultShapeByIds" parameterType="java.util.List">
+        delete from t_fault_shape where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!--根据断面名称查询ID-->
+    <select id="getIdByShape" parameterType="string" resultType="java.lang.Integer">
+        select Id from t_fault_shape where shape = #{shape}
+    </select>
+    <select id="selectTFaultShapeVo" resultType="com.ruoyi.hh.physical.domain.TFaultShape">
+        <include refid="selectTFaultShapeVo"></include>
+    </select>
+
+</mapper>

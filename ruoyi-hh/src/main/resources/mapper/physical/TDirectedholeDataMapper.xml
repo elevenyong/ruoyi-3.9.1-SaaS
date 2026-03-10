@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TDirectedholeDataMapper">
+    
+    <resultMap type="TDirectedholeData" id="TDirectedholeDataResult">
+        <result property="id"    column="id"    />
+        <result property="workfaceId"    column="workface_id"    />
+        <result property="holePlace"    column="hole_place"    />
+        <result property="holeHight"    column="hole_hight"    />
+        <result property="trepanningDip"    column="trepanning_dip"    />
+        <result property="finishDip"    column="finish_dip"    />
+        <result property="coalholeStart"    column="coalhole_start"    />
+        <result property="coalholeEnd"    column="coalhole_end"    />
+        <result property="deflectingMaxGradient"    column="deflecting_max_gradient"    />
+    </resultMap>
+
+    <sql id="selectTDirectedholeDataVo">
+        select id, workface_id, hole_place, hole_hight, trepanning_dip, finish_dip,
+        coalhole_start, coalhole_end,CONCAT(coalhole_start,"~",coalhole_end)
+        AS coalholerange,
+        deflecting_max_gradient from t_directedhole_data
+    </sql>
+
+    <select id="selectTDirectedholeDataList" parameterType="TDirectedholeData" resultMap="TDirectedholeDataResult">
+        <include refid="selectTDirectedholeDataVo"/>
+        <where>
+            <if test="id!=null and id!= 0">and id=#{id}</if>
+            <if test="workfaceId != null and workfaceId != 0 "> and workface_id = #{workfaceId}</if>
+            <if test="holePlace != null  and holePlace != ''"> and hole_place = #{holePlace}</if>
+            <if test="holeHight != null "> and hole_hight = #{holeHight}</if>
+            <if test="trepanningDip != null "> and trepanning_dip = #{trepanningDip}</if>
+            <if test="finishDip != null "> and finish_dip = #{finishDip}</if>
+            <if test="coalholeStart != null "> and coalhole_start = #{coalholeStart}</if>
+            <if test="coalholeEnd != null "> and coalhole_end = #{coalholeEnd}</if>
+            <if test="deflectingMaxGradient != null "> and deflecting_max_gradient = #{deflectingMaxGradient}</if>
+        </where>
+    </select>
+    
+    <select id="selectTDirectedholeDataById" parameterType="Integer" resultMap="TDirectedholeDataResult">
+        <include refid="selectTDirectedholeDataVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTDirectedholeData" parameterType="TDirectedholeData" useGeneratedKeys="true" keyProperty="id">
+        insert into t_directedhole_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="workfaceId != null and workfaceId != 0">workface_id,</if>
+            <if test="holePlace != null">hole_place,</if>
+            <if test="holeHight != null">hole_hight,</if>
+            <if test="trepanningDip != null">trepanning_dip,</if>
+            <if test="finishDip != null">finish_dip,</if>
+            <if test="coalholeStart != null">coalhole_start,</if>
+            <if test="coalholeEnd != null">coalhole_end,</if>
+            <if test="deflectingMaxGradient != null">deflecting_max_gradient,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="workfaceId != null and workfaceId != 0">#{workfaceId},</if>
+            <if test="holePlace != null">#{holePlace},</if>
+            <if test="holeHight != null">#{holeHight},</if>
+            <if test="trepanningDip != null">#{trepanningDip},</if>
+            <if test="finishDip != null">#{finishDip},</if>
+            <if test="coalholeStart != null">#{coalholeStart},</if>
+            <if test="coalholeEnd != null">#{coalholeEnd},</if>
+            <if test="deflectingMaxGradient != null">#{deflectingMaxGradient},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTDirectedholeData" parameterType="TDirectedholeData">
+        update t_directedhole_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workfaceId != null and workfaceId != 0">workface_id = #{workfaceId},</if>
+            <if test="holePlace != null">hole_place = #{holePlace},</if>
+            <if test="holeHight != null">hole_hight = #{holeHight},</if>
+            <if test="trepanningDip != null">trepanning_dip = #{trepanningDip},</if>
+            <if test="finishDip != null">finish_dip = #{finishDip},</if>
+            <if test="coalholeStart != null">coalhole_start = #{coalholeStart},</if>
+            <if test="coalholeEnd != null">coalhole_end = #{coalholeEnd},</if>
+            <if test="deflectingMaxGradient != null">deflecting_max_gradient = #{deflectingMaxGradient},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTDirectedholeDataById" parameterType="Integer">
+        delete from t_directedhole_data where id = #{id}
+    </delete>
+
+    <delete id="deleteTDirectedholeDataByIds" parameterType="String">
+        delete from t_directedhole_data where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

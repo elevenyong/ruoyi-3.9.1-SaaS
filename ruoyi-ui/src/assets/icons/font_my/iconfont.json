@@ -1,0 +1,58 @@
+{
+  "id": "4249549",
+  "name": "myicon",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "2430847",
+      "name": "点点距离（空间距离）",
+      "font_class": "diandianjulikongjianjuli",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
+      "icon_id": "13638737",
+      "name": "面积",
+      "font_class": "mianji",
+      "unicode": "e65e",
+      "unicode_decimal": 58974
+    },
+    {
+      "icon_id": "19849032",
+      "name": "measure",
+      "font_class": "measure",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "8554261",
+      "name": "导出CAD",
+      "font_class": "tubiao_daochuCAD",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "22386365",
+      "name": "三维对象",
+      "font_class": "sanweiduixiang",
+      "unicode": "ee29",
+      "unicode_decimal": 60969
+    },
+    {
+      "icon_id": "7587968",
+      "name": "显示",
+      "font_class": "xianshi",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    },
+    {
+      "icon_id": "18211076",
+      "name": "隐藏",
+      "font_class": "yincang",
+      "unicode": "e7a6",
+      "unicode_decimal": 59302
+    }
+  ]
+}

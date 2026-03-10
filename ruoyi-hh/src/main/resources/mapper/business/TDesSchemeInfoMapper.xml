@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.business.mapper.TDesSchemeInfoMapper">
+
+    <resultMap type="TDesSchemeInfo" id="TDesSchemeInfoResult">
+        <result property="id"    column="id"    />
+        <result property="scheme"    column="scheme"    />
+        <result property="workfaceId"    column="workface_id"    />
+        <result property="sign"    column="sign"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectTDesSchemeInfoVo">
+        select id, scheme,sign,workface_id, create_time from t_des_scheme_info
+    </sql>
+
+    <select id="selectTDesSchemeInfoList" parameterType="TDesSchemeInfo" resultMap="TDesSchemeInfoResult">
+        <include refid="selectTDesSchemeInfoVo"/>
+        <where>
+            <if test="id!=0 and id!=null and id != ''"> and id = #{id}</if>
+            <if test="sign!=null and sign != ''"> and sign = #{sign}</if>
+            <if test="scheme != null  and scheme != ''"> and scheme = #{scheme}</if>
+            <if test="workfaceId != null  and workfaceId != 0"> and workface_id = #{workfaceId}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectTDesSchemeInfoById" parameterType="Integer" resultMap="TDesSchemeInfoResult">
+        <include refid="selectTDesSchemeInfoVo"/>
+        where id = #{id} order by id desc
+    </select>
+
+    <insert id="insertTDesSchemeInfo" parameterType="TDesSchemeInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into t_des_scheme_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="scheme != null">scheme,</if>
+            <if test="workfaceId != null and workfaceId != 0">workface_id,</if>
+            <if test="sign != null">sign,</if>
+            create_time
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="scheme != null">#{scheme},</if>
+            <if test="workfaceId != null and workfaceId != 0">#{workfaceId},</if>
+            <if test="sign != null">#{sign},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+         </trim>
+    </insert>
+
+    <update id="updateTDesSchemeInfo" parameterType="TDesSchemeInfo">
+        update t_des_scheme_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="scheme != null">scheme = #{scheme},</if>
+            <if test="workfaceId != null and workfaceId != 0">workface_id = #{workfaceId},</if>
+            <if test="sign != null">sign = #{sign},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTDesSchemeInfoById" parameterType="Integer">
+        delete from t_des_scheme_info where id = #{id}
+    </delete>
+
+    <delete id="deleteTDesSchemeInfoByIds" parameterType="String">
+        delete from t_des_scheme_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

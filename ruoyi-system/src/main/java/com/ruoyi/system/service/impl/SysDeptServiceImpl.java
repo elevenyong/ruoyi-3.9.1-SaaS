@@ -110,6 +110,10 @@ public class SysDeptServiceImpl implements ISysDeptService
     public List<Long> selectDeptListByRoleId(Long roleId)
     {
         SysRole role = roleMapper.selectRoleById(roleId);
+        if (role == null)
+        {
+            return new ArrayList<>();
+        }
         return deptMapper.selectDeptListByRoleId(roleId, role.isDeptCheckStrictly());
     }
 
@@ -135,6 +139,16 @@ public class SysDeptServiceImpl implements ISysDeptService
     public int selectNormalChildrenDeptById(Long deptId)
     {
         return deptMapper.selectNormalChildrenDeptById(deptId);
+    }
+
+    /**
+     * 是否存在岗位
+     * @param deptId 部门ID
+     * @return true 存在；false 不存在
+     */
+    public boolean checkDeptExistPost(Long deptId){
+        int result = deptMapper.checkDeptExistPost(deptId);
+        return result > 0;
     }
 
     /**
@@ -170,7 +184,7 @@ public class SysDeptServiceImpl implements ISysDeptService
      * @return 结果
      */
     @Override
-    public boolean checkDeptNameUnique(SysDept dept)
+    public String checkDeptNameUnique(SysDept dept)
     {
         Long deptId = StringUtils.isNull(dept.getDeptId()) ? -1L : dept.getDeptId();
         SysDept info = deptMapper.checkDeptNameUnique(dept.getDeptName(), dept.getParentId());

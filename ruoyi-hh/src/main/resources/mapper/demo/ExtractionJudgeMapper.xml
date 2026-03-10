@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.hh.demo.mapper.ExtractionjudgeDao">
+	<!-- 进程评判-抽采信息列表 -->
+	<select id="getExtractionjudgeList" resultType="com.ruoyi.hh.demo.domain.Extractionjudge">
+		SELECT e.TargetTotal,e.AccumulativeTotal,e.AccumulativeTotalByWind,e.CoalGross,e.GasGross,e.AvgGasContent,
+		e.ExtractionReachQuantity,e.YesterdayQuantity,e.YesterdayWindExhaustGas,s.ConstructionName,
+		s.StripeCode,ROUND((e.GasGross-e.AccumulativeTotal)/e.CoalGross,2)AS CurrentConcentration 
+		from extractionjudge e RIGHT JOIN stripeinfo s ON e.StripeId=s.id
+	</select>
+	<!-- 根据条带编号查询抽采信息 -->
+	<select id="getExtractionjudgeByStripeCode" resultType="com.ruoyi.hh.demo.domain.Extractionjudge">
+		SELECT e.TargetTotal,e.AccumulativeTotal,e.AccumulativeTotalByWind,e.CoalGross,e.GasGross,e.AvgGasContent,
+		e.ExtractionReachQuantity,e.YesterdayQuantity,e.YesterdayWindExhaustGas,s.ConstructionName,
+		s.StripeCode,ROUND((e.GasGross-e.AccumulativeTotal)/e.CoalGross,2)AS CurrentConcentration 
+		from extractionjudge e RIGHT JOIN stripeinfo s ON e.StripeId=s.id
+		where s.StripeCode=#{StripeCode}
+	</select>
+</mapper>

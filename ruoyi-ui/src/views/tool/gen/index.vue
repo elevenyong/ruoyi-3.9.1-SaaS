@@ -2,31 +2,14 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="表名称" prop="tableName">
-        <el-input
-          v-model="queryParams.tableName"
-          placeholder="请输入表名称"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.tableName" placeholder="请输入表名称" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="表描述" prop="tableComment">
-        <el-input
-          v-model="queryParams.tableComment"
-          placeholder="请输入表描述"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
+        <el-input v-model="queryParams.tableComment" placeholder="请输入表描述" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
       <el-form-item label="创建时间">
-        <el-date-picker
-          v-model="dateRange"
-          style="width: 240px"
-          value-format="yyyy-MM-dd"
-          type="daterange"
-          range-separator="-"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-        ></el-date-picker>
+        <el-date-picker v-model="dateRange" style="width: 240px" value-format="yyyy-MM-dd" type="daterange"
+          range-separator="-" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -36,157 +19,163 @@
 
     <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-download"
-          size="mini"
-          :disabled="multiple"
-          @click="handleGenTable"
-          v-hasPermi="['tool:gen:code']"
-        >生成</el-button>
+        <el-button type="primary" plain icon="el-icon-download" size="mini" @click="handleGenTable"
+          v-hasPermi="['tool:gen:code']">生成</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="el-icon-plus"
-          size="mini"
-          @click="openCreateTable"
-          v-hasRole="['admin']"
-        >创建</el-button>
+        <el-button type="info" plain icon="el-icon-upload" size="mini" @click="openImportTable"
+          v-hasPermi="['tool:gen:import']">导入</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="info"
-          plain
-          icon="el-icon-upload"
-          size="mini"
-          @click="openImportTable"
-          v-hasPermi="['tool:gen:import']"
-        >导入</el-button>
+        <el-button type="success" plain icon="el-icon-edit" size="mini" :disabled="single" @click="handleEditTable"
+          v-hasPermi="['tool:gen:edit']">修改</el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleEditTable"
-          v-hasPermi="['tool:gen:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['tool:gen:remove']"
-        >删除</el-button>
+        <el-button type="danger" plain icon="el-icon-delete" size="mini" :disabled="multiple" @click="handleDelete"
+          v-hasPermi="['tool:gen:remove']">删除</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table ref="tables" v-loading="loading" :data="tableList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
+    <el-table v-loading="loading" :data="tableList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" align="center" width="55"></el-table-column>
       <el-table-column label="序号" type="index" width="50" align="center">
         <template slot-scope="scope">
-          <span>{{(queryParams.pageNum - 1) * queryParams.pageSize + scope.$index + 1}}</span>
+          <span>{{ (queryParams.pageNum - 1) * queryParams.pageSize + scope.$index + 1 }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="表名称" align="center" prop="tableName" :show-overflow-tooltip="true" width="140" />
-      <el-table-column label="表描述" align="center" prop="tableComment" :show-overflow-tooltip="true" width="140" />
-      <el-table-column label="实体" align="center" prop="className" :show-overflow-tooltip="true" width="140" />
-      <el-table-column label="创建时间" align="center" prop="createTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="160" />
-      <el-table-column label="更新时间" align="center" prop="updateTime" sortable="custom" :sort-orders="['descending', 'ascending']" width="160" />
+      <el-table-column label="表名称" align="center" prop="tableName" :show-overflow-tooltip="true" width="120" />
+      <el-table-column label="表描述" align="center" prop="tableComment" :show-overflow-tooltip="true" width="120" />
+      <el-table-column label="实体" align="center" prop="className" :show-overflow-tooltip="true" width="120" />
+      <el-table-column label="创建时间" align="center" prop="createTime" width="160" />
+      <el-table-column label="更新时间" align="center" prop="updateTime" width="160" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button
-            type="text"
-            size="small"
-            icon="el-icon-view"
-            @click="handlePreview(scope.row)"
-            v-hasPermi="['tool:gen:preview']"
-          >预览</el-button>
-          <el-button
-            type="text"
-            size="small"
-            icon="el-icon-edit"
-            @click="handleEditTable(scope.row)"
-            v-hasPermi="['tool:gen:edit']"
-          >编辑</el-button>
-          <el-button
-            type="text"
-            size="small"
-            icon="el-icon-delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['tool:gen:remove']"
-          >删除</el-button>
-          <el-button
-            type="text"
-            size="small"
-            icon="el-icon-refresh"
-            @click="handleSynchDb(scope.row)"
-            v-hasPermi="['tool:gen:edit']"
-          >同步</el-button>
-          <el-button
-            type="text"
-            size="small"
-            icon="el-icon-download"
-            @click="handleGenTable(scope.row)"
-            v-hasPermi="['tool:gen:code']"
-          >生成代码</el-button>
+          <el-button type="text" size="small" icon="el-icon-view" @click="handlePreview(scope.row)"
+            v-hasPermi="['tool:gen:preview']">预览</el-button>
+          <el-button type="text" size="small" icon="el-icon-edit" @click="handleEditTable(scope.row)"
+            v-hasPermi="['tool:gen:edit']">编辑</el-button>
+          <el-button type="text" size="small" icon="el-icon-delete" @click="handleDelete(scope.row)"
+            v-hasPermi="['tool:gen:remove']">删除</el-button>
+          <el-button type="text" size="small" icon="el-icon-refresh" @click="handleSynchDb(scope.row)"
+            v-hasPermi="['tool:gen:edit']">同步</el-button>
+          <el-button type="text" size="small" icon="el-icon-download" @click="handleGenTable(scope.row)"
+            v-hasPermi="['tool:gen:code']">生成代码</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <pagination
-      v-show="total>0"
-      :total="total"
-      :page.sync="queryParams.pageNum"
-      :limit.sync="queryParams.pageSize"
-      @pagination="getList"
-    />
+    <pagination v-show="total > 0" :total="total" :page.sync="queryParams.pageNum" :limit.sync="queryParams.pageSize"
+      @pagination="getList" />
     <!-- 预览界面 -->
-    <el-dialog :title="preview.title" :visible.sync="preview.open" width="80%" top="5vh" append-to-body class="scrollbar">
+    <el-dialog :title="preview.title" :visible.sync="preview.open" width="80%" top="5vh" append-to-body
+      class="scrollbar">
       <el-tabs v-model="preview.activeName">
-        <el-tab-pane
-          v-for="(value, key) in preview.data"
-          :label="key.substring(key.lastIndexOf('/')+1,key.indexOf('.vm'))"
-          :name="key.substring(key.lastIndexOf('/')+1,key.indexOf('.vm'))"
-          :key="key"
-        >
-          <el-link :underline="false" icon="el-icon-document-copy" v-clipboard:copy="value" v-clipboard:success="clipboardSuccess" style="float:right">复制</el-link>
+        <el-tab-pane v-for="(value, key) in preview.data"
+          :label="key.substring(key.lastIndexOf('/') + 1, key.indexOf('.vm'))"
+          :name="key.substring(key.lastIndexOf('/') + 1, key.indexOf('.vm'))" :key="key">
+          <el-link :underline="false" icon="el-icon-document-copy" v-clipboard:copy="value"
+            v-clipboard:success="clipboardSuccess" style="float:right">复制</el-link>
           <pre><code class="hljs" v-html="highlightedCode(value, key)"></code></pre>
         </el-tab-pane>
       </el-tabs>
     </el-dialog>
     <import-table ref="import" @ok="handleQuery" />
-    <create-table ref="create" @ok="handleQuery" />
   </div>
 </template>
 
 <script>
-import { listTable, previewTable, delTable, genCode, synchDb } from "@/api/tool/gen"
-import importTable from "./importTable"
-import createTable from "./createTable"
-import hljs from "highlight.js/lib/highlight"
-import "highlight.js/styles/github-gist.css"
-hljs.registerLanguage("java", require("highlight.js/lib/languages/java"))
-hljs.registerLanguage("xml", require("highlight.js/lib/languages/xml"))
-hljs.registerLanguage("html", require("highlight.js/lib/languages/xml"))
-hljs.registerLanguage("vue", require("highlight.js/lib/languages/xml"))
-hljs.registerLanguage("javascript", require("highlight.js/lib/languages/javascript"))
-hljs.registerLanguage("sql", require("highlight.js/lib/languages/sql"))
+import { listTable, previewTable, delTable, genCode, synchDb } from "@/api/tool/gen";
+import importTable from "./importTable";
+import hljs from "highlight.js/lib/highlight";
+import "highlight.js/styles/github-gist.css";
+
+import WlGantt from "wl-gantt";
+
+
+hljs.registerLanguage("java", require("highlight.js/lib/languages/java"));
+hljs.registerLanguage("xml", require("highlight.js/lib/languages/xml"));
+hljs.registerLanguage("html", require("highlight.js/lib/languages/xml"));
+hljs.registerLanguage("vue", require("highlight.js/lib/languages/xml"));
+hljs.registerLanguage("javascript", require("highlight.js/lib/languages/javascript"));
+hljs.registerLanguage("sql", require("highlight.js/lib/languages/sql"));
 
 export default {
   name: "Gen",
-  components: { importTable, createTable },
+  components: { importTable },
   data() {
     return {
+      projectTime: {},
+      data: [
+        {
+          id: "1",
+          pid: "0",
+          name: "旅行",
+          startDate: "2019-09-07",
+          realStartDate: "2019-09-10",
+          endDate: "2019-10-31",
+          realEndDate: "2019-10-19",
+          children: [
+            {
+              id: "1-1",
+              pid: "1",
+              name: "云台之间",
+              startDate: "2019-09-10",
+              endDate: "2019-09-13",
+              children: [
+                {
+                  id: "1-1-1",
+                  pid: "1-1",
+                  name: "日落云巅",
+                  startDate: "2019-09-10",
+                  endDate: "2019-09-13",
+                },
+              ],
+            },
+            {
+              id: "1-2",
+              pid: "1",
+              name: "天空之镜",
+              startDate: "2019-09-17",
+              endDate: "2019-09-22",
+            },
+            {
+              id: "1-3",
+              name: "蓬莱之岛",
+              pid: "1",
+              startDate: "2019-09-25",
+              endDate: "2019-09-30",
+            },
+            {
+              id: "1-4",
+              pid: "1",
+              name: "西塘之南",
+              startDate: "2019-10-03",
+              endDate: "2019-10-07",
+            },
+            {
+              pid: "1",
+              id: "1-5",
+              name: "凤凰之缘",
+              startDate: "2019-10-11",
+              endDate: "2019-10-19",
+            },
+          ],
+        },
+        {
+          id: "2",
+          name: "租房子",
+          startDate: "2019-09-20",
+          endDate: "2019-10-31",
+        },
+      ], // 数据
+      selected: [], // 选中数据
+      contextMenuOptions: [
+        { label: "任务名称", prop: "name" },
+        { label: "开始时间", prop: "startDate" },
+        { label: "结束时间", prop: "endDate" },
+      ],
+      columns: [{ type: "name", minWidth: 200, colType: "expand" }], // 可通过此参数配置列。其中内置有名称name、开始日期startDate、结束日期endDate、前置任务preTask，如果cloumns中有type等于这四个且slot为false时，将使用内置代码，当然除了内容使用内置代码，其他字段你还拥有配置权。另外如果不是为了配置内置列参数，slot中的prv和default仍可以用来自定义列
+    
       // 遮罩层
       loading: true,
       // 唯一标识符
@@ -207,8 +196,6 @@ export default {
       tableList: [],
       // 日期范围
       dateRange: "",
-      // 默认排序
-      defaultSort: { prop: "createTime", order: "descending" },
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -223,126 +210,110 @@ export default {
         data: {},
         activeName: "domain.java"
       }
-    }
+    };
   },
   created() {
-    this.queryParams.orderByColumn = this.defaultSort.prop
-    this.queryParams.isAsc = this.defaultSort.order
-    this.getList()
+    this.getList();
   },
   activated() {
-    const time = this.$route.query.t
+    const time = this.$route.query.t;
     if (time != null && time != this.uniqueId) {
-      this.uniqueId = time
-      this.queryParams.pageNum = Number(this.$route.query.pageNum)
-      this.getList()
+      this.uniqueId = time;
+      this.queryParams.pageNum = Number(this.$route.query.pageNum);
+      this.getList();
     }
   },
   methods: {
     /** 查询表集合 */
     getList() {
-      this.loading = true
+      this.loading = true;
       listTable(this.addDateRange(this.queryParams, this.dateRange)).then(response => {
-          this.tableList = response.rows
-          this.total = response.total
-          this.loading = false
-        }
-      )
+        this.tableList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      }
+      );
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1
-      this.getList()
+      this.queryParams.pageNum = 1;
+      this.getList();
     },
     /** 生成代码操作 */
     handleGenTable(row) {
-      const tableNames = row.tableName || this.tableNames
+      const tableNames = row.tableName || this.tableNames;
       if (tableNames == "") {
-        this.$modal.msgError("请选择要生成的数据")
-        return
+        this.$modal.msgError("请选择要生成的数据");
+        return;
       }
-      if(row.genType === "1") {
-        genCode(row.tableName).then(() => {
-          this.$modal.msgSuccess("成功生成到自定义路径：" + row.genPath)
-        })
+      if (row.genType === "1") {
+        genCode(row.tableName).then(response => {
+          this.$modal.msgSuccess("成功生成到自定义路径：" + row.genPath);
+        });
       } else {
-        const zipName = Array.isArray(tableNames) ? "ruoyi.zip" : tableNames + ".zip"
-        this.$download.zip("/tool/gen/batchGenCode?tables=" + tableNames, zipName)
+        this.$download.zip("/tool/gen/batchGenCode?tables=" + tableNames, "ruoyi");
       }
     },
     /** 同步数据库操作 */
     handleSynchDb(row) {
-      const tableName = row.tableName
-      this.$modal.confirm('确认要强制同步"' + tableName + '"表结构吗？').then(function() {
-        return synchDb(tableName)
+      const tableName = row.tableName;
+      this.$modal.confirm('确认要强制同步"' + tableName + '"表结构吗？').then(function () {
+        return synchDb(tableName);
       }).then(() => {
-        this.$modal.msgSuccess("同步成功")
-      }).catch(() => {})
+        this.$modal.msgSuccess("同步成功");
+      }).catch(() => { });
     },
     /** 打开导入表弹窗 */
     openImportTable() {
-      this.$refs.import.show()
-    },
-    /** 打开创建表弹窗 */
-    openCreateTable() {
-      this.$refs.create.show()
+      this.$refs.import.show();
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.dateRange = []
-      this.resetForm("queryForm")
-      this.queryParams.pageNum = 1
-      this.$refs.tables.sort(this.defaultSort.prop, this.defaultSort.order)
+      this.dateRange = [];
+      this.resetForm("queryForm");
+      this.handleQuery();
     },
     /** 预览按钮 */
     handlePreview(row) {
       previewTable(row.tableId).then(response => {
-        this.preview.data = response.data
-        this.preview.open = true
-        this.preview.activeName = "domain.java"
-      })
+        this.preview.data = response.data;
+        this.preview.open = true;
+        this.preview.activeName = "domain.java";
+      });
     },
     /** 高亮显示 */
     highlightedCode(code, key) {
-      const vmName = key.substring(key.lastIndexOf("/") + 1, key.indexOf(".vm"))
-      var language = vmName.substring(vmName.indexOf(".") + 1, vmName.length)
-      const result = hljs.highlight(language, code || "", true)
-      return result.value || '&nbsp;'
+      const vmName = key.substring(key.lastIndexOf("/") + 1, key.indexOf(".vm"));
+      var language = vmName.substring(vmName.indexOf(".") + 1, vmName.length);
+      const result = hljs.highlight(language, code || "", true);
+      return result.value || '&nbsp;';
     },
     /** 复制代码成功 */
     clipboardSuccess() {
-      this.$modal.msgSuccess("复制成功")
+      this.$modal.msgSuccess("复制成功");
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.tableId)
-      this.tableNames = selection.map(item => item.tableName)
-      this.single = selection.length != 1
-      this.multiple = !selection.length
-    },
-    /** 排序触发事件 */
-    handleSortChange(column, prop, order) {
-      this.queryParams.orderByColumn = column.prop
-      this.queryParams.isAsc = column.order
-      this.getList()
+      this.ids = selection.map(item => item.tableId);
+      this.tableNames = selection.map(item => item.tableName);
+      this.single = selection.length != 1;
+      this.multiple = !selection.length;
     },
     /** 修改按钮操作 */
     handleEditTable(row) {
-      const tableId = row.tableId || this.ids[0]
-      const tableName = row.tableName || this.tableNames[0]
-      const params = { pageNum: this.queryParams.pageNum }
-      this.$tab.openPage("修改[" + tableName + "]生成配置", '/tool/gen-edit/index/' + tableId, params)
+      const tableId = row.tableId || this.ids[0];
+      this.$router.push({ path: '/tool/gen-edit/index/' + tableId, query: { pageNum: this.queryParams.pageNum } });
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const tableIds = row.tableId || this.ids
-      this.$modal.confirm('是否确认删除表编号为"' + tableIds + '"的数据项？').then(function() {
-        return delTable(tableIds)
+      const tableIds = row.tableId || this.ids;
+      this.$modal.confirm('是否确认删除表编号为"' + tableIds + '"的数据项？').then(function () {
+        return delTable(tableIds);
       }).then(() => {
-        this.getList()
-        this.$modal.msgSuccess("删除成功")
-      }).catch(() => {})
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => { });
     }
   }
-}
+};
 </script>

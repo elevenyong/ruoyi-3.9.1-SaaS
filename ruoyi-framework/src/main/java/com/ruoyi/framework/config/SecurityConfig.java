@@ -1,5 +1,9 @@
 package com.ruoyi.framework.config;
 
+import com.ruoyi.framework.config.properties.PermitAllUrlProperties;
+import com.ruoyi.framework.security.filter.JwtAuthenticationTokenFilter;
+import com.ruoyi.framework.security.handle.AuthenticationEntryPointImpl;
+import com.ruoyi.framework.security.handle.LogoutSuccessHandlerImpl;
 import com.ruoyi.framework.tenant.TenantContextFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,15 +21,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.filter.CorsFilter;
-import com.ruoyi.framework.config.properties.PermitAllUrlProperties;
-import com.ruoyi.framework.security.filter.JwtAuthenticationTokenFilter;
-import com.ruoyi.framework.security.handle.AuthenticationEntryPointImpl;
-import com.ruoyi.framework.security.handle.LogoutSuccessHandlerImpl;
 
 /**
- * spring security配置
- * 
- * @author ruoyi
+ * spring security配置（多租户版）
+ *
+ * 说明：
+ * - 保留你原 SecurityConfig.java 中放行的资源路径（/3DVisual/**、/model/**、/getMenus/** 等）
+ * - 保留多租户 TenantContextFilter 的链路位置
  */
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @Configuration
@@ -36,7 +38,7 @@ public class SecurityConfig
      */
     @Autowired
     private UserDetailsService userDetailsService;
-    
+
     /**
      * 认证失败处理类
      */
@@ -54,7 +56,7 @@ public class SecurityConfig
      */
     @Autowired
     private JwtAuthenticationTokenFilter authenticationTokenFilter;
-    
+
     /**
      * 跨域过滤器
      */
@@ -62,11 +64,14 @@ public class SecurityConfig
     private CorsFilter corsFilter;
 
     /**
-     * 允许匿名访问的地址
+     * 允许匿名访问的地址（若依自带 permit-all 配置）
      */
     @Autowired
     private PermitAllUrlProperties permitAllUrl;
 
+    /**
+     * 多租户上下文过滤器
+     */
     @Autowired
     private TenantContextFilter tenantContextFilter;
 
@@ -81,7 +86,6 @@ public class SecurityConfig
         daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
         return new ProviderManager(daoAuthenticationProvider);
     }
-
     /**
      * anyRequest          |   匹配所有请求路径
      * access              |   SpringEl表达式结果为true时可以访问
@@ -98,39 +102,79 @@ public class SecurityConfig
      * authenticated       |   用户登录后可访问
      */
     @Bean
-    protected SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception
     {
         return httpSecurity
-            // CSRF禁用，因为不使用session
-            .csrf(csrf -> csrf.disable())
-            // 禁用HTTP响应标头
-            .headers((headersCustomizer) -> {
-                headersCustomizer.cacheControl(cache -> cache.disable()).frameOptions(options -> options.sameOrigin());
-            })
-            // 认证失败处理类
-            .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-            // 基于token，所以不需要session
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            // 注解标记允许匿名访问的url
-            .authorizeHttpRequests((requests) -> {
-                permitAllUrl.getUrls().forEach(url -> requests.antMatchers(url).permitAll());
-                // 对于登录login 注册register 验证码captchaImage 允许匿名访问
-                requests.antMatchers("/login", "/register", "/captchaImage").permitAll()
-                    // 静态资源，可匿名访问
-                    .antMatchers(HttpMethod.GET, "/", "/*.html", "/**/*.html", "/**/*.css", "/**/*.js", "/profile/**").permitAll()
-                    .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/*/api-docs", "/druid/**").permitAll()
+                // CSRF禁用，因为不使用session
+                .csrf(csrf -> csrf.disable())
+                // 禁用HTTP响应标头/iframe（保持与原版兼容：允许同源 frame）
+                .headers(headers -> headers
+                        .cacheControl(cache -> cache.disable())
+                        .frameOptions(frame -> frame.sameOrigin()))
+                // 认证失败处理类
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+                // 基于token，所以不需要session
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // 过滤请求
+                .authorizeHttpRequests(requests -> {
+                    // 1) 若依配置文件中标记 permitAll 的 url
+                    permitAllUrl.getUrls().forEach(url -> requests.antMatchers(url).permitAll());
+
+                    // 2) 原项目 SecurityConfig.java 里放行的接口/资源（补齐到多租户版）
+                    // 登录/注册/验证码
+                    requests.antMatchers("/login", "/register", "/captchaImage").permitAll();
+
+                    // 业务/资源放行（原项目）
+                    requests.antMatchers(
+                            "/3DVisual/**",
+                            "/model/**",
+                            "/getMenus/**",
+                            "/U3DRes/**",
+                            "/version/current",
+                            "/versionLog",
+                            "/versionLog/**",
+                            "/WebSocketServer/**",
+                            "/alertsWS/**",
+                            "/func/**"
+                    ).permitAll();
+
+                    // 静态资源（原项目）
+                    requests.antMatchers("/static/**", "/index/**").permitAll();
+
+                    // GET 静态资源（原项目/若依常规）
+                    requests.antMatchers(
+                            HttpMethod.GET,
+                            "/",
+                            "/*.html",
+                            "/**/*.html",
+                            "/**/*.css",
+                            "/**/*.js",
+                            "/profile/**"
+                    ).permitAll();
+
+                    // swagger / druid（原项目）
+                    requests.antMatchers(
+                            "/swagger-ui.html",
+                            "/swagger-resources/**",
+                            "/webjars/**",
+                            "/*/api-docs",
+                            "/druid/**"
+                    ).permitAll();
+
                     // 除上面外的所有请求全部需要鉴权认证
-                    .anyRequest().authenticated();
-            })
-            // 添加Logout filter
-            .logout(logout -> logout.logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler))
-            // 添加JWT filter
-            .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
-            .addFilterAfter(tenantContextFilter, JwtAuthenticationTokenFilter.class)
-            // 添加CORS filter
-            .addFilterBefore(corsFilter, JwtAuthenticationTokenFilter.class)
-            .addFilterBefore(corsFilter, LogoutFilter.class)
-            .build();
+                    requests.anyRequest().authenticated();
+//                    requests.anyRequest().permitAll();
+                })
+                // 退出
+                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler))
+                // JWT
+                .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                // 多租户上下文（放在 JWT 之后，确保已解析完 token 再落 tenant）
+                .addFilterAfter(tenantContextFilter, JwtAuthenticationTokenFilter.class)
+                // CORS
+                .addFilterBefore(corsFilter, JwtAuthenticationTokenFilter.class)
+                .addFilterBefore(corsFilter, LogoutFilter.class)
+                .build();
     }
 
     /**

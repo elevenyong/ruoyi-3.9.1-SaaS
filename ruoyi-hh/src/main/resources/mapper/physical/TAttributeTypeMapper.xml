@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TAttributeTypeMapper">
+
+    <resultMap type="TAttributeType" id="TAttributeTypeResult">
+        <result property="id" column="id"/>
+        <result property="attributeName" column="attribute_name"/>
+        <result property="dataUnit" column="data_unit"/>
+    </resultMap>
+
+    <sql id="selectTAttributeTypeVo">
+        select id,
+               attribute_name,
+               data_unit
+        from t_attribute_type
+    </sql>
+
+    <select id="selectTAttributeTypeList" parameterType="TAttributeType" resultMap="TAttributeTypeResult">
+        <include refid="selectTAttributeTypeVo"/>
+        <where>
+            <if test="attributeName != null ">and attribute_name = #{attributeName}</if>
+            <if test="dataUnit != null">and data_unit = #{dataUnit}</if>
+        </where>
+    </select>
+
+    <select id="selectTAttributeTypeById" parameterType="Long" resultMap="TAttributeTypeResult">
+        <include refid="selectTAttributeTypeVo"/>
+        where id = #{id}
+    </select>
+
+
+    <insert id="insertTAttributeType" parameterType="TAttributeType" useGeneratedKeys="true" keyProperty="id">
+        insert into t_attribute_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="attributeName != null">attribute_name,</if>
+            <if test="dataUnit != null">data_unit,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="attributeName != null">#{attributeName},</if>
+            <if test="dataUnit != null">#{dataUnit},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTAttributeType" parameterType="TAttributeType">
+        update t_attribute_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="attributeName != null">attribute_name = #{attributeName},</if>
+            <if test="dataUnit != null">data_unit = #{dataUnit},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTAttributeTypeById" parameterType="Long">
+        delete
+        from t_attribute_type
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTAttributeTypeByIds" parameterType="String">
+        delete from t_attribute_type where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

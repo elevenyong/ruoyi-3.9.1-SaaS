@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.util.mapper.TMeasuringTypeMapper">
+
+    <resultMap type="TMeasuringType" id="TMeasuringTypeResult">
+        <result property="id"    column="id"    />
+        <result property="measuringType"    column="measuring_type"    />
+        <result property="unit"    column="unit"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTMeasuringTypeVo">
+        select id, measuring_type, unit, create_by, create_time, update_by, update_time, remark from t_measuring_type
+    </sql>
+
+    <select id="selectTMeasuringTypeList" parameterType="TMeasuringType" resultMap="TMeasuringTypeResult">
+        <include refid="selectTMeasuringTypeVo"/>
+        <where>
+            <if test="id!=null and id!=0">and id=#{id}</if>
+            <if test="measuringType != null  and measuringType != ''"> and measuring_type = #{measuringType}</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+        </where>
+    </select>
+
+    <select id="selectTMeasuringTypeById" parameterType="java.lang.Integer" resultMap="TMeasuringTypeResult">
+        <include refid="selectTMeasuringTypeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTMeasuringType" parameterType="TMeasuringType" useGeneratedKeys="true" keyProperty="id">
+        insert into t_measuring_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="measuringType != null">measuring_type,</if>
+            <if test="unit != null">unit,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="measuringType != null">#{measuringType},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTMeasuringType" parameterType="TMeasuringType">
+        update t_measuring_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="measuringType != null">measuring_type = #{measuringType},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where Id = #{id}
+    </update>
+
+    <delete id="deleteTMeasuringTypeById" parameterType="java.lang.Integer">
+        delete from t_measuring_type where id = #{id}
+    </delete>
+
+    <delete id="deleteTMeasuringTypeByIds" parameterType="java.util.List">
+        delete from t_measuring_type where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getPageList" resultType="com.ruoyi.hh.util.domain.TMeasuringType">
+        select * from t_measuring_type
+    </select>
+</mapper>

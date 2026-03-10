@@ -115,4 +115,11 @@ public interface SysDeptMapper
      * @return 结果
      */
     public int deleteDeptById(Long deptId);
+    /**
+     * 是否存在岗位
+     *
+     * @param deptId
+     * @return
+     */
+    public int checkDeptExistPost(Long deptId);
 }

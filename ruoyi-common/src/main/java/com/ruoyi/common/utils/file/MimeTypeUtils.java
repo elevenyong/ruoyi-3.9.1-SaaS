@@ -24,7 +24,9 @@ public class MimeTypeUtils
     public static final String[] MEDIA_EXTENSION = { "swf", "flv", "mp3", "wav", "wma", "wmv", "mid", "avi", "mpg",
             "asf", "rm", "rmvb" };
 
-    public static final String[] VIDEO_EXTENSION = { "mp4", "avi", "rmvb" };
+    public static final String[] VIDEO_EXTENSION = {"mp4", "avi", "rmvb"};
+
+    public static final String[] CAD_EXTENSION = {"dwg", "dxf", "mxweb"};
 
     public static final String[] DEFAULT_ALLOWED_EXTENSION = {
             // 图片
@@ -36,7 +38,10 @@ public class MimeTypeUtils
             // 视频格式
             "mp4", "avi", "rmvb",
             // pdf
-            "pdf" };
+            "pdf",
+            // CAD
+            "dwg", "dxf", "mxweb",
+    };
 
     public static String getExtension(String prefix)
     {

@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TActualFlushingMapper">
+
+    <resultMap type="TActualFlushing" id="TActualFlushingResult">
+        <result property="id"    column="id"    />
+        <result property="boreholeId"    column="borehole_id"    />
+        <result property="shiftId"    column="shift_id"    />
+        <result property="dateFlushing"    column="date_flushing"    />
+        <result property="timeBeginFlushing"    column="time_begin_flushing"    />
+        <result property="timeEndFlushing"    column="time_end_flushing"    />
+        <result property="totalTimeFlushing"    column="total_time_flushing"    />
+        <result property="waterPressureDuringFlushing"    column="water_pressure_during_flushing"    />
+        <result property="gasCONCBeforeFlushing"    column="gas_CONC_before_flushing"    />
+        <result property="gasCONCAfterFlushing"    column="gas_CONC_after_flushing"    />
+        <result property="punchingParagraph1"    column="punching_paragraph1"    />
+        <result property="punchingParagraph2"    column="punching_paragraph2"    />
+        <result property="seeRockCase"    column="see_rock_case"    />
+        <result property="seeCoalCase"    column="see_coal_case"    />
+        <result property="actualCoalAmountFlushed"    column="actual_coal_amount_flushed"    />
+        <result property="coalDensity"    column="coal_density"    />
+        <result property="completionRatioFlushedCoal"    column="completion_ratio_flushed_coal"    />
+        <result property="personConstruction"    column="person_construction"    />
+        <result property="receptionTime"    column="reception_time"    />
+        <result property="gasChangeDuring"    column="gas_change_during"    />
+        <result property="exceptionPhenomena"    column="exception_phenomena"    />
+        <result property="personChecking"    column="person_checking"    />
+        <result property="otherPerson"    column="other_person"    />
+        <result property="chargehand"    column="chargehand"    />
+        <result property="file"    column="file"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTActualFlushingVo">
+        select r.roadway,a.group_no,a.borehole_no,s.shift_info,f.*
+        FROM
+        t_actual_flushing f
+        LEFT JOIN t_actual_borehole a ON a.id =f.borehole_id
+        LEFT JOIN t_roadway r ON r.id = a.roadway_id
+        LEFT JOIN t_shiftinfo s ON f.shift_id=s.id
+    </sql>
+    <sql id="selectTActualFlushingVo1">
+        select * from t_actual_flushing
+    </sql>
+
+    <select id="selectTActualFlushingList" parameterType="TActualFlushing" resultMap="TActualFlushingResult">
+        <include refid="selectTActualFlushingVo"/>
+        <where>
+            <if test="id!=null and id!=0">and f.id=#{id}</if>
+            <if test="boreholeId != null "> and f.borehole_id = #{boreholeId}</if>
+            <if test="shiftId != null "> and f.shift_id = #{shiftId}</if>
+            <if test="dateFlushing != null "> and f.date_flushing = #{dateFlushing}</if>
+            <if test="timeBeginFlushing != null "> and f.time_begin_flushing = #{timeBeginFlushing}</if>
+            <if test="timeEndFlushing != null "> and f.time_end_flushing = #{timeEndFlushing}</if>
+            <if test="totalTimeFlushing != null "> and f.total_time_flushing = #{totalTimeFlushing}</if>
+            <if test="waterPressureDuringFlushing != null "> and f.water_pressure_during_flushing = #{waterPressureDuringFlushing}</if>
+            <if test="gasCONCBeforeFlushing != null "> and f.gas_CONC_before_flushing = #{gasCONCBeforeFlushing}</if>
+            <if test="gasCONCAfterFlushing != null "> and f.gas_CONC_after_flushing = #{gasCONCAfterFlushing}</if>
+            <if test="punchingParagraph1 != null "> and f.punching_paragraph1 = #{punchingParagraph1}</if>
+            <if test="punchingParagraph2 != null "> and f.punching_paragraph2 = #{punchingParagraph2}</if>
+            <if test="seeRockCase != null  and seeRockCase != ''"> and f.see_rock_case = #{seeRockCase}</if>
+            <if test="seeCoalCase != null  and seeCoalCase != ''"> and f.see_coal_case = #{seeCoalCase}</if>
+            <if test="actualCoalAmountFlushed != null "> and f.actual_coal_amount_flushed = #{actualCoalAmountFlushed}</if>
+            <if test="coalDensity != null "> and f.coal_density = #{coalDensity}</if>
+            <if test="completionRatioFlushedCoal != null "> and f.completion_ratio_flushed_coal = #{completionRatioFlushedCoal}</if>
+            <if test="personConstruction != null  and personConstruction != ''"> and f.person_construction = #{personConstruction}</if>
+            <if test="receptionTime != null "> and f.reception_time = #{receptionTime}</if>
+            <if test="gasChangeDuring != null "> and f.gas_change_during = #{gasChangeDuring}</if>
+            <if test="exceptionPhenomena != null  and exceptionPhenomena != ''"> and f.exception_phenomena = #{exceptionPhenomena}</if>
+            <if test="personChecking != null  and personChecking != ''"> and f.person_checking = #{personChecking}</if>
+            <if test="otherPerson != null  and otherPerson != ''"> and f.other_person = #{otherPerson}</if>
+            <if test="chargehand != null  and chargehand != ''"> and f.chargehand = #{chargehand}</if>
+            <if test="file != null  and file != ''"> and f.file = #{file}</if>
+        </where>
+    </select>
+
+    <select id="selectTActualFlushingById" parameterType="Integer" resultMap="TActualFlushingResult">
+        <include refid="selectTActualFlushingVo"/>
+        where f.id = #{id}
+    </select>
+
+    <insert id="insertTActualFlushing" parameterType="TActualFlushing" useGeneratedKeys="true" keyProperty="id">
+        insert into t_actual_flushing
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="boreholeId != null and id!=0">borehole_id,</if>
+            <if test="shiftId != null">shift_id,</if>
+            <if test="dateFlushing != null">date_flushing,</if>
+            <if test="timeBeginFlushing != null">time_begin_flushing,</if>
+            <if test="timeEndFlushing != null">time_end_flushing,</if>
+            <if test="totalTimeFlushing != null">total_time_flushing,</if>
+            <if test="waterPressureDuringFlushing != null">water_pressure_during_flushing,</if>
+            <if test="gasCONCBeforeFlushing != null">gas_CONC_before_flushing,</if>
+            <if test="gasCONCAfterFlushing != null">gas_CONC_after_flushing,</if>
+            <if test="punchingParagraph1 != null">punching_paragraph1,</if>
+            <if test="punchingParagraph2 != null">punching_paragraph2,</if>
+            <if test="seeRockCase != null">see_rock_case,</if>
+            <if test="seeCoalCase != null">see_coal_case,</if>
+            <if test="actualCoalAmountFlushed != null">actual_coal_amount_flushed,</if>
+            <if test="completionRatioFlushedCoal != null">completion_ratio_flushed_coal,</if>
+            <if test="coalDensity != null">coal_density,</if>
+            <if test="personConstruction != null">person_construction,</if>
+            <if test="receptionTime != null">reception_time,</if>
+            <if test="gasChangeDuring != null">gas_change_during,</if>
+            <if test="exceptionPhenomena != null">exception_phenomena,</if>
+            <if test="personChecking != null">person_checking,</if>
+            <if test="otherPerson != null">other_person,</if>
+            <if test="chargehand != null">chargehand,</if>
+            <if test="file != null">file,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="boreholeId != null">#{boreholeId},</if>
+            <if test="shiftId != null">#{shiftId},</if>
+            <if test="dateFlushing != null">#{dateFlushing},</if>
+            <if test="timeBeginFlushing != null">#{timeBeginFlushing},</if>
+            <if test="timeEndFlushing != null">#{timeEndFlushing},</if>
+            <if test="totalTimeFlushing != null">#{totalTimeFlushing},</if>
+            <if test="waterPressureDuringFlushing != null">#{waterPressureDuringFlushing},</if>
+            <if test="gasCONCBeforeFlushing != null">#{gasCONCBeforeFlushing},</if>
+            <if test="gasCONCAfterFlushing != null">#{gasCONCAfterFlushing},</if>
+            <if test="punchingParagraph1 != null">#{punchingParagraph1},</if>
+            <if test="punchingParagraph2 != null">#{punchingParagraph2},</if>
+            <if test="seeRockCase != null">#{seeRockCase},</if>
+            <if test="seeCoalCase != null">#{seeCoalCase},</if>
+            <if test="actualCoalAmountFlushed != null">#{actualCoalAmountFlushed},</if>
+            <if test="coalDensity != null">#{coalDensity},</if>
+            <if test="completionRatioFlushedCoal != null">#{completionRatioFlushedCoal},</if>
+            <if test="personConstruction != null">#{personConstruction},</if>
+            <if test="receptionTime != null">#{receptionTime},</if>
+            <if test="gasChangeDuring != null">#{gasChangeDuring},</if>
+            <if test="exceptionPhenomena != null">#{exceptionPhenomena},</if>
+            <if test="personChecking != null">#{personChecking},</if>
+            <if test="otherPerson != null">#{otherPerson},</if>
+            <if test="chargehand != null">#{chargehand},</if>
+            <if test="file != null">#{file},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTActualFlushing" parameterType="TActualFlushing">
+        update t_actual_flushing
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="boreholeId != null">borehole_id = #{boreholeId},</if>
+            <if test="shiftId != null">shift_id = #{shiftId},</if>
+            <if test="dateFlushing != null">date_flushing = #{dateFlushing},</if>
+            <if test="timeBeginFlushing != null">time_begin_flushing = #{timeBeginFlushing},</if>
+            <if test="timeEndFlushing != null">time_end_flushing = #{timeEndFlushing},</if>
+            <if test="totalTimeFlushing != null">total_time_flushing = #{totalTimeFlushing},</if>
+            <if test="waterPressureDuringFlushing != null">water_pressure_during_flushing = #{waterPressureDuringFlushing},</if>
+            <if test="gasCONCBeforeFlushing != null">gas_CONC_before_flushing = #{gasCONCBeforeFlushing},</if>
+            <if test="gasCONCAfterFlushing != null">gas_CONC_after_flushing = #{gasCONCAfterFlushing},</if>
+            <if test="punchingParagraph1 != null">punching_paragraph1 = #{punchingParagraph1},</if>
+            <if test="punchingParagraph2 != null">punching_paragraph2 = #{punchingParagraph2},</if>
+            <if test="seeRockCase != null">see_rock_case = #{seeRockCase},</if>
+            <if test="seeCoalCase != null">see_coal_case = #{seeCoalCase},</if>
+            <if test="actualCoalAmountFlushed != null">actual_coal_amount_flushed = #{actualCoalAmountFlushed},</if>
+            <if test="coalDensity != null">coal_density = #{coalDensity},</if>
+            <if test="completionRatioFlushedCoal != null">completion_ratio_flushed_coal = #{completionRatioFlushedCoal},</if>
+            <if test="personConstruction != null">person_construction = #{personConstruction},</if>
+            <if test="receptionTime != null">reception_time = #{receptionTime},</if>
+            <if test="gasChangeDuring != null">gas_change_during = #{gasChangeDuring},</if>
+            <if test="exceptionPhenomena != null">exception_phenomena = #{exceptionPhenomena},</if>
+            <if test="personChecking != null">person_checking = #{personChecking},</if>
+            <if test="otherPerson != null">other_person = #{otherPerson},</if>
+            <if test="chargehand != null">chargehand = #{chargehand},</if>
+            <if test="file != null">file = #{file},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTActualFlushingById" parameterType="Integer">
+        delete from t_actual_flushing where id = #{id}
+    </delete>
+
+    <delete id="deleteTActualFlushingByIds" parameterType="java.util.List">
+        delete from t_actual_flushing where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!--和钻孔信息联查-->
+    <select id="getAndBroeholeInfo" resultType="com.ruoyi.hh.physical.domain.TActualFlushing">
+        select f.*,a.group_no,a.borehole_no,
+        r.roadway,c.borehole_category,p.purpose_borehole,n.navigation_point_name,(f.punching_paragraph2-f.punching_paragraph1)
+        AS punchingparagraphlength
+        FROM
+        t_actual_flushing f
+        LEFT JOIN t_actual_borehole a ON f.borehole_id= a.id
+        LEFT JOIN t_borehole_category c ON a.borehole_categoryid=c.id
+        LEFT JOIN t_navigation_point n ON a.navigation_pointid=n.id
+        LEFT JOIN t_purpose_borehole p ON a.purpose_borehole_id = p.id
+        LEFT JOIN t_roadway r ON a.roadway_id = r.id
+        LEFT JOIN t_shiftinfo s ON f.shift_id=s.id
+    </select>
+
+    <!--水力冲孔台账-->
+    <select id="getFlushingStandingBook" resultType="com.ruoyi.hh.simulate.domain.FlushingStandingBook">
+        select s.shift_info,
+        f.*,r.roadway,a.group_no,a.borehole_no,ROUND(a.borehole_length,2),ROUND(a.borehole_length,2) AS boreholelength,
+        CONCAT(f.punching_paragraph1,"-",f.punching_paragraph2)AS punchingparagraph,
+        ROUND((f.punching_paragraph2-f.punching_paragraph1),2)
+        AS punchingparagraphlength
+        from t_actual_flushing f
+        LEFT JOIN t_actual_borehole a ON a.id= f.borehole_id
+        LEFT JOIN t_roadway r ON a.roadway_id=r.id
+        LEFT JOIN t_shiftinfo s ON f.shift_id=s.id
+        where 1=1
+        <if test="roadwayId!=null">AND r.id IN
+            <foreach collection="roadwayId" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="groupNo!=null">AND a.group_no IN
+            <foreach collection="groupNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="boreholeNo!=null">AND a.borehole_no IN
+            <foreach collection="boreholeNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <if test="startDate!=null and endDate!=null">
+            and f.date_flushing BETWEEN #{startDate} and #{endDate}
+        </if>
+    </select>
+
+    <!--冲孔煤量完成情况(根据巷道ID和钻孔时间查询)-->
+    <select id="getFlushingStatistics" resultType="com.ruoyi.hh.simulate.domain.FlushingStatistics">
+        select r.roadway,b.group_no,b.borehole_no,
+        count(a.borehole_id) AS boreholecount,
+        round(sum((a.punching_paragraph2-a.punching_paragraph1)),2) AS punchingparagraphlength,
+        SUM(a.actual_coal_amount_flushed) AS actualCoalAmountFlushed,
+        SUM(df.designed_coal_amount_flush) AS designedcoalamountflushed,
+        round(SUM(a.actual_coal_amount_flushed)/SUM(df.designed_coal_amount_flush)*100,2) AS completionRatioFlushedCoal
+        from t_actual_flushing a
+        LEFT JOIN t_actual_borehole b ON a.borehole_id =b.id
+        LEFT JOIN t_roadway r ON b.roadway_id =r.id
+        LEFT JOIN t_designed_borehole d ON CONCAT(b.roadway_id,b.group_no,b.borehole_no)=CONCAT(d.roadway_id,d.group_no,d.borehole_no)
+        LEFT JOIN t_designed_flushing df ON d.id=df.borehole_id
+        where 1=1
+        <if test="roadwayId!=null">AND r.id IN
+            <foreach collection="roadwayId" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="groupNo!=null">AND b.group_no IN
+            <foreach collection="groupNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="boreholeNo!=null">AND b.borehole_no IN
+            <foreach collection="boreholeNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="startDate!=null and endDate!=null">
+            and b.drilling_date BETWEEN #{startDate} and #{endDate}
+        </if>
+        group by r.roadway
+    </select>
+    <!--冲孔信息联查其他-->
+    <select id="getFlushingInfoAndOther" resultType="com.ruoyi.hh.physical.domain.TActualFlushing">
+        select f.*,r.roadway,a.group_no,a.borehole_no,a.borehole_length,(f.punching_paragraph2-f.punching_paragraph1) AS
+        punchingparagraphlength
+        from t_actual_flushing f
+        LEFT JOIN t_actual_borehole a ON a.id= f.borehole_id
+        LEFT JOIN t_roadway r ON a.roadway_id=r.id
+        where 1=1
+        <if test="roadwayId!=null">AND r.id IN
+            <foreach collection="roadwayId" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="groupNo!=null">AND a.group_no IN
+            <foreach collection="groupNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="boreholeNo!=null">AND a.borehole_no IN
+            <foreach collection="boreholeNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="startDate!=null and endDate!=null">
+            and f.date_flushing BETWEEN #{startDate} and #{endDate}
+        </if>
+    </select>
+    <!--水力冲孔统计台账-->
+    <select id="getStatisticsBook" resultType="com.ruoyi.hh.simulate.domain.StatisticsBook">
+        select s.shift_info,
+        f.*,r.roadway,a.group_no,a.borehole_no,ROUND(a.borehole_length,2),ROUND(a.borehole_length,2) AS boreholelength,
+        CONCAT(f.punching_paragraph1,"-",f.punching_paragraph2)AS punchingparagraph,
+        ROUND((f.punching_paragraph2-f.punching_paragraph1),2)
+        AS punchingparagraphlength
+        from t_actual_flushing f
+        LEFT JOIN t_actual_borehole a ON a.id= f.borehole_id
+        LEFT JOIN t_roadway r ON a.roadway_id=r.id
+        LEFT JOIN t_shiftinfo s ON f.shift_id=s.id
+        where 1=1
+        <if test="roadwayId!=null">AND r.id IN
+            <foreach collection="roadwayId" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="groupNo!=null">AND a.group_no IN
+            <foreach collection="groupNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="boreholeNo!=null">AND a.borehole_no IN
+            <foreach collection="boreholeNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+
+        <if test="startDate!=null and endDate!=null">
+            and f.date_flushing BETWEEN #{startDate} and #{endDate}
+        </if>
+    </select>
+
+    <!--水力冲孔验收单-->
+    <select id="getAcceptBills" resultType="com.ruoyi.hh.physical.domain.TActualFlushing">
+        select f.id,r.roadway,sh.shift_info,sh.id AS shift_id,a.group_no,f.borehole_id,a.borehole_no,a.bore_diameter,a.borehole_length,a.azimuth_angle,a.inclination_angle,
+        f.date_flushing,f.time_begin_flushing,f.time_end_flushing,f.total_time_flushing,f.water_pressure_during_flushing,f.gas_CONC_before_flushing,
+        f.gas_CONC_after_flushing,f.punching_paragraph1,f.punching_paragraph2,f.see_coal_case,f.see_rock_case,CONCAT(f.punching_paragraph1,'~',
+        f.punching_paragraph2) AS punchingparagraph,ROUND(f.punching_paragraph2-f.punching_paragraph1,2) AS length,f.actual_coal_amount_flushed,
+        f.completion_ratio_flushed_coal,f.reception_time,f.gas_change_during,f.exception_phenomena,f.person_construction,f.chargehand,
+        f.person_checking,f.other_person,f.remark
+        from t_actual_flushing f LEFT JOIN t_actual_borehole a
+        ON f.borehole_id=a.Id
+        LEFT JOIN t_roadway r ON r.id=a.roadway_id
+        LEFT JOIN t_shiftinfo sh ON sh.id=f.shift_id
+        where 1=1
+        <if test="roadwayId!=null">AND r.id IN
+            <foreach collection="roadwayId" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="groupNo!=null">AND a.group_no IN
+            <foreach collection="groupNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="boreholeNo!=null">AND a.borehole_no IN
+            <foreach collection="boreholeNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="startDate!=null and endDate!=null">
+            and f.reception_time BETWEEN #{startDate} and #{endDate}
+        </if>
+    </select>
+
+    <!--根据钻孔ID删除冲孔信息-->
+    <delete id="delByBoreholeId" parameterType="java.lang.Integer">
+        delete from t_actual_flushing where borehole_id =#{boreholeId}
+    </delete>
+    <delete id="delByBoreholeIds" parameterType="java.util.List">
+        delete from t_actual_flushing where borehole_id in
+        <foreach item="boreholeIds" collection="list" open="(" separator="," close=")">
+            #{boreholeIds}
+        </foreach>
+    </delete>
+
+    <!--八矿************根据慧矿给出的单子Excel导出水力冲孔息信-->
+    <select id="PunchingledgerForExcel"  resultType="com.ruoyi.hh.business.domain.Punchingledger">
+        select concat(ab.group_no,"-",ab.borehole_no)  AS "boreholecode", ab.` constructionsite` AS "constructionsite",ab.bore_diameter AS "borediameter",db.inclination_angle AS "desangle",
+        ab.inclination_angle AS "actangle",db.borehole_length AS "desboreholelength",ab.borehole_length AS "actboreholelength",ab.depth_1st_rock_seam_start AS "rock1start",
+        ab.depth_1st_rock_seam_end AS "rock1end",ab.depth_1st_coal_seam_start AS "coal1start",ab.depth_1st_coal_seam_end AS "coal1end",ab.depth_2st_coal_seam_start AS "coal2start",
+        ab.depth_2st_coal_seam_end AS "coal2end",ab.depth_2st_rock_seam_start AS "rock2start",ab.depth_2st_rock_seam_end AS "rock2end",ab.depth_3st_rock_seam_start AS "rock3start",
+        ab.depth_3st_rock_seam_end AS "rock3end",af.actual_coal_amount_flushed AS "coalamountflushed",ab.drilling_date AS "drillingdate",ab.drilling_date AS "drillingtime",sg.end_time AS "endtime",
+        ab.person_construction AS "personConstruction",ab.chargehand AS "chargehand",ab.person_checking_video AS "personCheckingvideo",ab.person_checking_site AS "personCheckingsite",
+        ab.hole_sealing_specification AS "holesealingspecification",ab.solid_pipeline_length AS "solidpipelinelength",ab.sieve_pipeline_length AS "sievepipelinelength",ht.hole_seal_type AS "holesealtype",
+        sg.grouting_date AS "groutingdate",sg.actual_amount_bag_grouting AS "actualamountbaggrouting"
+        from
+        t_actual_flushing af
+        LEFT JOIN t_actual_borehole ab ON ab.id=af.borehole_id
+        LEFT JOIN t_sealing_grouting sg ON ab.id=sg.borehole_id
+        LEFT JOIN t_holeseal_type ht ON ht.id=sg.holeseal_typeid
+        LEFT JOIN t_designed_borehole db ON db.group_no=ab.group_no AND db.borehole_no=ab.borehole_no
+
+    </select>
+
+
+</mapper>

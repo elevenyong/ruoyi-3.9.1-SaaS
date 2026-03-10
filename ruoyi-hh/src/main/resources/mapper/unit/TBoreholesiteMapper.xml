@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.util.mapper.TBoreholesiteMapper">
+
+    <resultMap type="TBoreholesite" id="TBoreholesiteResult">
+        <result property="id"    column="id"    />
+        <result property="drillSite"    column="drill_site"    />
+        <result property="roadwayId"    column="roadway_id"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTBoreholesiteVo">
+        select id, drill_site, roadway_id, create_by, create_time, update_by, update_time, remark from t_boreholesite
+    </sql>
+
+    <select id="selectTBoreholesiteList" parameterType="TBoreholesite" resultMap="TBoreholesiteResult">
+        <include refid="selectTBoreholesiteVo"/>
+        <where>
+            <if test="id!=null and id!=0">and id=#{id}</if>
+            <if test="drillSite != null  and drillSite != ''"> and drill_site = #{drillSite}</if>
+            <if test="roadwayId != null "> and roadway_id = #{roadwayId}</if>
+        </where>
+    </select>
+
+    <select id="selectTBoreholesiteById" parameterType="Integer" resultMap="TBoreholesiteResult">
+        <include refid="selectTBoreholesiteVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTBoreholesite" parameterType="TBoreholesite" useGeneratedKeys="true" keyProperty="id">
+        insert into t_boreholesite
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="drillSite != null">drill_site,</if>
+            <if test="roadwayId != null">roadway_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="drillSite != null">#{drillSite},</if>
+            <if test="roadwayId != null">#{roadwayId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTBoreholesite" parameterType="TBoreholesite">
+        update t_boreholesite
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="drillSite != null">drill_site = #{drillSite},</if>
+            <if test="roadwayId != null">roadway_id = #{roadwayId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTBoreholesiteById" parameterType="Integer">
+        delete from t_boreholesite where id = #{id}
+    </delete>
+
+    <delete id="deleteTBoreholesiteByIds" parameterType="java.util.List">
+        delete from t_boreholesite where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="insertTBoreholesiteList" parameterType="java.util.List">
+        insert IGNORE into t_boreholesite(drill_site,roadway_id)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.drillSite},
+            #{item.roadway_id}
+            )
+        </foreach>
+    </insert>
+
+    <!--根据巷道ID删除钻场信息-->
+    <delete id="delByRoadWayId" parameterType="int">
+        delete from t_boreholesite where roadway_id =#{RoadWayId}
+    </delete>
+    <delete id="delByRoadWayIds" parameterType="java.util.List">
+        delete from t_boreholesite where roadway_id in
+        <foreach item="roadWayIds" collection="list" open="(" separator="," close=")">
+            #{roadWayIds}
+        </foreach>
+    </delete>
+    <!--根据巷道ID查询钻场ID列表-->
+     <select id="getIdsByRoadWayId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+         select id from t_boreholesite where roadway_id =#{roadWayId}
+     </select>
+
+
+</mapper>

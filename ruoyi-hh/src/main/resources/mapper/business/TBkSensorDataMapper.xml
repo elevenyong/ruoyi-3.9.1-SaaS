@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.business.mapper.TBkSensorDataMapper">
+
+    <resultMap type="TBkSensorData" id="TBkSensorDataResult">
+        <result property="id"    column="id"    />
+        <result property="coalMineName"    column="coal_mine_name"    />
+        <result property="measurePointCode"    column="measure_point_code"    />
+        <result property="sensorTypeName"    column="sensor_type_name"    />
+        <result property="measurePointLocal"    column="measure_point_local"    />
+        <result property="measurePointValue"    column="measure_point_value"    />
+        <result property="unit"    column="unit"    />
+        <result property="status"    column="status"    />
+        <result property="time"    column="time"    />
+    </resultMap>
+
+    <sql id="selectTBkSensorDataVo">
+        select id,coal_mine_name, measure_point_code, sensor_type_name, measure_point_local, measure_point_value, unit, status, time from t_bk_sensor_data
+    </sql>
+
+    <select id="selectTBkSensorDataList" parameterType="com.ruoyi.hh.business.domain.TBkSensorData" resultMap="TBkSensorDataResult">
+        <include refid="selectTBkSensorDataVo"/>
+        <where>
+            <if test="coalMineName != null  and coalMineName != ''"> and coal_mine_name = #{coalMineName}</if>
+            <if test="measurePointCode != null  and measurePointCode != ''"> and measure_point_code = #{measurePointCode}</if>
+            <if test="sensorTypeName != null  and sensorTypeName != ''"> and sensor_type_name like concat('%', #{sensorTypeName}, '%')</if>
+            <if test="measurePointLocal != null  and measurePointLocal != ''"> and measure_point_local = #{measurePointLocal}</if>
+            <if test="measurePointValue != null  and measurePointValue != ''"> and measure_point_value = #{measurePointValue}</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="time != null "> and time = #{time}</if>
+        </where>
+    </select>
+
+    <select id="selectTBkSensorDataById" parameterType="Integer" resultMap="TBkSensorDataResult">
+        <include refid="selectTBkSensorDataVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTBkSensorData" parameterType="com.ruoyi.hh.business.domain.TBkSensorData">
+        insert into t_bk_sensor_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="coalMineName != null">coal_mine_name,</if>
+            <if test="measurePointCode != null">measure_point_code,</if>
+            <if test="sensorTypeName != null">sensor_type_name,</if>
+            <if test="measurePointLocal != null">measure_point_local,</if>
+            <if test="measurePointValue != null">measure_point_value,</if>
+            <if test="unit != null">unit,</if>
+            <if test="status != null">status,</if>
+            <if test="time != null">time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="coalMineName != null">#{coalMineName},</if>
+            <if test="measurePointCode != null">#{measurePointCode},</if>
+            <if test="sensorTypeName != null">#{sensorTypeName},</if>
+            <if test="measurePointLocal != null">#{measurePointLocal},</if>
+            <if test="measurePointValue != null">#{measurePointValue},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="status != null">#{status},</if>
+            <if test="time != null">#{time},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTBkSensorData" parameterType="com.ruoyi.hh.business.domain.TBkSensorData">
+        update t_bk_sensor_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="coalMineName != null">coal_mine_name = #{coalMineName},</if>
+            <if test="measurePointCode != null">measure_point_code = #{measurePointCode},</if>
+            <if test="sensorTypeName != null">sensor_type_name = #{sensorTypeName},</if>
+            <if test="measurePointLocal != null">measure_point_local = #{measurePointLocal},</if>
+            <if test="measurePointValue != null">measure_point_value = #{measurePointValue},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="time != null">time = #{time},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTBkSensorDataById" parameterType="Integer">
+        delete from t_bk_sensor_data where id = #{id}
+    </delete>
+
+
+<!--    &lt;!&ndash;查询某一天某位置处的测点的最后一包数据&ndash;&gt;-->
+<!--    <select id="getLastDataSomeDay" resultMap="TBkSensorDataResult" parameterType="java.lang.String">-->
+<!--        SELECT t.* FROM t_bk_sensor_data t JOIN (SELECT measure_point_code, MAX(time) AS max_timestamp-->
+<!--        FROM t_bk_sensor_data WHERE DATE(time) = DATE(#{time,javaType=String,jdbcType=VARCHAR})-->
+<!--        GROUP BY measure_point_code) m  ON t.measure_point_code = m.measure_point_code-->
+<!--        AND t.time = m.max_timestamp AND t.measure_point_local like-->
+<!--        CONCAT('%',#{measurePointLocal,javaType=String,jdbcType=VARCHAR},'%')-->
+<!--    </select>-->
+
+    <delete id="deleteTBkSensorDataByIds" parameterType="String">
+        delete from t_bk_sensor_data where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--查询某一天某位置处的测点的第一包数据-->
+<!--    <select id="getFirstDataSomeDay" resultMap="TBkSensorDataResult" parameterType="java.lang.String">-->
+<!--        SELECT t.* FROM t_bk_sensor_data t JOIN (SELECT measure_point_code, MIN(time) AS min_timestamp-->
+<!--        FROM t_bk_sensor_data WHERE DATE(time) = DATE(#{time,javaType=String,jdbcType=VARCHAR})-->
+<!--        GROUP BY measure_point_code) m  ON t.measure_point_code = m.measure_point_code-->
+<!--        AND t.time = m.min_timestamp AND t.measure_point_local like-->
+<!--        CONCAT('%',#{measurePointLocal,javaType=String,jdbcType=VARCHAR},'%')-->
+<!--    </select>-->
+    <!--获取指定日期的第一包数据-->
+    <select id="getFirstDataSomeDay_Time" resultType="com.ruoyi.hh.business.domain.TBkSensorData">
+        SELECT measure_point_code, MIN(time) AS min_timestamp
+        FROM t_bk_sensor_data where time between #{startTime} and #{endTime}
+        <if test="measurePointLocal!=null">
+            and measure_point_local like "%${measurePointLocal}%"
+        </if>
+        GROUP BY measure_point_code
+    </select>
+    <!--获取指定日期的最后一包数据-->
+    <select id="getLastDataSomeDay_Time" resultType="com.ruoyi.hh.business.domain.TBkSensorData">
+        SELECT measure_point_code, MAX(time) AS min_timestamp
+        FROM t_bk_sensor_data where time between #{startTime} and #{endTime}
+        <if test="measurePointLocal!=null">
+            and measure_point_local like "%${measurePointLocal}%"
+        </if>
+        GROUP BY measure_point_code
+    </select>
+    <!--获取某一天的所有数据-->
+    <select id="getDataSomeDay_All" resultMap="TBkSensorDataResult">
+        select * from t_bk_sensor_data where time between #{startTime}
+        and #{endTime} and measure_point_local like "%${measurePointLocal}%" ORDER BY time desc
+    </select>
+    <!--获取某一天的，指定传感器的数据-->
+    <select id="getDataByLocal_All" resultMap="TBkSensorDataResult">
+        select * from t_bk_sensor_data where time between #{startTime}
+        and #{endTime}
+        <if test="measurePointLocal!=null">and measure_point_local in
+            <foreach collection="measurePointLocal" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <!--获取某一天所有测点的最后一包数据-->
+    <select id="getAllDataLast_Time" resultMap="TBkSensorDataResult">
+        SELECT measure_point_code, MIN(time) AS min_timestamp
+        FROM t_bk_sensor_data where time between #{startTime} and #{endTime} and measure_point_local like "%${measurePointLocal}%"
+        GROUP BY measure_point_code
+    </select>
+
+    <!--(抽采历史曲线)时间内某测点编码，某测点类型数据-->
+    <select id="getHistoricalCurve" resultMap="TBkSensorDataResult">
+        SELECT * from t_bk_sensor_data
+
+                 WHERE time BETWEEN #{startTime} and #{endTime}
+        <if test="measurePointCode!=null">
+            and measure_point_code=#{measurePointCode}
+        </if>
+        <if test="sensorTypeName!=null">
+            and sensor_type_name=#{sensorTypeName}
+        </if>
+    </select>
+
+    <!--查询某天的所有日累计测点位置信息-->
+    <select id="getDayLocal" resultType="string">
+        select measure_point_local from t_bk_sensor_data where sensor_type_name = "瓦斯日累计纯量" and time between #{startTime} and #{endTime} GROUP BY measure_point_local
+    </select>
+    <!--查询某天的所有月累计测点位置信息-->
+    <select id="getMonthLocal" resultType="string">
+        select measure_point_local from t_bk_sensor_data where sensor_type_name = "瓦斯月累计纯量" and time between #{startTime} and #{endTime} GROUP BY measure_point_local
+    </select>
+    <!--查询某天测所有抽放量的测点位置信息-->
+    <select id="getDrainageLocal" resultType="string">
+        select measure_point_local from t_bk_sensor_data where sensor_type_name = "瓦斯抽放量" and time between #{startTime} and #{endTime} GROUP BY measure_point_local
+    </select>
+</mapper>

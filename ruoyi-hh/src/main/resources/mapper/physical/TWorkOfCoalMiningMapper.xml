@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TWorkOfCoalMiningMapper">
+
+    <resultMap type="TWorkOfCoalMining" id="TWorkOfCoalMiningResult">
+        <result property="id" column="id"/>
+        <result property="workfaceId" column="workface_id"/>
+        <result property="miningRate" column="mining_rate"/>
+        <result property="miningShift" column="mining_shift"/>
+        <result property="numberOfWorkfaceSupports" column="number_of_workface_supports"/>
+        <result property="supportLength" column="support_length"/>
+        <result property="constructionUnit" column="construction_unit"/>
+        <result property="returnAirRoadNavPointId" column="return_air_road_nav_point_id"/>
+        <result property="disToRetAirNavPoint" column="dis_to_ret_air_nav_point"/>
+        <result property="intakeAirRoadNavPointId" column="intake_air_road_nav_point_id"/>
+        <result property="disToInAirNavPoint" column="dis_to_in_air_nav_point"/>
+    </resultMap>
+
+    <sql id="selectTWorkOfCoalMiningVo">
+        select id,
+               workface_id,
+               mining_rate,
+               mining_shift,
+               number_of_workface_supports,
+               support_length,
+               construction_unit,
+               return_air_road_nav_point_id,
+               dis_to_ret_air_nav_point,
+               intake_air_road_nav_point_id,
+               dis_to_in_air_nav_point
+        from t_work_of_coal_mining
+    </sql>
+
+    <select id="selectTWorkOfCoalMiningList" parameterType="TWorkOfCoalMining"
+            resultMap="TWorkOfCoalMiningResult">
+        <include refid="selectTWorkOfCoalMiningVo"/>
+        <where>
+            <if test="workfaceId != null ">and workface_id = #{workfaceId}</if>
+            <if test="miningRate != null ">and mining_rate = #{miningRate}</if>
+            <if test="miningShift != null ">and mining_shift = #{miningShift}</if>
+            <if test="numberOfWorkfaceSupports != null ">and number_of_workface_supports = #{numberOfWorkfaceSupports}</if>
+            <if test="supportLength != null ">and support_length = #{supportLength}</if>
+            <if test="constructionUnit != null ">and construction_unit = #{constructionUnit}</if>
+            <if test="returnAirRoadNavPointId != null ">and return_air_road_nav_point_id = #{returnAirRoadNavPointId}</if>
+            <if test="disToRetAirNavPoint != null ">and dis_to_ret_air_nav_point = #{disToRetAirNavPoint}</if>
+            <if test="intakeAirRoadNavPointId != null ">and intake_air_road_nav_point_id = #{intakeAirRoadNavPointId}</if>
+            <if test="disToInAirNavPoint != null ">and dis_to_in_air_nav_point = #{disToInAirNavPoint}</if>
+        </where>
+        order by mining_shift desc
+    </select>
+
+    <select id="selectTWorkOfCoalMiningById" parameterType="Integer"
+            resultMap="TWorkOfCoalMiningResult">
+        <include refid="selectTWorkOfCoalMiningVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTWorkOfCoalMining" parameterType="TWorkOfCoalMining" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_work_of_coal_mining
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="workfaceId != null">workface_id,</if>
+            <if test="miningRate != null">mining_rate,</if>
+            <if test="miningShift != null">mining_shift,</if>
+            <if test="numberOfWorkfaceSupports != null">number_of_workface_supports,</if>
+            <if test="supportLength != null">support_length,</if>
+            <if test="constructionUnit != null">construction_unit,</if>
+            <if test="returnAirRoadNavPointId != null">return_air_road_nav_point_id,</if>
+            <if test="disToRetAirNavPoint != null">dis_to_ret_air_nav_point,</if>
+            <if test="intakeAirRoadNavPointId != null">intake_air_road_nav_point_id,</if>
+            <if test="disToInAirNavPoint != null">dis_to_in_air_nav_point</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="workfaceId != null">#{workfaceId},</if>
+            <if test="miningRate != null">#{miningRate},</if>
+            <if test="miningShift != null">#{miningShift},</if>
+            <if test="numberOfWorkfaceSupports != null">#{numberOfWorkfaceSupports},</if>
+            <if test="supportLength != null">#{supportLength},</if>
+            <if test="constructionUnit != null">#{constructionUnit},</if>
+            <if test="returnAirRoadNavPointId != null">#{returnAirRoadNavPointId},</if>
+            <if test="disToRetAirNavPoint != null">#{disToRetAirNavPoint},</if>
+            <if test="intakeAirRoadNavPointId != null">#{intakeAirRoadNavPointId},</if>
+            <if test="disToInAirNavPoint != null">#{disToInAirNavPoint}</if>
+        </trim>
+    </insert>
+
+    <update id="updateTWorkOfCoalMining" parameterType="TWorkOfCoalMining">
+        update t_work_of_coal_mining
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workfaceId != null">workface_id = #{workfaceId},</if>
+            <if test="miningRate != null">mining_rate = #{miningRate},</if>
+            <if test="miningShift != null">mining_shift = #{miningShift},</if>
+            <if test="numberOfWorkfaceSupports != null ">number_of_workface_supports = #{numberOfWorkfaceSupports},</if>
+            <if test="supportLength != null ">support_length = #{supportLength},</if>
+            <if test="constructionUnit != null ">construction_unit = #{constructionUnit},</if>
+            <if test="returnAirRoadNavPointId != null ">return_air_road_nav_point_id = #{returnAirRoadNavPointId},</if>
+            <if test="disToRetAirNavPoint != null ">dis_to_ret_air_nav_point = #{disToRetAirNavPoint},</if>
+            <if test="intakeAirRoadNavPointId != null ">intake_air_road_nav_point_id = #{intakeAirRoadNavPointId},</if>
+            <if test="disToInAirNavPoint != null ">dis_to_in_air_nav_point = #{disToInAirNavPoint}</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTWorkOfCoalMiningById" parameterType="Integer">
+        delete
+        from t_work_of_coal_mining
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTWorkOfCoalMiningByIds" parameterType="String">
+        delete from t_work_of_coal_mining where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

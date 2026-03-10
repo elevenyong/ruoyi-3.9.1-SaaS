@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TGeoFallenColumnMapper">
+
+    <resultMap type="TGeoFallenColumn" id="TGeoFallenColumnResult">
+        <result property="id" column="id"/>
+        <result property="workfaceId" column="workface_id"/>
+        <result property="name" column="name"/>
+        <result property="centerX" column="center_x"/>
+        <result property="centerY" column="center_y"/>
+        <result property="centerZ" column="center_z"/>
+        <result property="fallenDescribe" column="fallen_describe"/>
+    </resultMap>
+
+    <sql id="selectTGeoFallenColumnVo">
+        select id,
+               workface_id,
+               name,
+               center_x,
+               center_y,
+               center_z,
+               fallen_describe
+        from t_geo_fallen_column
+    </sql>
+
+    <select id="selectTGeoFallenColumnList" parameterType="TGeoFallenColumn" resultMap="TGeoFallenColumnResult">
+        <include refid="selectTGeoFallenColumnVo"/>
+        <where>
+            <if test="workfaceId != null ">and workface_id = #{workfaceId}</if>
+            <if test="name != null">and `name` = #{name}</if>
+            <if test="centerX != null ">and center_x = #{centerX}</if>
+            <if test="centerY != null ">and center_y = #{centerY}</if>
+            <if test="centerZ != null ">and center_z = #{centerZ}</if>
+            <if test="fallenDescribe != null ">and fallen_describe = #{fallenDescribe}</if>
+        </where>
+    </select>
+
+    <select id="selectTGeoFallenColumnById" parameterType="java.lang.Integer" resultMap="TGeoFallenColumnResult">
+        <include refid="selectTGeoFallenColumnVo"/>
+        where id = #{id}
+    </select>
+
+
+    <insert id="insertTGeoFallenColumn" parameterType="TGeoFallenColumn" useGeneratedKeys="true" keyProperty="id">
+        insert into t_geo_fallen_column
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="workfaceId != null">workface_id,</if>
+            <if test="name != null">`name`,</if>
+            <if test="centerX != null">center_x,</if>
+            <if test="centerY != null">center_y,</if>
+            <if test="centerZ != null">center_z,</if>
+            <if test="fallenDescribe != null">fallen_describe,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="workfaceId != null">#{workfaceId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="centerX != null">#{centerX},</if>
+            <if test="centerY != null">#{centerY},</if>
+            <if test="centerZ != null">#{centerZ},</if>
+            <if test="fallenDescribe != null">#{fallenDescribe},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTGeoFallenColumn" parameterType="TGeoFallenColumn">
+        update t_geo_fallen_column
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workfaceId != null">workface_id = #{workfaceId},</if>
+            <if test="name != null">`name` = #{name},</if>
+            <if test="centerX != null">center_x = #{centerX},</if>
+            <if test="centerY != null">center_y = #{centerY},</if>
+            <if test="centerZ != null">center_z = #{centerZ},</if>
+            <if test="fallenDescribe != null">fallen_describe = #{fallenDescribe},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTGeoFallenColumnById" parameterType="java.lang.Integer">
+        delete
+        from t_geo_fallen_column
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTGeoFallenColumnByIds" parameterType="String">
+        delete from t_geo_fallen_column where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

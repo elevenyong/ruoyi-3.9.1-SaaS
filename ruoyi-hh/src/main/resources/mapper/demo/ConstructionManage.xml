@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.hh.demo.mapper.ConstructionmanageDao">
+	<!-- 查询工程任务列表 -->
+	<select id="getConstructionManageList" resultType="com.ruoyi.hh.demo.domain.Constructionmanage">
+		select * from constructionmanage
+	</select>
+	
+	<!-- 查询工程任务进度 -->
+	<select id="getTaskProgress" resultType="com.ruoyi.hh.demo.domain.TaskProgressData">
+		select t.TaskId,c.taskName,c.StartDate,c.PlanEndDate,c.Remarks,sum(t.CompletePercentage)AS total, count(t.WorkDate) keepDays 
+			from constructionmanage c RIGHT JOIN taskprogress t ON c.id=t.taskid GROUP BY t.TaskId
+	</select>
+	
+	<!-- 根据taskId查询每个季度的数据 -->
+	<select id="sumByQuarter" parameterType="java.lang.Integer" resultType="com.ruoyi.hh.demo.domain.SumByQuarterEnt">
+		select sum(CompletePercentage) as total ,CONCAT(YEAR(WorkDate),'-',QUARTER(WorkDate) )AS `QUARTER` FROM `taskprogress` WHERE TaskId =#{TaskId} GROUP BY `QUARTER`
+	</select>
+</mapper>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.hh.business.mapper.TGasDrillingStandingBookMapper">
+
+<!--    <select id="getTGasDrillingStandingBookList" resultType="com.ruoyi.hh.business.domain.TGasDrillingStandingBook">-->
+<!--        SELECT r.roadway,a.groupid,a.borehole_no,a.pull_drill_date,d.angle AS desangle,a.angle AS actangle,d.inclination_angle AS desinclinationangle,-->
+<!--        a.inclination_angle AS actInclinationangle,d.depth_1st_coal_seam_start AS desdepth1stcoalseamstart,a.depth_1st_coal_seam_start AS actDepth1stCoalSeamStart,-->
+<!--        CONCAT(a.depth_1st_coal_seam_start,'-',a.depth_1st_coal_seam_end) AS seecoalcase,a.adjacent_boreholeno,a.distance_adjacent_borehole,-->
+<!--        ROUND(a.height_arch_baseline,2) AS heightarchbaseline,n.navigation_point_name,-->
+<!--        a.distance_to_navigation_point,a.distance_to_centralline_tunnel,a.person_construction,a.person_checking,a.pulled_gas_concentration,a.pulled_CO_concentration,-->
+<!--        h.hole_seal_type,ROUND((af.punching_paragraph2-punching_paragraph1),2)AS FlushingLength,a.gaschecker,(d.inclination_angle-a.inclination_angle) AS ErrInclinationAngle,-->
+<!--        af.actual_coal_amount_flushed,af.completion_ratio_flushed_coal-->
+<!--        from t_actual_borehole a-->
+<!--        LEFT JOIN t_designed_borehole d ON-->
+<!--        CONCAT(a.roadwayid,a.groupid,a.borehole_no) =CONCAT(d.roadwayid,d.groupid,d.borehole_no)-->
+<!--        LEFT JOIN t_actual_flushing af ON-->
+<!--        a.id=af.boreholeid-->
+<!--        LEFT JOIN t_navigation_point n ON-->
+<!--        a.navigation_pointId =n.id-->
+<!--        LEFT JOIN t_sealing_grouting s ON-->
+<!--        a.id=s.boreholeid-->
+<!--        LEFT JOIN t_holeseal_type h ON-->
+<!--        h.Id = s.holeseal_typeid-->
+<!--        LEFT JOIN t_roadway r ON-->
+<!--        r.Id = a.roadwayid-->
+<!--        LEFT JOIN t_purpose_borehole p ON-->
+<!--        p.Id = a.purpose_boreholeId-->
+<!--        where 1=1-->
+<!--        <if test="roadwayid!=null">-->
+<!--            and a.roadwayid = #{roadwayid}-->
+<!--        </if>-->
+<!--        <if test="groupid!=null"> AND a.groupid IN-->
+<!--            <foreach collection="groupid" item="item" index="index" open="(" separator="," close=")">-->
+<!--                #{item}-->
+<!--            </foreach>-->
+<!--        </if>-->
+<!--        <if test="purposeboreholeid!=null">AND a.purpose_boreholeId IN-->
+<!--            <foreach collection="purposeboreholeid" item="item" index="index" open="(" separator="," close=")">-->
+<!--                #{item}-->
+<!--            </foreach>-->
+<!--        </if>-->
+<!--        <if test="startdate!=null and enddate!=null">-->
+<!--            AND-->
+<!--            a.checking_date BETWEEN  #{startdate} AND #{enddate}-->
+<!--        </if>-->
+<!--    </select>-->
+    <!--八矿新建钻孔施工台帐-->
+    <select id="getTGasDrillingStandingBookList" resultType="com.ruoyi.hh.business.domain.TGasDrillingStandingBook">
+        SELECT r.roadway,a.group_no,a.borehole_no,a.borehole_code,a.pull_drill_date,d.angle AS desangle,a.angle AS actangle,d.inclination_angle AS desinclinationangle,
+        a.inclination_angle AS actInclinationangle,d.depth_1st_coal_seam_start AS desCoalDepth,a.depth_1st_coal_seam_start AS actCoalDepth,
+        CONCAT(a.depth_1st_coal_seam_start,'-',a.depth_1st_coal_seam_end) AS seecoalcase,a.adjacent_borehole_no,a.distance_adjacent_borehole,
+        CONCAT('岩1:',a.depth_1st_rock_seam_start,'-',a.depth_1st_rock_seam_end,',煤1:',a.depth_1st_coal_seam_start,'-',a.depth_1st_coal_seam_end,',岩2:',a.depth_2st_rock_seam_start,
+        '-',a.depth_2st_rock_seam_end,',煤2:',a.depth_2st_coal_seam_start,'-',a.depth_2st_coal_seam_end,',岩3:',a.depth_3st_rock_seam_start,'-',a.depth_3st_rock_seam_end) as seerockcoalcase,
+        ROUND(a.hole_altitude,2) AS holeAltitude,n.navigation_point_name,a.person_checking_site as personchecking,
+        a.distance_to_navigation_point,a.distance_to_centralline_tunnel,a.person_construction,a.chargehand,
+        a.sealing_material,ROUND((a.punching_paragraph2-a.punching_paragraph1),2)AS lengthFlushing,(d.inclination_angle-a.inclination_angle) AS ErrInclinationAngle,
+        a.actual_coal_amount_flushed,a.completion_ratio_flushed_coal,dp.gas_concentration,dp.negative_pressure
+        from t_bk_act_borehole_info a
+        LEFT JOIN t_designed_borehole d ON
+        CONCAT(a.roadway_id,a.group_no,a.borehole_no) =CONCAT(d.roadway_id,d.group_no,d.borehole_no)
+        LEFT JOIN t_navigation_point n ON
+        a.navigation_point_id =n.id
+        LEFT JOIN t_drainage_parameter dp ON
+        dp.borehole_Id=a.id
+        LEFT JOIN t_sealing_grouting s ON
+        a.id=s.borehole_id
+        LEFT JOIN t_roadway r ON
+        r.id = a.roadway_id
+        LEFT JOIN t_purpose_borehole p ON
+        p.id = a.purpose_borehole_id
+        where 1=1 and dp.beginningcon=1
+        <if test="roadwayId!=null">
+            and a.roadway_id = #{roadwayId}
+        </if>
+        <if test="groupNo!=null"> AND a.group_no IN
+            <foreach collection="groupNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="purposeboreholeId!=null">AND a.purpose_borehole_id IN
+            <foreach collection="purposeboreholeId" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="startdate!=null and enddate!=null">
+            AND
+            a.checking_date BETWEEN  #{startdate} AND #{enddate}
+        </if>
+    </select>
+</mapper>

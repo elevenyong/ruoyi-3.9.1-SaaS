@@ -44,4 +44,10 @@ public interface ISysTenantService
     void resetTenantAdminPassword(Long tenantId, String adminUserName, String newPassword);
 
     int updateTenantStatus(Long tenantId, String status);
+
+    SysTenant selectTenantById(Long tenantId);
+
+    int updateTenant(SysTenant tenant);
+
+    int deleteTenantByIds(Long[] tenantIds);
 }

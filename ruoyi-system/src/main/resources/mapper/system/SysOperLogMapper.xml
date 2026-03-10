@@ -44,7 +44,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		) values (
 					 #{tenantId},
 					 #{title}, #{businessType}, #{method}, #{requestMethod}, #{operatorType}, #{operName}, #{deptName},
-					 #{operUrl}, #{operIp}, #{operLocation}, #{operParam}, #{jsonResult}, #{status}, #{errorMsg},#{costTime}, sysdate()
+					 #{operUrl}, #{operIp}, #{operLocation}, #{operParam}, #{jsonResult}, #{status}, #{errorMsg},#{costTime},
+					 NOW()
 				 )
 	</insert>
 	
@@ -75,10 +76,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="operName != null and operName != ''">
 				AND oper_name like concat('%', #{operName}, '%')
 			</if>
-			<if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+			<if test="params != null and params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
 				AND oper_time &gt;= #{params.beginTime}
 			</if>
-			<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+			<if test="params != null and params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
 				AND oper_time &lt;= #{params.endTime}
 			</if>
 		</where>
@@ -101,4 +102,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         truncate table sys_oper_log
     </update>
 
+    <resultMap id="groupByCountNum" type="java.util.Map">
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="tnum" property="tnum" jdbcType="VARCHAR"/>
+    </resultMap>
+    <select id="selectOperLogCount" resultMap="groupByCountNum">
+        SELECT title name, COUNT(title) value
+        FROM `sys_oper_log`
+        GROUP BY title
+        ORDER BY value DESC;
+    </select>
 </mapper> 

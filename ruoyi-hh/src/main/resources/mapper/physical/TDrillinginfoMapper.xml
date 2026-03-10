@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TDrillinginfoMapper">
+
+    <resultMap type="TDrillinginfo" id="TDrillinginfoResult">
+        <result property="id"    column="id"    />
+        <result property="drillingNo"    column="drilling_no"    />
+        <result property="drillingName"    column="drilling_name"    />
+        <result property="constructionCompany"    column="construction_company"    />
+        <result property="waterDevId"    column="water_dev_id"    />
+        <result property="coalWaterDevId"    column="coal_water_dev_id"    />
+        <result property="gasDevId"    column="gas_dev_id"    />
+        <result property="waterDevCode"    column="water_dev_code"    />
+        <result property="flowRate"    column="flow_rate"    />
+        <result property="waterCumulant"    column="water_cumulant"    />
+        <result property="coalWaterDevCode"    column="coal_water_dev_code"    />
+        <result property="mixture"    column="mixture"    />
+        <result property="concentration"    column="concentration"    />
+        <result property="coalCumulant"    column="coal_cumulant"    />
+        <result property="gasDevCode"    column="gas_dev_code"    />
+        <result property="gasMixture"    column="gas_mixture"    />
+        <result property="gasConcentration"    column="gas_concentration"    />
+        <result property="gasCumulant"    column="gas_cumulant"    />
+        <result property="cumulantTime"    column="cumulant_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTDrillinginfoVo">
+        select id, drilling_no, drilling_name, construction_company, water_dev_id, coal_water_dev_id, gas_dev_id, water_dev_code, flow_rate, water_cumulant, coal_water_dev_code, mixture, concentration, coal_cumulant, gas_dev_code, gas_mixture, gas_concentration, gas_cumulant, cumulant_time, create_by, create_time, update_by, update_time, remark from t_drillinginfo
+    </sql>
+
+    <select id="selectTDrillinginfoList" parameterType="TDrillinginfo" resultMap="TDrillinginfoResult">
+        <include refid="selectTDrillinginfoVo"/>
+        <where>
+            <if test="id != null and id != 0"> and id = #{id}</if>
+            <if test="drillingNo != null "> and drilling_no = #{drillingNo}</if>
+            <if test="drillingName != null  and drillingName != ''"> and drilling_name like concat('%', #{drillingName}, '%')</if>
+            <if test="constructionCompany != null  and constructionCompany != ''"> and construction_company = #{constructionCompany}</if>
+            <if test="waterDevId != null  and waterDevId != 0 "> and water_dev_id = #{waterDevId}</if>
+            <if test="coalWaterDevId != null and coalWaterDevId != 0 "> and coal_water_dev_id = #{coalWaterDevId}</if>
+            <if test="gasDevId != null and gasDevId != 0 "> and gas_dev_id = #{gasDevId}</if>
+            <if test="waterDevCode != null  and waterDevCode != ''"> and water_dev_code = #{waterDevCode}</if>
+            <if test="flowRate != null "> and flow_rate = #{flowRate}</if>
+            <if test="waterCumulant != null "> and water_cumulant = #{waterCumulant}</if>
+            <if test="coalWaterDevCode != null  and coalWaterDevCode != ''"> and coal_water_dev_code = #{coalWaterDevCode}</if>
+            <if test="mixture != null "> and mixture = #{mixture}</if>
+            <if test="concentration != null "> and concentration = #{concentration}</if>
+            <if test="coalCumulant != null "> and coal_cumulant = #{coalCumulant}</if>
+            <if test="gasDevCode != null  and gasDevCode != ''"> and gas_dev_code = #{gasDevCode}</if>
+            <if test="gasMixture != null "> and gas_mixture = #{gasMixture}</if>
+            <if test="gasConcentration != null "> and gas_concentration = #{gasConcentration}</if>
+            <if test="gasCumulant != null "> and gas_cumulant = #{gasCumulant}</if>
+            <if test="cumulantTime != null "> and cumulant_time = #{cumulantTime}</if>
+        </where>
+    </select>
+
+    <select id="selectTDrillinginfoById" parameterType="Integer" resultMap="TDrillinginfoResult">
+        <include refid="selectTDrillinginfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTDrillinginfo" parameterType="TDrillinginfo" useGeneratedKeys="true" keyProperty="id">
+        insert into t_drillinginfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="drillingNo != null">drilling_no,</if>
+            <if test="drillingName != null">drilling_name,</if>
+            <if test="constructionCompany != null">construction_company,</if>
+            <if test="waterDevId != null  and waterDevId != 0">water_dev_id,</if>
+            <if test="coalWaterDevId != null and coalWaterDevId != 0">coal_water_dev_id,</if>
+            <if test="gasDevId != null and gasDevId != 0">gas_dev_id,</if>
+            <if test="waterDevCode != null">water_dev_code,</if>
+            <if test="flowRate != null">flow_rate,</if>
+            <if test="waterCumulant != null">water_cumulant,</if>
+            <if test="coalWaterDevCode != null">coal_water_dev_code,</if>
+            <if test="mixture != null">mixture,</if>
+            <if test="concentration != null">concentration,</if>
+            <if test="coalCumulant != null">coal_cumulant,</if>
+            <if test="gasDevCode != null">gas_dev_code,</if>
+            <if test="gasMixture != null">gas_mixture,</if>
+            <if test="gasConcentration != null">gas_concentration,</if>
+            <if test="gasCumulant != null">gas_cumulant,</if>
+            <if test="cumulantTime != null">cumulant_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="drillingNo != null">#{drillingNo},</if>
+            <if test="drillingName != null">#{drillingName},</if>
+            <if test="constructionCompany != null">#{constructionCompany},</if>
+            <if test="waterDevId != null  and waterDevId != 0">#{waterDevId},</if>
+            <if test="coalWaterDevId != null and coalWaterDevId != 0">#{coalWaterDevId},</if>
+            <if test="gasDevId != null and gasDevId != 0">#{gasDevId},</if>
+            <if test="waterDevCode != null">#{waterDevCode},</if>
+            <if test="flowRate != null">#{flowRate},</if>
+            <if test="waterCumulant != null">#{waterCumulant},</if>
+            <if test="coalWaterDevCode != null">#{coalWaterDevCode},</if>
+            <if test="mixture != null">#{mixture},</if>
+            <if test="concentration != null">#{concentration},</if>
+            <if test="coalCumulant != null">#{coalCumulant},</if>
+            <if test="gasDevCode != null">#{gasDevCode},</if>
+            <if test="gasMixture != null">#{gasMixture},</if>
+            <if test="gasConcentration != null">#{gasConcentration},</if>
+            <if test="gasCumulant != null">#{gasCumulant},</if>
+            <if test="cumulantTime != null">#{cumulantTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTDrillinginfo" parameterType="TDrillinginfo">
+        update t_drillinginfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="drillingNo != null">drilling_no = #{drillingNo},</if>
+            <if test="drillingName != null">drilling_name = #{drillingName},</if>
+            <if test="constructionCompany != null">construction_company = #{constructionCompany},</if>
+            <if test="waterDevId != null  and waterDevId != 0">water_dev_id = #{waterDevId},</if>
+            <if test="coalWaterDevId != null and coalWaterDevId != 0">coal_water_dev_id = #{coalWaterDevId},</if>
+            <if test="gasDevId != null and gasDevId != 0">gas_dev_id = #{gasDevId},</if>
+            <if test="waterDevCode != null">water_dev_code = #{waterDevCode},</if>
+            <if test="flowRate != null">flow_rate = #{flowRate},</if>
+            <if test="waterCumulant != null">water_cumulant = #{waterCumulant},</if>
+            <if test="coalWaterDevCode != null">coal_water_dev_code = #{coalWaterDevCode},</if>
+            <if test="mixture != null">mixture = #{mixture},</if>
+            <if test="concentration != null">concentration = #{concentration},</if>
+            <if test="coalCumulant != null">coal_cumulant = #{coalCumulant},</if>
+            <if test="gasDevCode != null">gas_dev_code = #{gasDevCode},</if>
+            <if test="gasMixture != null">gas_mixture = #{gasMixture},</if>
+            <if test="gasConcentration != null">gas_concentration = #{gasConcentration},</if>
+            <if test="gasCumulant != null">gas_cumulant = #{gasCumulant},</if>
+            <if test="cumulantTime != null">cumulant_time = #{cumulantTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTDrillinginfoById" parameterType="Integer">
+        delete from t_drillinginfo where id = #{id}
+    </delete>
+
+    <delete id="deleteTDrillinginfoByIds" parameterType="String">
+        delete from t_drillinginfo where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

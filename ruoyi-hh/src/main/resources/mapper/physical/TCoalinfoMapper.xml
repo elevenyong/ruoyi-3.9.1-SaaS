@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TCoalinfoMapper">
+
+    <resultMap type="TCoalinfo" id="TCoalinfoResult">
+        <result property="id"    column="id"    />
+        <result property="coalSerial"    column="coal_serial"    />
+        <result property="coalReserves"    column="coal_reserves"    />
+        <result property="coalThick"    column="coal_thick"    />
+        <result property="coalDip"    column="coal_dip"    />
+        <result property="coalHardness"    column="coal_hardness"    />
+        <result property="coalBedding"    column="coal_bedding"    />
+        <result property="coalJoint"    column="coal_joint"    />
+        <result property="selfIgnite"    column="self_ignite"    />
+        <result property="stabilize"    column="stabilize"    />
+        <result property="explodeCoeffcient"    column="explode_coeffcient"    />
+        <result property="groundTemperature"    column="ground_temperature"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTCoalinfoVo">
+        select id, coal_serial, coal_reserves, coal_thick, coal_dip, coal_hardness, coal_bedding, coal_joint, self_ignite, stabilize, explode_coeffcient, ground_temperature, remark, create_by, create_time, update_by, update_time from t_coalinfo
+    </sql>
+
+    <select id="selectTCoalinfoList" parameterType="TCoalinfo" resultMap="TCoalinfoResult">
+        <include refid="selectTCoalinfoVo"/>
+        <where>
+            <if test="id!=null and id != 0">and id=#{id}</if>
+            <if test="coalSerial != null  and coalSerial != ''"> and coal_serial = #{coalSerial}</if>
+            <if test="coalReserves != null "> and coal_reserves = #{coalReserves}</if>
+            <if test="coalThick != null  and coalThick != ''"> and coal_thick = #{coalThick}</if>
+            <if test="coalDip != null  and coalDip != ''"> and coal_dip = #{coalDip}</if>
+            <if test="coalHardness != null  and coalHardness != ''"> and coal_hardness = #{coalHardness}</if>
+            <if test="coalBedding != null  and coalBedding != ''"> and coal_bedding = #{coalBedding}</if>
+            <if test="coalJoint != null  and coalJoint != ''"> and coal_joint = #{coalJoint}</if>
+            <if test="selfIgnite != null  and selfIgnite != ''"> and self_ignite = #{selfIgnite}</if>
+            <if test="stabilize != null  and stabilize != ''"> and stabilize = #{stabilize}</if>
+            <if test="explodeCoeffcient != null  and explodeCoeffcient != ''"> and explode_coeffcient = #{explodeCoeffcient}</if>
+            <if test="groundTemperature != null "> and ground_temperature = #{groundTemperature}</if>
+        </where>
+    </select>
+
+    <select id="selectTCoalinfoById" parameterType="Integer" resultMap="TCoalinfoResult">
+        <include refid="selectTCoalinfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTCoalinfo" parameterType="TCoalinfo" useGeneratedKeys="true" keyProperty="id">
+        insert into t_coalinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="coalSerial != null">coal_serial,</if>
+            <if test="coalReserves != null">coal_reserves,</if>
+            <if test="coalThick != null">coal_thick,</if>
+            <if test="coalDip != null">coal_dip,</if>
+            <if test="coalHardness != null">coal_hardness,</if>
+            <if test="coalBedding != null">coal_bedding,</if>
+            <if test="coalJoint != null">coal_joint,</if>
+            <if test="selfIgnite != null">self_ignite,</if>
+            <if test="stabilize != null">stabilize,</if>
+            <if test="explodeCoeffcient != null">explode_coeffcient,</if>
+            <if test="groundTemperature != null">ground_temperature,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="coalSerial != null">#{coalSerial},</if>
+            <if test="coalReserves != null">#{coalReserves},</if>
+            <if test="coalThick != null">#{coalThick},</if>
+            <if test="coalDip != null">#{coalDip},</if>
+            <if test="coalHardness != null">#{coalHardness},</if>
+            <if test="coalBedding != null">#{coalBedding},</if>
+            <if test="coalJoint != null">#{coalJoint},</if>
+            <if test="selfIgnite != null">#{selfIgnite},</if>
+            <if test="stabilize != null">#{stabilize},</if>
+            <if test="explodeCoeffcient != null">#{explodeCoeffcient},</if>
+            <if test="groundTemperature != null">#{groundTemperature},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTCoalinfo" parameterType="TCoalinfo">
+        update t_coalinfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="coalSerial != null">coal_serial = #{coalSerial},</if>
+            <if test="coalReserves != null">coal_reserves = #{coalReserves},</if>
+            <if test="coalThick != null">coal_thick = #{coalThick},</if>
+            <if test="coalDip != null">coal_dip = #{coalDip},</if>
+            <if test="coalHardness != null">coal_hardness = #{coalHardness},</if>
+            <if test="coalBedding != null">coal_bedding = #{coalBedding},</if>
+            <if test="coalJoint != null">coal_joint = #{coalJoint},</if>
+            <if test="selfIgnite != null">self_ignite = #{selfIgnite},</if>
+            <if test="stabilize != null">stabilize = #{stabilize},</if>
+            <if test="explodeCoeffcient != null">explode_coeffcient = #{explodeCoeffcient},</if>
+            <if test="groundTemperature != null">ground_temperature = #{groundTemperature},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTCoalinfoById" parameterType="Integer">
+        delete from t_coalinfo where Id = #{id}
+    </delete>
+
+    <delete id="deleteTCoalinfoByIds" parameterType="java.util.List">
+        delete from t_coalinfo where Id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="selectTCoalinfoVo" resultType="com.ruoyi.hh.physical.domain.TCoalinfo">
+        <include refid="selectTCoalinfoVo"/>
+    </select>
+    <!--根据工作面ID删除煤层信息-->
+    <delete id="delByWorkingFaceIds" parameterType="java.util.List">
+        delete from t_coalinfo where working_faceid in
+        <foreach item="workingFaceIds" collection="list" open="(" separator="," close=")">
+            #{workingFaceIds}
+        </foreach>
+    </delete>
+    <select id="getCoalInfo" resultType="com.ruoyi.hh.physical.domain.TCoalinfo">
+        SELECT c.* from t_coalinfo c
+        LEFT JOIN t_working_face w
+        ON c.id=w.coal_id
+        WHERE w.id = #{workfaceid}
+    </select>
+
+
+</mapper>

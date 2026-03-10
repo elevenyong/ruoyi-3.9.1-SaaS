@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.simulate.mapper.CoalWaterDevDataMapper">
+    
+    <resultMap type="CoalWaterDevData" id="CoalWaterDevDataResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="mixture"    column="mixture"    />
+        <result property="concentration"    column="concentration"    />
+        <result property="cumulant"    column="cumulant"    />
+    </resultMap>
+
+    <sql id="selectCoalWaterDevDataVo">
+        select id, code, mixture, concentration, cumulant from coal_water_dev_data
+    </sql>
+
+    <select id="selectCoalWaterDevDataList" parameterType="CoalWaterDevData" resultMap="CoalWaterDevDataResult">
+        <include refid="selectCoalWaterDevDataVo"/>
+        <where>  
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="mixture != null "> and mixture = #{mixture}</if>
+            <if test="concentration != null "> and concentration = #{concentration}</if>
+            <if test="cumulant != null "> and cumulant = #{cumulant}</if>
+        </where>
+    </select>
+    
+    <select id="selectCoalWaterDevDataById" parameterType="Integer" resultMap="CoalWaterDevDataResult">
+        <include refid="selectCoalWaterDevDataVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCoalWaterDevData" parameterType="CoalWaterDevData" useGeneratedKeys="true" keyProperty="id">
+        insert into coal_water_dev_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="code != null">code,</if>
+            <if test="mixture != null">mixture,</if>
+            <if test="concentration != null">concentration,</if>
+            <if test="cumulant != null">cumulant,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="code != null">#{code},</if>
+            <if test="mixture != null">#{mixture},</if>
+            <if test="concentration != null">#{concentration},</if>
+            <if test="cumulant != null">#{cumulant},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCoalWaterDevData" parameterType="CoalWaterDevData">
+        update coal_water_dev_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">code = #{code},</if>
+            <if test="mixture != null">mixture = #{mixture},</if>
+            <if test="concentration != null">concentration = #{concentration},</if>
+            <if test="cumulant != null">cumulant = #{cumulant},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCoalWaterDevDataById" parameterType="Integer">
+        delete from coal_water_dev_data where id = #{id}
+    </delete>
+
+    <delete id="deleteCoalWaterDevDataByIds" parameterType="String">
+        delete from coal_water_dev_data where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.simulate.mapper.StFaultinfoMapper">
+    
+    <resultMap type="StFaultinfo" id="StFaultinfoResult">
+        <result property="id"    column="id"    />
+        <result property="workfaceId"    column="workface_id"    />
+        <result property="faultName"    column="fault_name"    />
+        <result property="direction"    column="direction"    />
+        <result property="tendency"    column="tendency"    />
+        <result property="dip"    column="dip"    />
+        <result property="nature"    column="nature"    />
+        <result property="fail"    column="fail"    />
+        <result property="influenceDegree"    column="influence_degree"    />
+    </resultMap>
+
+    <sql id="selectStFaultinfoVo">
+        select id, workface_id, fault_name, direction, tendency, dip, nature, fail, influence_degree from st_faultinfo
+    </sql>
+
+    <select id="selectStFaultinfoList" parameterType="StFaultinfo" resultMap="StFaultinfoResult">
+        <include refid="selectStFaultinfoVo"/>
+        <where>  
+            <if test="workfaceId != null "> and workface_id = #{workfaceId}</if>
+            <if test="faultName != null  and faultName != ''"> and fault_name like concat('%', #{faultName}, '%')</if>
+            <if test="direction != null "> and direction = #{direction}</if>
+            <if test="tendency != null "> and tendency = #{tendency}</if>
+            <if test="dip != null "> and dip = #{dip}</if>
+            <if test="nature != null  and nature != ''"> and nature = #{nature}</if>
+            <if test="fail != null  and fail != ''"> and fail = #{fail}</if>
+            <if test="influenceDegree != null  and influenceDegree != ''"> and influence_degree = #{influenceDegree}</if>
+        </where>
+    </select>
+    
+    <select id="selectStFaultinfoById" parameterType="Integer" resultMap="StFaultinfoResult">
+        <include refid="selectStFaultinfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertStFaultinfo" parameterType="StFaultinfo" useGeneratedKeys="true" keyProperty="id">
+        insert into st_faultinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="workfaceId != null">workface_id,</if>
+            <if test="faultName != null">fault_name,</if>
+            <if test="direction != null">direction,</if>
+            <if test="tendency != null">tendency,</if>
+            <if test="dip != null">dip,</if>
+            <if test="nature != null">nature,</if>
+            <if test="fail != null">fail,</if>
+            <if test="influenceDegree != null">influence_degree,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="workfaceId != null">#{workfaceId},</if>
+            <if test="faultName != null">#{faultName},</if>
+            <if test="direction != null">#{direction},</if>
+            <if test="tendency != null">#{tendency},</if>
+            <if test="dip != null">#{dip},</if>
+            <if test="nature != null">#{nature},</if>
+            <if test="fail != null">#{fail},</if>
+            <if test="influenceDegree != null">#{influenceDegree},</if>
+         </trim>
+    </insert>
+
+    <update id="updateStFaultinfo" parameterType="StFaultinfo">
+        update st_faultinfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workfaceId != null">workface_id = #{workfaceId},</if>
+            <if test="faultName != null">fault_name = #{faultName},</if>
+            <if test="direction != null">direction = #{direction},</if>
+            <if test="tendency != null">tendency = #{tendency},</if>
+            <if test="dip != null">dip = #{dip},</if>
+            <if test="nature != null">nature = #{nature},</if>
+            <if test="fail != null">fail = #{fail},</if>
+            <if test="influenceDegree != null">influence_degree = #{influenceDegree},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteStFaultinfoById" parameterType="Integer">
+        delete from st_faultinfo where id = #{id}
+    </delete>
+
+    <delete id="deleteStFaultinfoByIds" parameterType="String">
+        delete from st_faultinfo where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!--根据工作面ID查询模拟的断层信息-->
+    <select id="getByworkfaceId" resultType="com.ruoyi.hh.simulate.domain.StFaultinfo" parameterType="Integer">
+        select * from st_faultinfo where workface_id=#{workfaceId}
+    </select>
+</mapper>

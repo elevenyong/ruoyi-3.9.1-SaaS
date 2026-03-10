@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TMeasuringPointMapper">
+
+    <resultMap type="TMeasuringPoint" id="TMeasuringPointResult">
+        <result property="id"    column="id"    />
+        <result property="measuringPointName"    column="measuring_point_name"    />
+        <result property="parentId"    column="parent_id"    />
+        <result property="measuringPointLevelId"    column="measuring_point_level_id"    />
+        <result property="goafInfoId"    column="goaf_info_id"    />
+        <result property="coalUncoverId"    column="coal_uncover_id"    />
+        <result property="roadwayId"    column="roadway_id"    />
+        <result property="drainageUnitId"    column="drainage_unit_id"    />
+        <result property="channel"    column="channel"    />
+        <result property="distalis"    column="distalis"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTMeasuringPointVo">
+        select id, measuring_point_name, parent_id, measuring_point_level_id, goaf_info_id, coal_uncover_id, roadway_id, drainage_unit_id, channel, distalis, create_by, create_time, update_by, update_time, remark from t_measuring_point
+    </sql>
+
+    <select id="selectTMeasuringPointList" parameterType="TMeasuringPoint" resultMap="TMeasuringPointResult">
+        <include refid="selectTMeasuringPointVo"/>
+        <where>
+            <if test="measuringPointName != null  and measuringPointName != ''"> and measuring_point_name like concat('%', #{measuringPointName}, '%')</if>
+            <if test="parentId != null "> and parent_id = #{parentId}</if>
+            <if test="measuringPointLevelId != null "> and measuring_point_level_id = #{measuringPointLevelId}</if>
+            <if test="goafInfoId != null "> and goaf_info_id = #{goafInfoId}</if>
+            <if test="coalUncoverId != null "> and coal_uncover_id = #{coalUncoverId}</if>
+            <if test="roadwayId != null "> and roadway_id = #{roadwayId}</if>
+            <if test="drainageUnitId != null "> and drainage_unit_id = #{drainageUnitId}</if>
+            <if test="channel != null "> and channel = #{channel}</if>
+            <if test="distalis != null "> and distalis = #{distalis}</if>
+        </where>
+    </select>
+
+    <select id="selectTMeasuringPointById" parameterType="java.lang.Integer" resultMap="TMeasuringPointResult">
+        <include refid="selectTMeasuringPointVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTMeasuringPoint" parameterType="TMeasuringPoint" useGeneratedKeys="true" keyProperty="id">
+        insert into t_measuring_point
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="measuringPointName != null">measuring_point_name,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="measuringPointLevelId != null">measuring_point_level_id,</if>
+            <if test="goafInfoId != null">goaf_info_id,</if>
+            <if test="coalUncoverId != null">coal_uncover_id,</if>
+            <if test="roadwayId != null">roadway_id,</if>
+            <if test="drainageUnitId != null">drainage_unit_id,</if>
+            <if test="channel != null">channel,</if>
+            <if test="distalis != null">distalis,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="measuringPointName != null">#{measuringPointName},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="measuringPointLevelId != null">#{measuringPointLevelId},</if>
+            <if test="goafInfoId != null">#{goafInfoId},</if>
+            <if test="coalUncoverId != null">#{coalUncoverId},</if>
+            <if test="roadwayId != null">#{roadwayId},</if>
+            <if test="drainageUnitId != null">#{drainageUnitId},</if>
+            <if test="channel != null">#{channel},</if>
+            <if test="distalis != null">#{distalis},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTMeasuringPoint" parameterType="TMeasuringPoint">
+        update t_measuring_point
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="measuringPointName != null">measuring_point_name = #{measuringPointName},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="measuringPointLevelId != null">measuring_point_level_id = #{measuringPointLevelId},</if>
+            <if test="goafInfoId != null">goaf_info_id = #{goafInfoId},</if>
+            <if test="coalUncoverId != null">coal_uncover_id = #{coalUncoverId},</if>
+            <if test="roadwayId != null">roadway_id = #{roadwayId},</if>
+            <if test="drainageUnitId != null">drainage_unit_id = #{drainageUnitId},</if>
+            <if test="channel != null">channel = #{channel},</if>
+            <if test="distalis != null">distalis = #{distalis},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTMeasuringPointById" parameterType="java.lang.Integer">
+        delete from t_measuring_point where id = #{id}
+    </delete>
+
+    <delete id="deleteTMeasuringPointByIds" parameterType="java.util.List">
+        delete from t_measuring_point where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--分页查询列表-->
+    <select id="getPageList" resultType="com.ruoyi.hh.physical.domain.TMeasuringPoint">
+        select * from t_measuring_point
+    </select>
+     <!--根据巷道Id删除测点信息-->
+    <delete id="delByRoadWayIds" parameterType="java.util.List">
+        delete from t_measuring_point where roadway_id in
+        <foreach item="roadWayIds" collection="list" open="(" separator="," close=")">
+            #{roadWayIds}
+        </foreach>
+    </delete>
+    <delete id="delByRoadWayId" parameterType="java.lang.Integer">
+        delete from t_measuring_point where roadway_id = #{roadwayId}
+    </delete>
+
+    <!--根据巷道ID和测点类型查询测点信息-->
+    <select id="getByRoadWayIdAndType" resultType="com.ruoyi.hh.physical.domain.TMeasuringPoint">
+        select * from t_measuring_point where roadway_id = #{roadwayId} and MeasuringTypeId = #{measuringtypeid}
+    </select>
+    <!--根据评价单元ID查询测点列表-->
+    <select id="getByDrainageUnitId" parameterType="java.lang.Integer" resultType="com.ruoyi.hh.physical.domain.TMeasuringPoint">
+        select * from t_measuring_point
+        where drainage_unit_id = #{drainageUnitId}
+    </select>
+    <!--根据评价单元ID查询测点ID列表-->
+    <select id="getMeasureIdByUnitId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select id from t_measuring_point
+        where drainage_unit_id = #{drainageUnitId} and channel = 0
+    </select>
+    <!--根据工作面ID查询测点连接的叶节点（channel=0说明该测点不是管道测点）-->
+    <select id="getLeafNodeByWorkFaceId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select m.id from t_measuring_point m
+        LEFT JOIN t_drainage_unit d ON m.drainage_unit_id=d.id
+        LEFT JOIN t_working_face w ON d.work_face_id=w.id
+        where m.id NOT IN
+        (SELECT parent_id from t_measuring_point where parent_id != ''  GROUP BY parent_id)
+        AND w.ID = #{workFaceId} and m.channel =0
+    </select>
+    <!--根据工作面ID和测点级别查询测点列表-->
+    <select id="getByWorkFaceIdAndMeasureLevel" resultType="java.lang.Integer">
+        SELECT m.id from  t_measuring_point m
+        LEFT JOIN t_roadway r ON m.roadway_id =r.id
+        LEFT JOIN t_working_face w ON r.workfaceid =w.id
+        WHERE m.measuring_point_level_id =#{measurePointLevelId}
+        and w.id=#{workFaceId}
+    </select>
+    <!--根据踩空去ID查询测点列表-->
+    <select id="getByGoafinfoid" parameterType="java.lang.Integer" resultType="com.ruoyi.hh.physical.domain.TMeasuringPoint">
+        select * from t_measuring_point where goaf_info_id=#{goafInfoId}
+    </select>
+     <select id="getByCoalUncoverid" parameterType="java.lang.Integer" resultType="com.ruoyi.hh.physical.domain.TMeasuringPoint">
+         select * from t_measuring_point where coal_uncover_id=#{coalUncoverId}
+     </select>
+
+
+</mapper>

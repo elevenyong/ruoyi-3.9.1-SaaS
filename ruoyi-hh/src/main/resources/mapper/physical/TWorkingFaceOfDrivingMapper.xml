@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TWorkingFaceOfDrivingMapper">
+
+    <resultMap type="TWorkingFaceOfDriving" id="TWorkingFaceOfDrivingResult">
+        <result property="id" column="id"/>
+        <result property="workfaceName" column="workface_name"/>
+        <result property="roadwayId" column="roadway_id"/>
+        <result property="originPosition" column="origin_position"/>
+        <result property="currentPosition" column="current_position"/>
+        <result property="direction" column="direction"/>
+    </resultMap>
+
+    <sql id="selectTWorkingFaceOfDrivingVo">
+        select id,
+               workface_name,
+               roadway_id,
+               origin_position,
+               current_position,
+               direction
+        from t_working_face_of_driving
+    </sql>
+
+    <select id="selectTWorkingFaceOfDrivingList" parameterType="TWorkingFaceOfDriving"
+            resultMap="TWorkingFaceOfDrivingResult">
+        <include refid="selectTWorkingFaceOfDrivingVo"/>
+        <where>
+            <if test="workfaceName != null  and workfaceName != ''">and workface_name like concat('%',
+                #{workfaceName}, '%')
+            </if>
+            <if test="roadwayId != null ">and roadway_id = #{roadwayId}</if>
+            <if test="originPosition != null ">and origin_position = #{originPosition}</if>
+            <if test="currentPosition != null ">and current_position = #{currentPosition}</if>
+            <if test="direction != null ">and direction = #{direction}</if>
+        </where>
+    </select>
+
+    <select id="selectTWorkingFaceOfDrivingById" parameterType="Integer"
+            resultMap="TWorkingFaceOfDrivingResult">
+        <include refid="selectTWorkingFaceOfDrivingVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTWorkingFaceOfDriving" parameterType="TWorkingFaceOfDriving" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_working_face_of_driving
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="workfaceName != null">workface_name,</if>
+            <if test="roadwayId != null">roadway_id,</if>
+            <if test="currentPosition != null">current_position,</if>
+            <if test="originPosition != null">origin_position,</if>
+            <if test="direction != null">direction</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="workfaceName != null">#{workfaceName},</if>
+            <if test="roadwayId != null">#{roadwayId},</if>
+            <if test="originPosition != null">#{originPosition},</if>
+            <if test="currentPosition != null">#{currentPosition},</if>
+            <if test="direction != null">#{direction}</if>
+        </trim>
+    </insert>
+
+    <update id="updateTWorkingFaceOfDriving" parameterType="TWorkingFaceOfDriving">
+        update t_working_face_of_driving
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workfaceName != null">workface_name = #{workfaceName},</if>
+            <if test="roadwayId != null">roadway_id = #{roadwayId},</if>
+            <if test="originPosition != null">origin_position = #{originPosition},</if>
+            <if test="currentPosition != null">current_position = #{currentPosition},</if>
+            <if test="direction != null">direction = #{direction}</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTWorkingFaceOfDrivingById" parameterType="Integer">
+        delete
+        from t_working_face_of_driving
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTWorkingFaceOfDrivingByIds" parameterType="String">
+        delete from t_working_face_of_driving where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

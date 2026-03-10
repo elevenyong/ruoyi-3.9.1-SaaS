@@ -3,6 +3,8 @@ package com.ruoyi.common.core.domain.entity;
 import java.util.Date;
 import java.util.List;
 import javax.validation.constraints.*;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -13,6 +15,7 @@ import com.ruoyi.common.annotation.Excels;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.xss.Xss;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * 用户对象 sys_user
@@ -57,10 +60,22 @@ public class SysUser extends BaseEntity
     /** 密码 */
     private String password;
 
+    /**
+     * 盐加密
+     */
+    private String salt;
     /** 账号状态（0正常 1停用） */
     @Excel(name = "账号状态", readConverterExp = "0=正常,1=停用")
     private String status;
 
+    /**
+     * 账号有效期，创建时间+有效期<当前时间。账号会被自动停用
+     */
+    //@Excel(name = "账号过期时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss", type = Type.EXPORT)
+    //private String expire;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date expireTime;
     /** 删除标志（0代表存在 2代表删除） */
     private String delFlag;
 
@@ -130,6 +145,9 @@ public class SysUser extends BaseEntity
         return SecurityUtils.isAdmin(this.userId);
     }
 
+    public static boolean isAdmin(Long userId) {
+        return userId != null && 1L == userId;
+    }
     public Long getDeptId()
     {
         return deptId;
@@ -317,6 +335,14 @@ public class SysUser extends BaseEntity
     public void setRoleId(Long roleId)
     {
         this.roleId = roleId;
+    }
+
+    public Date getExpireTime() {
+        return expireTime;
+    }
+
+    public void setExpireTime(Date expireTime) {
+        this.expireTime = expireTime;
     }
 
     @Override

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.simulate.mapper.DataHistoryMapper">
+    
+    <resultMap type="DataHistory" id="DataHistoryResult">
+        <result property="id"    column="id"    />
+        <result property="measurepointid"    column="measure_pointid"    />
+        <result property="drainageunitid"    column="drainageunitid"    />
+        <result property="workfaceid"    column="workfaceid"    />
+        <result property="mixtureflow"    column="mixtureflow"    />
+        <result property="pureflow"    column="pureflow"    />
+        <result property="temperature"    column="temperature"    />
+        <result property="ch4concentration"    column="ch4concentration"    />
+        <result property="coconcentration"    column="coconcentration"    />
+        <result property="co2concentration"    column="co2concentration"    />
+        <result property="negativepressure"    column="negativepressure"    />
+        <result property="totalmixtureflow"    column="totalmixtureflow"    />
+        <result property="totalpureflow"    column="totalpureflow"    />
+        <result property="ethene"    column="ethene"    />
+        <result property="ethyne"    column="ethyne"    />
+        <result property="oconcentration"    column="oconcentration"    />
+        <result property="date"    column="date"    />
+    </resultMap>
+
+    <sql id="selectDataHistoryVo">
+        select id, measure_pointid, drainageunitid, workfaceid, mixtureflow, pureflow, temperature, ch4concentration, coconcentration, co2concentration, negativepressure, totalmixtureflow, totalpureflow, ethene, ethyne, oconcentration, date from data_history
+    </sql>
+
+    <select id="selectDataHistoryList" parameterType="DataHistory" resultMap="DataHistoryResult">
+        <include refid="selectDataHistoryVo"/>
+        <where>
+            <if test="id != null "> and id = #{id}</if>
+            <if test="measurepointid != null "> and measure_pointid = #{measurepointid}</if>
+            <if test="drainageunitid != null "> and drainageunitid = #{drainageunitid}</if>
+            <if test="workfaceid != null "> and workfaceid = #{workfaceid}</if>
+            <if test="mixtureflow != null "> and mixtureflow = #{mixtureflow}</if>
+            <if test="pureflow != null "> and pureflow = #{pureflow}</if>
+            <if test="temperature != null "> and temperature = #{temperature}</if>
+            <if test="ch4concentration != null "> and ch4concentration = #{ch4concentration}</if>
+            <if test="coconcentration != null "> and coconcentration = #{coconcentration}</if>
+            <if test="co2concentration != null "> and co2concentration = #{co2concentration}</if>
+            <if test="negativepressure != null "> and negativepressure = #{negativepressure}</if>
+            <if test="totalmixtureflow != null "> and totalmixtureflow = #{totalmixtureflow}</if>
+            <if test="totalpureflow != null "> and totalpureflow = #{totalpureflow}</if>
+            <if test="ethene != null "> and ethene = #{ethene}</if>
+            <if test="ethyne != null "> and ethyne = #{ethyne}</if>
+            <if test="oconcentration != null "> and oconcentration = #{oconcentration}</if>
+            <if test="date != null "> and date = #{date}</if>
+        </where>
+    </select>
+    
+    <select id="selectDataHistoryById" parameterType="Integer" resultMap="DataHistoryResult">
+        <include refid="selectDataHistoryVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertDataHistory" parameterType="DataHistory" useGeneratedKeys="true" keyProperty="id">
+        insert into data_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="measurepointid != null">measure_pointid,</if>
+            <if test="drainageunitid != null">drainageunitid,</if>
+            <if test="workfaceid != null">workfaceid,</if>
+            <if test="mixtureflow != null">mixtureflow,</if>
+            <if test="pureflow != null">pureflow,</if>
+            <if test="temperature != null">temperature,</if>
+            <if test="ch4concentration != null">ch4concentration,</if>
+            <if test="coconcentration != null">coconcentration,</if>
+            <if test="co2concentration != null">co2concentration,</if>
+            <if test="negativepressure != null">negativepressure,</if>
+            <if test="totalmixtureflow != null">totalmixtureflow,</if>
+            <if test="totalpureflow != null">totalpureflow,</if>
+            <if test="ethene != null">ethene,</if>
+            <if test="ethyne != null">ethyne,</if>
+            <if test="oconcentration != null">oconcentration,</if>
+            <if test="date != null">date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="measurepointid != null">#{measurepointid},</if>
+            <if test="drainageunitid != null">#{drainageunitid},</if>
+            <if test="workfaceid != null">#{workfaceid},</if>
+            <if test="mixtureflow != null">#{mixtureflow},</if>
+            <if test="pureflow != null">#{pureflow},</if>
+            <if test="temperature != null">#{temperature},</if>
+            <if test="ch4concentration != null">#{ch4concentration},</if>
+            <if test="coconcentration != null">#{coconcentration},</if>
+            <if test="co2concentration != null">#{co2concentration},</if>
+            <if test="negativepressure != null">#{negativepressure},</if>
+            <if test="totalmixtureflow != null">#{totalmixtureflow},</if>
+            <if test="totalpureflow != null">#{totalpureflow},</if>
+            <if test="ethene != null">#{ethene},</if>
+            <if test="ethyne != null">#{ethyne},</if>
+            <if test="oconcentration != null">#{oconcentration},</if>
+            <if test="date != null">#{date},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDataHistory" parameterType="DataHistory">
+        update data_history
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="measurepointid != null">measure_pointid = #{measurepointid},</if>
+            <if test="drainageunitid != null">drainageunitid = #{drainageunitid},</if>
+            <if test="workfaceid != null">workfaceid = #{workfaceid},</if>
+            <if test="mixtureflow != null">mixtureflow = #{mixtureflow},</if>
+            <if test="pureflow != null">pureflow = #{pureflow},</if>
+            <if test="temperature != null">temperature = #{temperature},</if>
+            <if test="ch4concentration != null">ch4concentration = #{ch4concentration},</if>
+            <if test="coconcentration != null">coconcentration = #{coconcentration},</if>
+            <if test="co2concentration != null">co2concentration = #{co2concentration},</if>
+            <if test="negativepressure != null">negativepressure = #{negativepressure},</if>
+            <if test="totalmixtureflow != null">totalmixtureflow = #{totalmixtureflow},</if>
+            <if test="totalpureflow != null">totalpureflow = #{totalpureflow},</if>
+            <if test="ethene != null">ethene = #{ethene},</if>
+            <if test="ethyne != null">ethyne = #{ethyne},</if>
+            <if test="oconcentration != null">oconcentration = #{oconcentration},</if>
+            <if test="date != null">data = #{date},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDataHistoryById" parameterType="Integer">
+        delete from data_history where id = #{id}
+    </delete>
+
+    <delete id="deleteDataHistoryByIds" parameterType="String">
+        delete from data_history where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="getInTime" parameterType="String" resultType="DataHistory">
+        select * from data_history where date between #{startDate} and #{endDate}
+    </select>
+</mapper>

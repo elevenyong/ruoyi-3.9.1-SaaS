@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.business.mapper.TMeasurePointContrastMapper">
+
+    <resultMap type="TMeasurePointContrast" id="TMeasurePointContrastResult">
+        <result property="id"    column="id"    />
+        <result property="measurePointLocal"    column="measure_point_local"    />
+        <result property="measureTime"    column="measure_time"    />
+        <result property="concentration"    column="concentration"    />
+        <result property="concentrationS"    column="concentration_s"    />
+        <result property="concentrationRevise"    column="concentration_revise"    />
+        <result property="vacuum"    column="vacuum"    />
+        <result property="vacuumS"    column="vacuum_s"    />
+        <result property="vacuumRevise"    column="vacuum_revise"    />
+        <result property="mixedFlow"    column="mixed_flow"    />
+        <result property="mixedFlowS"    column="mixed_flow_s"    />
+        <result property="mixedFlowRevise"    column="mixed_flow_revise"    />
+        <result property="pureFlow"    column="pure_flow"    />
+        <result property="pureFlowS"    column="pure_flow_s"    />
+        <result property="pureFlowRevise"    column="pure_flow_revise"    />
+        <result property="temperature"    column="temperature"    />
+        <result property="temperatureS"    column="temperature_s"    />
+        <result property="temperatureRevise"    column="temperature_revise"    />
+        <result property="COPortable"    column="CO_portable"    />
+        <result property="COS"    column="CO_S"    />
+        <result property="CORevise"    column="CO_revise"    />
+        <result property="barometerValue"    column="barometer_value"    />
+        <result property="pressureS"    column="pressure_s"    />
+        <result property="pressureRevise"    column="pressure_revise"    />
+        <result property="actualMeasurementPersion"    column="actual_measurement_persion"    />
+        <result property="timingPersion"    column="timing_persion"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTMeasurePointContrastVo">
+        select m.id, m.measure_point_local, p.measuring_point_name,m.measure_time, m.concentration, m.concentration_s,
+        m.concentration_revise, m.vacuum, m.vacuum_s, m.vacuum_revise, m.mixed_flow, m.mixed_flow_s, m.mixed_flow_revise,
+        m.pure_flow, m.pure_flow_s, m.pure_flow_revise, m.temperature, m.temperature_s, m.temperature_revise, m.CO_portable,
+        m.CO_S, m.CO_revise, m.barometer_value, m.pressure_s, m.pressure_revise, m.actual_measurement_persion, m.timing_persion,
+        m.create_by,m.create_time,m.update_by,m.update_time,m.remark
+        from t_measure_point_contrast m
+        LEFT JOIN
+        t_measuring_point p
+        ON m.measure_point_local=p.id
+    </sql>
+
+    <select id="selectTMeasurePointContrastList" parameterType="TMeasurePointContrast"
+            resultMap="TMeasurePointContrastResult">
+        <include refid="selectTMeasurePointContrastVo"/>
+        <where>
+            <if test="id!=null and id!=0">and id=#{id}</if>
+            <if test="measurePointLocal != null "> and measure_point_local = #{measurePointLocal}</if>
+            <if test="measureTime != null "> and measure_time = #{measureTime}</if>
+            <if test="concentration != null "> and concentration = #{concentration}</if>
+            <if test="concentrationS != null "> and concentration_s = #{concentrationS}</if>
+            <if test="concentrationRevise != null "> and concentration_revise = #{concentrationRevise}</if>
+            <if test="vacuum != null "> and vacuum = #{vacuum}</if>
+            <if test="vacuumS != null "> and vacuum_s = #{vacuumS}</if>
+            <if test="vacuumRevise != null "> and vacuum_revise = #{vacuumRevise}</if>
+            <if test="mixedFlow != null "> and mixed_flow = #{mixedFlow}</if>
+            <if test="mixedFlowS != null "> and mixed_flow_s = #{mixedFlowS}</if>
+            <if test="mixedFlowRevise != null "> and mixed_flow_revise = #{mixedFlowRevise}</if>
+            <if test="pureFlow != null "> and pure_flow = #{pureFlow}</if>
+            <if test="pureFlowS != null "> and pure_flow_s = #{pureFlowS}</if>
+            <if test="pureFlowRevise != null "> and pure_flow_revise = #{pureFlowRevise}</if>
+            <if test="temperature != null "> and temperature = #{temperature}</if>
+            <if test="temperatureS != null "> and temperature_s = #{temperatureS}</if>
+            <if test="temperatureRevise != null "> and temperature_revise = #{temperatureRevise}</if>
+            <if test="COPortable != null "> and CO_portable = #{COPortable}</if>
+            <if test="COS != null "> and CO_S = #{COS}</if>
+            <if test="CORevise != null "> and CO_revise = #{CORevise}</if>
+            <if test="barometerValue != null "> and barometer_value = #{barometerValue}</if>
+            <if test="pressureS != null "> and pressure_s = #{pressureS}</if>
+            <if test="pressureRevise != null "> and pressure_revise = #{pressureRevise}</if>
+            <if test="actualMeasurementPersion != null  and actualMeasurementPersion != ''"> and actual_measurement_persion = #{actualMeasurementPersion}</if>
+            <if test="timingPersion != null  and timingPersion != ''"> and timing_persion = #{timingPersion}</if>
+        </where>
+    </select>
+
+    <select id="selectTMeasurePointContrastById" parameterType="Integer" resultMap="TMeasurePointContrastResult">
+        <include refid="selectTMeasurePointContrastVo"/>
+        where Id = #{id}
+    </select>
+
+    <insert id="insertTMeasurePointContrast" parameterType="TMeasurePointContrast" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_measure_point_contrast
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="measurePointLocal != null">measure_point_local,</if>
+            <if test="measureTime != null">measure_time,</if>
+            <if test="concentration != null">concentration,</if>
+            <if test="concentrationS != null">concentration_s,</if>
+            <if test="concentrationRevise != null">concentration_revise,</if>
+            <if test="vacuum != null">vacuum,</if>
+            <if test="vacuumS != null">vacuum_s,</if>
+            <if test="vacuumRevise != null">vacuum_revise,</if>
+            <if test="mixedFlow != null">mixed_flow,</if>
+            <if test="mixedFlowS != null">mixed_flow_s,</if>
+            <if test="mixedFlowRevise != null">mixed_flow_revise,</if>
+            <if test="pureFlow != null">pure_flow,</if>
+            <if test="pureFlowS != null">pure_flow_s,</if>
+            <if test="pureFlowRevise != null">pure_flow_revise,</if>
+            <if test="temperature != null">temperature,</if>
+            <if test="temperatureS != null">temperature_s,</if>
+            <if test="temperatureRevise != null">temperature_revise,</if>
+            <if test="COPortable != null">CO_portable,</if>
+            <if test="COS != null">CO_S,</if>
+            <if test="CORevise != null">CO_revise,</if>
+            <if test="barometerValue != null">barometer_value,</if>
+            <if test="pressureS != null">pressure_s,</if>
+            <if test="pressureRevise != null">pressure_revise,</if>
+            <if test="actualMeasurementPersion != null">actual_measurement_persion,</if>
+            <if test="timingPersion != null">timing_persion,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="measurePointLocal != null">#{measurePointLocal},</if>
+            <if test="measureTime != null">#{measureTime},</if>
+            <if test="concentration != null">#{concentration},</if>
+            <if test="concentrationS != null">#{concentrationS},</if>
+            <if test="concentrationRevise != null">#{concentrationRevise},</if>
+            <if test="vacuum != null">#{vacuum},</if>
+            <if test="vacuumS != null">#{vacuumS},</if>
+            <if test="vacuumRevise != null">#{vacuumRevise},</if>
+            <if test="mixedFlow != null">#{mixedFlow},</if>
+            <if test="mixedFlowS != null">#{mixedFlowS},</if>
+            <if test="mixedFlowRevise != null">#{mixedFlowRevise},</if>
+            <if test="pureFlow != null">#{pureFlow},</if>
+            <if test="pureFlowS != null">#{pureFlowS},</if>
+            <if test="pureFlowRevise != null">#{pureFlowRevise},</if>
+            <if test="temperature != null">#{temperature},</if>
+            <if test="temperatureS != null">#{temperatureS},</if>
+            <if test="temperatureRevise != null">#{temperatureRevise},</if>
+            <if test="COPortable != null">#{COPortable},</if>
+            <if test="COS != null">#{COS},</if>
+            <if test="CORevise != null">#{CORevise},</if>
+            <if test="barometerValue != null">#{barometerValue},</if>
+            <if test="pressureS != null">#{pressureS},</if>
+            <if test="pressureRevise != null">#{pressureRevise},</if>
+            <if test="actualMeasurementPersion != null">#{actualMeasurementPersion},</if>
+            <if test="timingPersion != null">#{timingPersion},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTMeasurePointContrast" parameterType="TMeasurePointContrast">
+        update t_measure_point_contrast
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="measurePointLocal != null">measure_point_local = #{measurePointLocal},</if>
+            <if test="measureTime != null">measure_time = #{measureTime},</if>
+            <if test="concentration != null">concentration = #{concentration},</if>
+            <if test="concentrationS != null">concentration_s = #{concentrationS},</if>
+            <if test="concentrationRevise != null">concentration_revise = #{concentrationRevise},</if>
+            <if test="vacuum != null">vacuum = #{vacuum},</if>
+            <if test="vacuumS != null">vacuum_s = #{vacuumS},</if>
+            <if test="vacuumRevise != null">vacuum_revise = #{vacuumRevise},</if>
+            <if test="mixedFlow != null">mixed_flow = #{mixedFlow},</if>
+            <if test="mixedFlowS != null">mixed_flow_s = #{mixedFlowS},</if>
+            <if test="mixedFlowRevise != null">mixed_flow_revise = #{mixedFlowRevise},</if>
+            <if test="pureFlow != null">pure_flow = #{pureFlow},</if>
+            <if test="pureFlowS != null">pure_flow_s = #{pureFlowS},</if>
+            <if test="pureFlowRevise != null">pure_flow_revise = #{pureFlowRevise},</if>
+            <if test="temperature != null">temperature = #{temperature},</if>
+            <if test="temperatureS != null">temperature_s = #{temperatureS},</if>
+            <if test="temperatureRevise != null">temperature_revise = #{temperatureRevise},</if>
+            <if test="COPortable != null">CO_portable = #{COPortable},</if>
+            <if test="COS != null">CO_S = #{COS},</if>
+            <if test="CORevise != null">CO_revise = #{CORevise},</if>
+            <if test="barometerValue != null">barometer_value = #{barometerValue},</if>
+            <if test="pressureS != null">pressure_s = #{pressureS},</if>
+            <if test="pressureRevise != null">pressure_revise = #{pressureRevise},</if>
+            <if test="actualMeasurementPersion != null">actual_measurement_persion = #{actualMeasurementPersion},</if>
+            <if test="timingPersion != null">timing_persion = #{timingPersion},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where Id = #{id}
+    </update>
+
+    <delete id="deleteTMeasurePointContrastById" parameterType="Integer">
+        delete from t_measure_point_contrast where id = #{id}
+    </delete>
+
+    <delete id="deleteTMeasurePointContrastByIds" parameterType="java.util.List">
+        delete from t_measure_point_contrast where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!--通过测点ID查询人工测点数据-->
+    <select id="getByMeasurePointId" resultType="com.ruoyi.hh.business.domain.TMeasurePointContrast">
+        select p.measuring_point_name,m.* from t_measure_point_contrast m
+        LEFT JOIN t_measuring_point p ON m.measure_point_local=p.id
+        where 1=1
+        <if test="measurePointIds!=null">AND m.measure_point_local IN
+            <foreach collection="measurePointIds" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <!--查询所有数据-->
+    <select id="getPageList" resultType="com.ruoyi.hh.business.domain.TMeasurePointContrast">
+        <include refid="selectTMeasurePointContrastVo"/>
+    </select>
+
+    <!--根据测点名称查询测点ID-->
+    <select id="getIdByName" resultType="java.lang.Integer" parameterType="string">
+        select id from t_measuring_point where measuring_point_name=#{name}
+    </select>
+
+    <!--根据测点ID删除测点人工对比信息-->
+    <delete id="delByMeasurePointId" parameterType="java.lang.Integer">
+        delete from t_measure_point_contrast where measure_point_local =#{measurePointId}
+    </delete>
+    <delete id="delByMeasurePointIds" parameterType="java.util.List">
+        delete from t_measure_point_contrast where measure_point_local in
+        <foreach item="measurePointIds" collection="list" open="(" separator="," close=")">
+            #{measurePointIds}
+        </foreach>
+    </delete>
+
+
+</mapper>

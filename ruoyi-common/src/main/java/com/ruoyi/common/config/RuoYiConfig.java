@@ -1,7 +1,10 @@
 package com.ruoyi.common.config;
 
+import com.ruoyi.common.core.domain.VersionLog;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * 读取项目相关配置
@@ -21,6 +24,8 @@ public class RuoYiConfig
     /** 版权年份 */
     private String copyrightYear;
 
+    /** 实例演示开关 */
+    private boolean demoEnabled;
     /** 上传路径 */
     private static String profile;
 
@@ -29,6 +34,16 @@ public class RuoYiConfig
 
     /** 验证码类型 */
     private static String captchaType;
+    /** 数据库版本 */
+    private List<VersionLog> versionLogs;
+
+    public List<VersionLog> getVersionLogs() {
+        return versionLogs;
+    }
+
+    public void setVersionLogs(List<VersionLog> versionLogs) {
+        this.versionLogs = versionLogs;
+    }
 
     public String getName()
     {
@@ -58,6 +73,16 @@ public class RuoYiConfig
     public void setCopyrightYear(String copyrightYear)
     {
         this.copyrightYear = copyrightYear;
+    }
+
+    public boolean isDemoEnabled()
+    {
+        return demoEnabled;
+    }
+
+    public void setDemoEnabled(boolean demoEnabled)
+    {
+        this.demoEnabled = demoEnabled;
     }
 
     public static String getProfile()
@@ -111,12 +136,21 @@ public class RuoYiConfig
     {
         return getProfile() + "/download/";
     }
+	
+	/**
+     * 获取word模版路径
+     */
+    public static String getwordTemplatePath(){
+        return getProfile()+"/wordpath/";
+    }
+
 
     /**
-     * 获取上传路径
-     */
-    public static String getUploadPath()
-    {
-        return getProfile() + "/upload";
-    }
+	* 获取上传路径
+	*/    
+	public static String getUploadPath()    
+	{        
+	  return getProfile() + "/upload";    
+	}
+	
 }

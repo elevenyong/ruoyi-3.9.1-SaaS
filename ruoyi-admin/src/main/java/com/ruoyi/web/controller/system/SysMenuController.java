@@ -68,9 +68,20 @@ public class SysMenuController extends BaseController
      * 加载对应角色菜单列表树
      */
     @GetMapping(value = "/roleMenuTreeselect/{roleId}")
-    public AjaxResult roleMenuTreeselect(@PathVariable("roleId") Long roleId)
-    {
+    public AjaxResult roleMenuTreeselect(@PathVariable("roleId") Long roleId) {
         List<SysMenu> menus = menuService.selectMenuList(getUserId());
+
+        // 只有管理员能看到角色管理
+        if (getUserId() != 1) {
+            // 移除角色管理相关的列表
+            menus.removeIf(sysMenu -> sysMenu.getMenuId().equals(101L) ||
+                    sysMenu.getMenuId().equals(1008L) ||
+                    sysMenu.getMenuId().equals(1009L) ||
+                    sysMenu.getMenuId().equals(1010L) ||
+                    sysMenu.getMenuId().equals(1011L) ||
+                    sysMenu.getMenuId().equals(1012L)
+            );
+        }
         AjaxResult ajax = AjaxResult.success();
         ajax.put("checkedKeys", menuService.selectMenuListByRoleId(roleId));
         ajax.put("menus", menuService.buildMenuTreeSelect(menus));
@@ -85,7 +96,7 @@ public class SysMenuController extends BaseController
     @PostMapping
     public AjaxResult add(@Validated @RequestBody SysMenu menu)
     {
-        if (!menuService.checkMenuNameUnique(menu))
+        if (!menuService.checkMenuNameUnique(menu).equals("0"))
         {
             return error("新增菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
         }
@@ -93,7 +104,7 @@ public class SysMenuController extends BaseController
         {
             return error("新增菜单'" + menu.getMenuName() + "'失败，地址必须以http(s)://开头");
         }
-        else if (!menuService.checkRouteConfigUnique(menu))
+        else if (!menuService.checkRouteConfigUnique(menu).equals("0"))
         {
             return error("新增菜单'" + menu.getMenuName() + "'失败，路由名称或地址已存在");
         }
@@ -109,7 +120,7 @@ public class SysMenuController extends BaseController
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysMenu menu)
     {
-        if (!menuService.checkMenuNameUnique(menu))
+        if (!menuService.checkMenuNameUnique(menu).equals("0"))
         {
             return error("修改菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
         }
@@ -121,7 +132,7 @@ public class SysMenuController extends BaseController
         {
             return error("修改菜单'" + menu.getMenuName() + "'失败，上级菜单不能选择自己");
         }
-        else if (!menuService.checkRouteConfigUnique(menu))
+        else if (!menuService.checkRouteConfigUnique(menu).equals("0"))
         {
             return error("修改菜单'" + menu.getMenuName() + "'失败，路由名称或地址已存在");
         }

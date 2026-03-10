@@ -6,7 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.tenant.TenantContextHolder;
+import com.ruoyi.system.domain.SysPost;
+import com.ruoyi.system.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,11 +23,9 @@ import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.system.domain.SysRoleDept;
 import com.ruoyi.system.domain.SysRoleMenu;
 import com.ruoyi.system.domain.SysUserRole;
-import com.ruoyi.system.mapper.SysRoleDeptMapper;
-import com.ruoyi.system.mapper.SysRoleMapper;
-import com.ruoyi.system.mapper.SysRoleMenuMapper;
-import com.ruoyi.system.mapper.SysUserRoleMapper;
 import com.ruoyi.system.service.ISysRoleService;
+
+import javax.annotation.Resource;
 
 /**
  * 角色 业务层处理
@@ -46,6 +47,11 @@ public class SysRoleServiceImpl implements ISysRoleService
     @Autowired
     private SysRoleDeptMapper roleDeptMapper;
 
+    @Resource
+    private SysDeptMapper deptMapper;
+
+    @Resource
+    private SysPostMapper postMapper;
     /**
      * 根据条件分页查询角色数据
      * 
@@ -147,7 +153,7 @@ public class SysRoleServiceImpl implements ISysRoleService
      * @return 结果
      */
     @Override
-    public boolean checkRoleNameUnique(SysRole role)
+    public String checkRoleNameUnique(SysRole role)
     {
         Long roleId = StringUtils.isNull(role.getRoleId()) ? -1L : role.getRoleId();
         SysRole info = roleMapper.checkRoleNameUnique(role.getRoleName());
@@ -165,7 +171,7 @@ public class SysRoleServiceImpl implements ISysRoleService
      * @return 结果
      */
     @Override
-    public boolean checkRoleKeyUnique(SysRole role)
+    public String checkRoleKeyUnique(SysRole role)
     {
         Long roleId = StringUtils.isNull(role.getRoleId()) ? -1L : role.getRoleId();
         SysRole info = roleMapper.checkRoleKeyUnique(role.getRoleKey());
@@ -254,6 +260,29 @@ public class SysRoleServiceImpl implements ISysRoleService
         roleMapper.updateRole(role);
         // 删除角色与菜单关联
         roleMenuMapper.deleteRoleMenuByRoleId(role.getRoleId());
+        // 如果本次修改取消了一些权限, 则删除该部门内岗位的权限, 下层部门树权限, 下层部门树内岗位权限
+        Long roleId = role.getRoleId();
+        SysPost sysPost = postMapper.selectPostById(roleId);
+        SysDept sysDept = deptMapper.selectDeptById(roleId);
+        if (sysPost != null && sysDept == null) {
+            SysDept selDept = deptMapper.selectDeptById(sysPost.getDeptId());
+            System.out.println("修改岗位:" + selDept.getDeptId() + ":" + selDept.getDeptName() + ";" + sysPost.getPostId() + ":" + sysPost.getPostName());
+        } else if (sysPost == null && sysDept != null) {
+            SysPost post = new SysPost();
+            post.setDeptId(sysDept.getDeptId());
+            List<SysPost> selPosts = postMapper.selectPostList(post);
+            System.out.println("修改部门:" + sysDept.getDeptId() + ":" + sysDept.getDeptName());
+            List<SysDept> sysDepts = deptMapper.selectChildrenDeptById(sysDept.getDeptId());
+            for (SysDept selDept : sysDepts) {
+                System.out.println(selDept.getDeptId() + ":" + selDept.getDeptName());
+            }
+            System.out.println("下属岗位:");
+            for (SysPost selPost : selPosts) {
+                System.out.println(selPost.getPostId() + ":" + selPost.getPostName());
+            }
+        } else if (sysPost == null) {
+            System.out.println("修改特殊角色:" + role.getRoleId() + ":" + role.getRoleName());
+        }
         return insertRoleMenu(role);
     }
 

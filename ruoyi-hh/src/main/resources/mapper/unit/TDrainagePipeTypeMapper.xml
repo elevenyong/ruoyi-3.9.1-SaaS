@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.util.mapper.TDrainagePipeTypeMapper">
+
+    <resultMap type="TDrainagePipeType" id="TDrainagePipeTypeResult">
+        <result property="id"    column="id"    />
+        <result property="pipeType"    column="pipe_type"    />
+    </resultMap>
+
+    <sql id="selectTDrainagePipeTypeVo">
+        select id, pipe_type from t_drainage_pipe_type
+    </sql>
+
+    <select id="selectTDrainagePipeTypeList" parameterType="TDrainagePipeType" resultMap="TDrainagePipeTypeResult">
+        <include refid="selectTDrainagePipeTypeVo"/>
+        <where>
+            <if test="id != null "> and id = #{id}</if>
+            <if test="pipeType != null  and pipeType != ''"> and pipe_type = #{pipeType}</if>
+        </where>
+    </select>
+
+    <select id="selectTDrainagePipeTypeById" parameterType="Integer" resultMap="TDrainagePipeTypeResult">
+        <include refid="selectTDrainagePipeTypeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTDrainagePipeType" parameterType="TDrainagePipeType" useGeneratedKeys="true" keyProperty="id">
+        insert into t_drainage_pipe_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pipeType != null">pipe_type,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pipeType != null">#{pipeType},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTDrainagePipeType" parameterType="TDrainagePipeType">
+        update t_drainage_pipe_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="pipeType != null">pipe_type = #{pipeType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTDrainagePipeTypeById" parameterType="Integer">
+        delete from t_drainage_pipe_type where id = #{id}
+    </delete>
+
+    <delete id="deleteTDrainagePipeTypeByIds" parameterType="java.util.List">
+        delete from t_drainage_pipe_type where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

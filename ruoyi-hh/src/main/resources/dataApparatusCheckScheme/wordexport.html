@@ -1,0 +1,173 @@
+<html>
+
+
+
+<body lang=ZH-CN style='text-justify-trim:punctuation'>
+
+<div class=WordSection1 style='layout-grid:15.6pt'>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=205 valign=top style='width:60.85pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-family:宋体'>工作面名称</span></p>
+  </td>
+  <td width=167 valign=top style='width:60.85pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-family:宋体'>采区编号</span></p>
+  </td>
+  <td width=157 valign=top style='width:60.85pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-family:宋体'>所属煤层</span></p>
+  </td>
+  <td width=174 valign=top style='width:60.85pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-family:宋体'>工作面煤储量</span></p>
+  </td>
+  <td width=185 valign=top style='width:60.9pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-family:宋体'>工作面走向长度</span></p>
+  </td>
+  <td width=157 valign=top style='width:60.9pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-family:宋体'>工作面切眼长度</span></p>
+  </td>
+  <td width=208 valign=top style='width:60.9pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-family:宋体'>原始瓦斯含量</span></p>
+  </td>
+ </tr>
+<#List workFaces as workFace>
+ <tr>
+  <td width=205 valign=top style='width:60.85pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>${workFace.workingfacename!&quot;&quot;}</span></p>
+  </td>
+  <td width=167 valign=top style='width:60.85pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>${workFace.miningarea!&quot;&quot;}</span></p>
+  </td>
+  <td width=157 valign=top style='width:60.85pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>${workFace.coalserial!&quot;&quot;}</span></p>
+  </td>
+  <td width=174 valign=top style='width:60.85pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>${workFace.coalreserves!&quot;&quot;}</span></p>
+  </td>
+  <td width=185 valign=top style='width:60.9pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>${workFace.towardslength!&quot;&quot;}</span></p>
+  </td>
+  <td width=157 valign=top style='width:60.9pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>${workFace.cutlength!&quot;&quot;}</span></p>
+  </td>
+  <td width=208 valign=top style='width:60.9pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>${workFace.gascontentoriginal!&quot;&quot;}</span></p>
+  </td>
+ </tr>
+</#List>
+</table>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+<table class=MsoTableGrid border=1 cellspacing=0 cellpadding=0
+ style='border-collapse:collapse;border:none'>
+ <tr>
+  <td width=225 valign=top style='width:53.25pt;border:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-family:宋体'>评价单元名称</span></p>
+  </td>
+  <td width=149 valign=top style='width:53.25pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-family:宋体'>宽</span></p>
+  </td>
+  <td width=158 valign=top style='width:53.25pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-family:宋体'>长</span></p>
+  </td>
+  <td width=251 valign=top style='width:53.25pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-family:宋体'>时间最长的钻孔</span><span
+  lang=EN-US>ID</span></p>
+  </td>
+  <td width=153 valign=top style='width:53.25pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-family:宋体'>抽采时间最长天数</span></p>
+  </td>
+  <td width=154 valign=top style='width:53.25pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-family:宋体'>抽采时间最短天数</span></p>
+  </td>
+  <td width=200 valign=top style='width:53.3pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-family:宋体'>预抽时间差异系数</span></p>
+  </td>
+  <td width=250 valign=top style='width:53.3pt;border:solid windowtext 1.0pt;
+  border-left:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span style='font-family:宋体'>预抽时间差异系数标准</span></p>
+  </td>
+ </tr>
+<#List evaluateUnits as evaluateUnit>
+ <tr>
+  <td width=225 valign=top style='width:53.25pt;border:solid windowtext 1.0pt;
+  border-top:none;padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>${evaluateUnit.evaluateunitname!&quot;&quot;}</span></p>
+  </td>
+  <td width=149 valign=top style='width:53.25pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>${evaluateUnit.wide!&quot;&quot;}</span></p>
+  </td>
+  <td width=158 valign=top style='width:53.25pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>${evaluateUnit.length!&quot;&quot;}</span></p>
+  </td>
+  <td width=251 valign=top style='width:53.25pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>${evaluateUnit.longesttimeboreholeid!&quot;&quot;}</span></p>
+  </td>
+  <td width=153 valign=top style='width:53.25pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>${evaluateUnit.daysL!&quot;&quot;}</span></p>
+  </td>
+  <td width=154 valign=top style='width:53.25pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>${evaluateUnit.daysS!&quot;&quot;}</span></p>
+  </td>
+  <td width=200 valign=top style='width:53.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>${evaluateUnit.diffcoefficient!&quot;&quot;}</span></p>
+  </td>
+  <td width=250 valign=top style='width:53.3pt;border-top:none;border-left:
+  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;
+  padding:0cm 5.4pt 0cm 5.4pt'>
+  <p class=MsoNormal><span lang=EN-US>${evaluateUnit.diffcoefficientstandard!&quot;&quot;}</span></p>
+  </td>
+ </tr>
+</#List>
+</table>
+
+<p class=MsoNormal><span lang=EN-US>&nbsp;</span></p>
+
+</div>
+
+</body>
+
+</html>

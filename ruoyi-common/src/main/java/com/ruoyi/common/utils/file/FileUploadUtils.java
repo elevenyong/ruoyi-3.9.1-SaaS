@@ -88,6 +88,27 @@ public class FileUploadUtils
     }
 
     /**
+     * 根据文件路径上传
+     *
+     * @param baseDir 相对应用的基目录
+     * @param file 上传的文件
+     * @param randomName 随机文件名
+     * @return 文件名称
+     * @throws IOException
+     */
+    public static final String upload(String baseDir, MultipartFile file,Boolean randomName) throws IOException
+    {
+        try
+        {
+            return upload(baseDir, file, MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION, randomName);
+        }
+        catch (Exception e)
+        {
+            throw new IOException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 文件上传
      *
      * @param baseDir 相对应用的基目录
@@ -103,7 +124,19 @@ public class FileUploadUtils
             throws FileSizeLimitExceededException, IOException, FileNameLengthLimitExceededException,
             InvalidExtensionException
     {
-        return upload(baseDir, file, allowedExtension, false);
+        int fileNamelength = Objects.requireNonNull(file.getOriginalFilename()).length();
+        if (fileNamelength > FileUploadUtils.DEFAULT_FILE_NAME_LENGTH)
+        {
+            throw new FileNameLengthLimitExceededException(FileUploadUtils.DEFAULT_FILE_NAME_LENGTH);
+        }
+
+        assertAllowed(file, allowedExtension);
+
+        String fileName = extractFilename(file);
+
+        String absPath = getAbsoluteFile(baseDir, fileName).getAbsolutePath();
+        file.transferTo(Paths.get(absPath));
+        return getPathFileName(baseDir, fileName);
     }
     
     /**
@@ -152,6 +185,24 @@ public class FileUploadUtils
     public static final String uuidFilename(MultipartFile file)
     {
         return StringUtils.format("{}/{}.{}", DateUtils.datePath(), IdUtils.fastSimpleUUID(), getExtension(file));
+    }
+	
+	    /**
+     * 编码文件名(随机文件名)
+     */
+    public static final String extractFilename(MultipartFile file,Boolean random)
+    {
+        if (random){
+            String chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+            StringBuilder randomStr = new StringBuilder();
+            for (int i = 0; i < 8; i++) {
+                randomStr.append(chars.charAt((int) Math.floor(Math.random() * chars.length())));
+            }
+            return StringUtils.format("{}/{}.{}", DateUtils.datePath(), Seq.getId(Seq.uploadSeqType)+randomStr, getExtension(file));
+        }else {
+            return StringUtils.format("{}/{}_{}.{}", DateUtils.datePath(),
+                    FilenameUtils.getBaseName(file.getOriginalFilename()), Seq.getId(Seq.uploadSeqType), getExtension(file));
+        }
     }
 
     public static final File getAbsoluteFile(String uploadDir, String fileName) throws IOException
@@ -214,6 +265,11 @@ public class FileUploadUtils
             else if (allowedExtension == MimeTypeUtils.VIDEO_EXTENSION)
             {
                 throw new InvalidExtensionException.InvalidVideoExtensionException(allowedExtension, extension,
+                        fileName);
+            }
+            else if (allowedExtension == MimeTypeUtils.CAD_EXTENSION)
+            {
+                throw new InvalidExtensionException.InvalidCADExtensionException(allowedExtension, extension,
                         fileName);
             }
             else

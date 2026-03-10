@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TStationInfoMapper">
+
+    <resultMap type="TStationInfo" id="TStationInfoResult">
+        <result property="id"    column="id"    />
+        <result property="roadwayId"    column="roadway_id"    />
+        <result property="drainageUnitId"    column="drainage_unit_id"    />
+        <result property="pipeTypeId"    column="pipe_type_id"    />
+        <result property="serial"    column="serial"    />
+        <result property="measurePointCode"    column="measure_point_code"    />
+        <result property="sysCode"    column="sys_code"    />
+        <result property="substationCode"    column="substation_code"    />
+        <result property="sensorTypeName"    column="sensor_type_name"    />
+        <result property="measurePointValueType"    column="measure_point_value_type"    />
+        <result property="measurePointValueUnit"    column="measure_point_value_unit"    />
+        <result property="hightRange"    column="hight_range"    />
+        <result property="lowRange"    column="low_range"    />
+        <result property="upWarn"    column="up_warn"    />
+        <result property="upCancelWarn"    column="up_cancel_warn"    />
+        <result property="lowWarn"    column="low_warn"    />
+        <result property="lowCancelWarn"    column="low_cancel_warn"    />
+        <result property="upOutage"    column="up_outage"    />
+        <result property="upOnpower"    column="up_onpower"    />
+        <result property="lowOutage"    column="low_outage"    />
+        <result property="lowOnpower"    column="low_onpower"    />
+        <result property="onDescribe"    column="on_describe"    />
+        <result property="stopDescribe"    column="stop_describe"    />
+        <result property="measurePointLocal"    column="measure_point_local"    />
+        <result property="X"    column="X"    />
+        <result property="Y"    column="Y"    />
+        <result property="Z"    column="Z"    />
+        <result property="sensorRelevance"    column="sensor_relevance"    />
+        <result property="time"    column="time"    />
+        <result property="piping"    column="piping"    />
+        <result property="farthestEnd"    column="farthest_end"    />
+    </resultMap>
+
+    <sql id="selectTStationInfoVo">
+        select id, roadway_id,drainage_unit_id,pipe_type_id,serial,measure_point_code, sys_code, substation_code, sensor_type_name,
+               measure_point_value_type, measure_point_value_unit, hight_range, low_range, up_warn, up_cancel_warn,
+               low_warn, low_cancel_warn, up_outage, up_onpower, low_outage, low_onpower, on_describe, stop_describe,
+               measure_point_local, X, Y, Z, sensor_relevance, `time`,piping,farthest_end from t_station_info
+    </sql>
+
+    <select id="selectTStationInfoList" parameterType="TStationInfo" resultMap="TStationInfoResult">
+        <include refid="selectTStationInfoVo"/>
+        <where>
+            <if test="id != null  and id != ''"> and id = #{id}</if>
+            <if test="roadwayId != null  and roadwayId != 0"> and roadway_id = #{roadwayId}</if>
+            <if test="drainageUnitId != null  and drainageUnitId != 0"> and drainage_unit_id = #{drainageUnitId}</if>
+            <if test="pipeTypeId != null  and pipeTypeId != 0"> and pipe_type_id = #{pipeTypeId}</if>
+            <if test="serial != null  and serial != ''"> and serial = #{serial}</if>
+            <if test="measurePointCode != null  and measurePointCode != ''"> and measure_point_code = #{measurePointCode}</if>
+            <if test="sysCode != null  and sysCode != ''"> and sys_code = #{sysCode}</if>
+            <if test="substationCode != null  and substationCode != ''"> and substation_code = #{substationCode}</if>
+            <if test="sensorTypeName != null  and sensorTypeName != ''"> and sensor_type_name=#{sensorTypeName} </if>
+            <if test="measurePointValueType != null  and measurePointValueType != ''"> and measure_point_value_type = #{measurePointValueType}</if>
+            <if test="measurePointValueUnit != null  and measurePointValueUnit != ''"> and measure_point_value_unit = #{measurePointValueUnit}</if>
+            <if test="hightRange != null and hightRange!= 0.0 "> and hight_range = #{hightRange}</if>
+            <if test="lowRange != null and lowRange!=0.0"> and low_range = #{lowRange}</if>
+            <if test="upWarn != null and upWarn!=0.0"> and up_warn = #{upWarn}</if>
+            <if test="upCancelWarn != null and upCancelWarn!=0.0"> and up_cancel_warn = #{upCancelWarn}</if>
+            <if test="lowWarn != null and lowWarn!=0.0"> and low_warn = #{lowWarn}</if>
+            <if test="lowCancelWarn != null and lowCancelWarn!=0.0"> and low_cancel_warn = #{lowCancelWarn}</if>
+            <if test="upOutage != null and upOutage!=0.0"> and up_outage = #{upOutage}</if>
+            <if test="upOnpower != null and upOnpower!=0.0"> and up_onpower = #{upOnpower}</if>
+            <if test="lowOutage != null and lowOutage!=0.0"> and low_outage = #{lowOutage}</if>
+            <if test="lowOnpower != null and lowOnpower!=0.0"> and low_onpower = #{lowOnpower}</if>
+            <if test="onDescribe != null"> and on_describe = #{onDescribe}</if>
+            <if test="stopDescribe != null"> and stop_describe = #{stopDescribe}</if>
+            <if test="measurePointLocal != null  and measurePointLocal != ''"> and measure_point_local like concat('%', #{measurePointLocal}, '%')</if>
+            <if test="X != null "> and X = #{x}</if>
+            <if test="Y != null "> and Y = #{y}</if>
+            <if test="Z != null "> and Z = #{z}</if>
+            <if test="sensorRelevance != null  and sensorRelevance != ''"> and sensor_relevance = #{sensorRelevance}</if>
+            <if test="time != null "> and time = #{time}</if>
+            <if test="piping != null "> and piping = #{piping}</if>
+            <if test="farthestEnd != null "> and farthest_end = #{farthestEnd}</if>
+        </where>
+    </select>
+
+    <select id="selectTStationInfoById" parameterType="Integer" resultMap="TStationInfoResult">
+        <include refid="selectTStationInfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTStationInfo" parameterType="TStationInfo">
+        insert into t_station_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="roadwayId != null and roadwayId != 0">roadway_id,</if>
+            <if test="drainageUnitId != null and drainageUnitId != 0">drainage_unit_id,</if>
+            <if test="pipeTypeId != null and pipeTypeId != 0">pipe_type_id,</if>
+            <if test="serial != null">serial,</if>
+            <if test="measurePointCode != null">measure_point_code,</if>
+            <if test="sysCode != null">sys_code,</if>
+            <if test="substationCode != null">substation_code,</if>
+            <if test="sensorTypeName != null">sensor_type_name,</if>
+            <if test="measurePointValueType != null">measure_point_value_type,</if>
+            <if test="measurePointValueUnit != null">measure_point_value_unit,</if>
+            <if test="hightRange != null">hight_range,</if>
+            <if test="lowRange != null">low_range,</if>
+            <if test="upWarn != null">up_warn,</if>
+            <if test="upCancelWarn != null">up_cancel_warn,</if>
+            <if test="lowWarn != null">low_warn,</if>
+            <if test="lowCancelWarn != null">low_cancel_warn,</if>
+            <if test="upOutage != null">up_outage,</if>
+            <if test="upOnpower != null">up_onpower,</if>
+            <if test="lowOutage != null">low_outage,</if>
+            <if test="lowOnpower != null">low_onpower,</if>
+            <if test="onDescribe != null">on_describe,</if>
+            <if test="stopDescribe != null">stop_describe,</if>
+            <if test="measurePointLocal != null">measure_point_local,</if>
+            <if test="X != null">X,</if>
+            <if test="Y != null">Y,</if>
+            <if test="Z != null">Z,</if>
+            <if test="sensorRelevance != null">sensor_relevance,</if>
+            <if test="time != null">time,</if>
+            <if test="piping != null">piping,</if>
+            <if test="farthestEnd != null">farthest_end,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="roadwayId != null and roadwayId != 0">#{roadwayId},</if>
+            <if test="drainageUnitId != null and drainageUnitId != 0">#{drainageUnitId},</if>
+            <if test="pipeTypeId != null and pipeTypeId != 0">#{pipeTypeId},</if>
+            <if test="serial != null">#{serial},</if>
+            <if test="measurePointCode != null">#{measurePointCode},</if>
+            <if test="sysCode != null">#{sysCode},</if>
+            <if test="substationCode != null">#{substationCode},</if>
+            <if test="sensorTypeName != null">#{sensorTypeName},</if>
+            <if test="measurePointValueType != null">#{measurePointValueType},</if>
+            <if test="measurePointValueUnit != null">#{measurePointValueUnit},</if>
+            <if test="hightRange != null">#{hightRange},</if>
+            <if test="lowRange != null">#{lowRange},</if>
+            <if test="upWarn != null">#{upWarn},</if>
+            <if test="upCancelWarn != null">#{upCancelWarn},</if>
+            <if test="lowWarn != null">#{lowWarn},</if>
+            <if test="lowCancelWarn != null">#{lowCancelWarn},</if>
+            <if test="upOutage != null">#{upOutage},</if>
+            <if test="upOnpower != null">#{upOnpower},</if>
+            <if test="lowOutage != null">#{lowOutage},</if>
+            <if test="lowOnpower != null">#{lowOnpower},</if>
+            <if test="onDescribe != null">#{onDescribe},</if>
+            <if test="stopDescribe != null">#{stopDescribe},</if>
+            <if test="measurePointLocal != null">#{measurePointLocal},</if>
+            <if test="X != null">#{x},</if>
+            <if test="Y != null">#{y},</if>
+            <if test="Z != null">#{z},</if>
+            <if test="sensorRelevance != null">#{sensorRelevance},</if>
+            <if test="time != null">#{time},</if>
+            <if test="piping != null">#{piping},</if>
+            <if test="farthestEnd != null">#{farthestEnd},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTStationInfo" parameterType="TStationInfo">
+        update t_station_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">roadway_id = #{roadwayId},</if>
+            <if test="drainageUnitId != null and drainageUnitId != 0">drainage_unit_id = #{drainageUnitId},</if>
+            <if test="pipeTypeId != null and pipeTypeId != 0">pipe_type_id = #{pipeTypeId},</if>
+            <if test="serial != null">serial = #{serial},</if>
+            <if test="measurePointCode != null">measure_point_code = #{measurePointCode},</if>
+            <if test="sysCode != null">sys_code = #{sysCode},</if>
+            <if test="substationCode != null">substation_code = #{substationCode},</if>
+            <if test="sensorTypeName != null">sensor_type_name = #{sensorTypeName},</if>
+            <if test="measurePointValueType != null">measure_point_value_type = #{measurePointValueType},</if>
+            <if test="measurePointValueUnit != null">measure_point_value_unit = #{measurePointValueUnit},</if>
+            <if test="hightRange != null">hight_range = #{hightRange},</if>
+            <if test="lowRange != null">low_range = #{lowRange},</if>
+            <if test="upWarn != null">up_warn = #{upWarn},</if>
+            <if test="upCancelWarn != null">up_cancel_warn = #{upCancelWarn},</if>
+            <if test="lowWarn != null">low_warn = #{lowWarn},</if>
+            <if test="lowCancelWarn != null">low_cancel_warn = #{lowCancelWarn},</if>
+            <if test="upOutage != null">up_outage = #{upOutage},</if>
+            <if test="upOnpower != null">up_onpower = #{upOnpower},</if>
+            <if test="lowOutage != null">low_outage = #{lowOutage},</if>
+            <if test="lowOnpower != null">low_onpower = #{lowOnpower},</if>
+            <if test="onDescribe != null">on_describe = #{onDescribe},</if>
+            <if test="stopDescribe != null">stop_describe = #{stopDescribe},</if>
+            <if test="measurePointLocal != null">measure_point_local = #{measurePointLocal},</if>
+            <if test="X != null">X = #{x},</if>
+            <if test="Y != null">Y = #{y},</if>
+            <if test="Z != null">Z = #{z},</if>
+            <if test="sensorRelevance != null">sensor_relevance = #{sensorRelevance},</if>
+            <if test="time != null">time = #{time},</if>
+            <if test="piping != null">piping = #{piping},</if>
+            <if test="farthestEnd != null">farthest_end = #{farthestEnd},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTStationInfoById" parameterType="Integer">
+        delete from t_station_info where id = #{id}
+    </delete>
+
+    <delete id="deleteTStationInfoByIds" parameterType="String">
+        delete from t_station_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateByMeasurePointCode" parameterType="TStationInfo">
+        update t_station_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">roadway_id = #{roadwayId},</if>
+            <if test="drainageUnitId != null and drainageUnitId != 0">drainage_unit_id = #{drainageUnitId},</if>
+            <if test="pipeTypeId != null and pipeTypeId != 0">pipe_type_id = #{pipeTypeId},</if>
+            <if test="serial != null">serial = #{serial},</if>
+            <if test="sysCode != null">sys_code = #{sysCode},</if>
+            <if test="substationCode != null">substation_code = #{substationCode},</if>
+            <if test="sensorTypeName != null">sensor_type_name = #{sensorTypeName},</if>
+            <if test="measurePointValueType != null">measure_point_value_type = #{measurePointValueType},</if>
+            <if test="measurePointValueUnit != null">measure_point_value_unit = #{measurePointValueUnit},</if>
+            <if test="hightRange != null">hight_range = #{hightRange},</if>
+            <if test="lowRange != null">low_range = #{lowRange},</if>
+            <if test="upWarn != null">up_warn = #{upWarn},</if>
+            <if test="upCancelWarn != null">up_cancel_warn = #{upCancelWarn},</if>
+            <if test="lowWarn != null">low_warn = #{lowWarn},</if>
+            <if test="lowCancelWarn != null">low_cancel_warn = #{lowCancelWarn},</if>
+            <if test="upOutage != null">up_outage = #{upOutage},</if>
+            <if test="upOnpower != null">up_onpower = #{upOnpower},</if>
+            <if test="lowOutage != null">low_outage = #{lowOutage},</if>
+            <if test="lowOnpower != null">low_onpower = #{lowOnpower},</if>
+            <if test="onDescribe != null">on_describe = #{onDescribe},</if>
+            <if test="stopDescribe != null">stop_describe = #{stopDescribe},</if>
+            <if test="measurePointLocal != null">measure_point_local = #{measurePointLocal},</if>
+            <if test="X != null">X = #{x},</if>
+            <if test="Y != null">Y = #{y},</if>
+            <if test="Z != null">Z = #{z},</if>
+            <if test="sensorRelevance != null">sensor_relevance = #{sensorRelevance},</if>
+            <if test="time != null">time = #{time},</if>
+            <if test="piping != null">piping = #{piping},</if>
+            <if test="farthestEnd != null">farthest_end = #{farthestEnd},</if>
+        </trim>
+        where measure_point_code = #{measurePointCode}
+    </update>
+
+    <!--更改测点安装位置所属的巷道-->
+    <update id="updateRoadwayIdByLocal">
+        update t_station_info set roadway_id =#{roadwayId} where measure_point_local in
+        <foreach collection="measurePointLocals" item="item" index="index" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+    <!--设置测点的位置逻辑信息-->
+    <update id="setStationInfo">
+        update t_station_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roadwayId!=null and roadwayId!=0">roadway_id =#{roadwayId},</if>
+            <if test="drainageUnitId != null and drainageUnitId != 0">drainage_unit_id = #{drainageUnitId},</if>
+            <if test="pipeTypeId != null and pipeTypeId != 0">pipe_type_id = #{pipeTypeId},</if>
+            <if test="serial != null">serial = #{serial},</if>
+            <if test="piping != null">piping = #{piping},</if>
+            <if test="farthestEnd != null">farthest_end = #{farthestEnd},</if>
+        </trim>
+        where measure_point_local = #{measurePointLocal}
+    </update>
+
+</mapper>

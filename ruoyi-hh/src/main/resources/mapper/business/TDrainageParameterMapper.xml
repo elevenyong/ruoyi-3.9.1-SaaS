@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.business.mapper.TDrainageParameterMapper">
+
+    <resultMap type="TDrainageParameter" id="TDrainageParameterResult">
+        <result property="id"    column="id"    />
+        <result property="boreholeId"    column="borehole_id"    />
+        <result property="gasConcentration"    column="gas_concentration"    />
+        <result property="negativePressure"    column="negative_pressure"    />
+        <result property="estimatedTimeDrainageDone"    column="estimated_time_drainage_done"    />
+        <result property="measureDate"    column="measure_date"    />
+        <result property="beginningcon"    column="beginningcon"    />
+        <result property="beginningconDate"    column="beginningcon_date"    />
+        <result property="measurer"    column="measurer"    />
+        <result property="tabulator"    column="tabulator"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+<!--    <sql id="selectTDrainageParameterVo">-->
+<!--        select r.id AS roadwayId,r.roadway,a.groupid,a.borehole_no,a.borehole_length,p.id, p.borehole_id, p.gasConcentration, p.negativepressure, p.estimated_time_drainage_done,-->
+<!--        p.measure_date, p.beginningcon, p.measurer, p.tabulator, p.create_by, p.create_time, p.update_by, p.update_time, p.remark,pb.purpose_borehole-->
+<!--        from t_drainage_parameter p-->
+<!--        LEFT JOIN t_actual_borehole a ON a.id=p.borehole_id-->
+<!--        LEFT JOIN t_roadway r ON r.id  = a.roadwayId-->
+<!--        LEFT JOIN t_purpose_borehole pb ON pb.id = a.purpose_boreholeid-->
+<!--    </sql>-->
+    <!--钻孔周期计量台帐（更新）-->
+    <sql id="selectTDrainageParameterVo">
+        select r.id AS roadwayId,r.roadway,a.drilling_location,a.borehole_code,a.group_no,a.borehole_no,a.borehole_length as borehole_length,p.id, p.borehole_id, p.gas_concentration, p.negative_pressure, p.estimated_time_drainage_done,
+               p.measure_date, p.beginningcon, p.measurer, p.tabulator, p.create_by, p.create_time, p.update_by, p.update_time, p.remark,pb.purpose_borehole
+        from t_drainage_parameter p
+                 LEFT JOIN t_bk_act_borehole_info a ON a.id=p.borehole_id
+                 LEFT JOIN t_roadway r ON r.id  = a.roadway_id
+                 LEFT JOIN t_purpose_borehole pb ON pb.id = a.purpose_borehole_id
+    </sql>
+
+
+    <select id="selectTDrainageParameterList" parameterType="TDrainageParameter" resultMap="TDrainageParameterResult">
+        <include refid="selectTDrainageParameterVo"/>
+        <where>
+            <if test="id!=null and id!=0">and p.id=#{id}</if>
+            <if test="boreholeId != null and boreholeId!=0"> and p.borehole_id = #{boreholeId}</if>
+            <if test="gasConcentration != null "> and p.gas_concentration = #{gasConcentration}</if>
+            <if test="negativePressure != null "> and p.negative_pressure = #{negativePressure}</if>
+            <if test="estimatedTimeDrainageDone != null "> and p.estimated_time_drainage_done = #{estimatedTimeDrainageDone}</if>
+            <if test="measureDate != null "> and p.measure_date = #{measureDate}</if>
+            <if test="beginningcon != null "> and p.beginningcon = #{beginningcon}</if>
+            <if test="beginningconDate != null "> and p.beginningcon_date = #{beginningconDate}</if>
+            <if test="measurer != null  and measurer != ''"> and p.measurer = #{measurer}</if>
+            <if test="tabulator != null  and tabulator != ''"> and p.tabulator = #{tabulator}</if>
+        </where>
+    </select>
+
+    <select id="selectTDrainageParameterById" parameterType="Integer" resultMap="TDrainageParameterResult">
+        <include refid="selectTDrainageParameterVo"/>
+        where p.id = #{id}
+    </select>
+
+    <insert id="insertTDrainageParameter" parameterType="TDrainageParameter" useGeneratedKeys="true" keyProperty="id">
+        insert into t_drainage_parameter
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="boreholeId != null and boreholeId!=0">borehole_id,</if>
+            <if test="gasConcentration != null">gas_concentration,</if>
+            <if test="negativePressure != null">negative_pressure,</if>
+            <if test="estimatedTimeDrainageDone != null">estimated_time_drainage_done,</if>
+            <if test="measureDate != null">measure_date,</if>
+            <if test="beginningcon != null">beginningcon,</if>
+            <if test="beginningconDate != null">beginningcon_date,</if>
+            <if test="measurer != null">measurer,</if>
+            <if test="tabulator != null">tabulator,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="boreholeId != null and boreholeId!=0">#{boreholeId},</if>
+            <if test="gasConcentration != null">#{gasConcentration},</if>
+            <if test="negativePressure != null">#{negativePressure},</if>
+            <if test="estimatedTimeDrainageDone != null">#{estimatedTimeDrainageDone},</if>
+            <if test="measureDate != null">#{measureDate},</if>
+            <if test="beginningcon != null">#{beginningcon},</if>
+            <if test="beginningconDate != null">#{beginningconDate},</if>
+            <if test="measurer != null">#{measurer},</if>
+            <if test="tabulator != null">#{tabulator},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTDrainageParameter" parameterType="TDrainageParameter">
+        update t_drainage_parameter
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="boreholeId != null and boreholeId!=0">borehole_id = #{boreholeId},</if>
+            <if test="gasConcentration != null">gas_concentration = #{gasConcentration},</if>
+            <if test="negativePressure != null">negative_pressure = #{negativePressure},</if>
+            <if test="estimatedTimeDrainageDone != null">estimated_time_drainage_done = #{estimatedTimeDrainageDone},</if>
+            <if test="measureDate != null">measure_date = #{measureDate},</if>
+            <if test="beginningcon != null">beginningcon = #{beginningcon},</if>
+            <if test="beginningconDate != null">beginningcon_date = #{beginningconDate},</if>
+            <if test="measurer != null">measurer = #{measurer},</if>
+            <if test="tabulator != null">tabulator = #{tabulator},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTDrainageParameterById" parameterType="Integer">
+        delete from t_drainage_parameter where id = #{id}
+    </delete>
+
+    <delete id="deleteTDrainageParameterByIds" parameterType="java.util.List">
+        delete from t_drainage_parameter where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getTDrainageParameter" resultType="com.ruoyi.hh.business.domain.TDrainageParameter">
+        select r.roadway,a.drilling_location,a.group_no,a.borehole_no,a.borehole_code,a.borehole_length as borehole_length,r.id AS roadwayId,purpose_borehole,p.* from
+        t_drainage_parameter p
+        LEFT JOIN t_bk_act_borehole_info a ON p.borehole_id=a.id
+        LEFT JOIN t_roadway r ON r.id=a.roadway_id
+        LEFT JOIN t_purpose_borehole pb ON pb.id = a.purpose_borehole_id
+        WHERE
+        1=1
+        <if test="roadwayId!=null">
+            AND a.roadway_id=#{roadwayId}
+        </if>
+
+        <if test="groupNo!=null"> AND a.group_no IN
+            <foreach collection="groupNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="purposeboreholeid!=null"> AND a.purpose_borehole_id IN
+            <foreach collection="purposeboreholeid" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="boreholeNo!=null"> AND a.borehole_no IN
+            <foreach collection="boreholeNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="startdate!=null and enddate!=null">
+            AND p.measure_date BETWEEN #{startdate} and #{enddate}
+        </if>
+    </select>
+
+
+
+    <!--钻孔抽采参数测量-->
+    <select id="getPageList" resultType="com.ruoyi.hh.business.domain.TDrainageParameter">
+        <include refid="selectTDrainageParameterVo"/>
+    </select>
+
+    <!--根据钻孔ID删除钻孔抽采参数信息-->
+    <delete id="delByBoreholeId" parameterType="java.lang.Integer">
+        delete from t_drainage_parameter where borehole_id=#{boreholeId}
+    </delete>
+    <delete id="delByBoreholeIds" parameterType="java.util.List">
+        delete from t_drainage_parameter where borehole_id in
+        <foreach item="boreholeIds" collection="list" open="(" separator="," close=")">
+            #{boreholeIds}
+        </foreach>
+    </delete>
+    <!--根据孔号ID查询数据-->
+    <select id="getByBoreholeId" parameterType="java.lang.Integer" resultType="com.ruoyi.hh.business.domain.TDrainageParameter">
+        select * from t_drainage_parameter where borehole_id=#{boreholeId}
+    </select>
+
+    <!--根据巷道ID，钻孔用途，组号，查询给定阶段的浓度-->
+    <select id="getTGasExtractionAnalyze" resultType="com.ruoyi.hh.business.domain.TDrainageParameter">
+        select g.id,a.borehole_no,g.gas_concentration,g.negative_pressure,g.measurer, g.measure_date, p.purpose_borehole,a.azimuth_angle as azimuth_angle,a.angle as angle,
+        a.inclination_angle inclination_angle,a.borehole_length as borehole_length,
+        f.see_rock_case,f.see_coal_case,n.navigation_point_name,a.distance_to_navigation_point,t.hole_seal_type,
+        a.actual_coal_amount_flushed,g.borehole_id,
+        g.beginningcon, g.create_by, g.create_time, g.update_by, g.update_time, g.remark
+        from t_drainage_parameter g
+        LEFT JOIN t_bk_act_borehole_info a ON a.id =g.borehole_id
+        LEFT JOIN t_purpose_borehole p ON a.purpose_borehole_id=p.id
+        LEFT JOIN t_roadway r ON r.id =a.roadway_id
+        LEFT JOIN t_actual_flushing f ON f.borehole_id=a.id
+        LEFT JOIN t_navigation_point n ON a.navigation_point_id=n.id
+        LEFT JOIN t_holeseal_type t ON a.holeseal_type_id=t.id
+        LEFT JOIN t_actual_flushing af ON a.id=af.borehole_id
+        where beginningcon =false and gas_concentration &gt; #{low} and gas_concentration &lt; #{height}
+        <if test="roadwayId!=null">AND a.roadway_id IN
+            <foreach collection="roadwayId" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="purposeboreholeid!=null">AND a.purpose_borehole_id IN
+            <foreach collection="purposeboreholeid" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="groupNo!=null"> AND a.group_no IN
+            <foreach collection="groupNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="boreholeNo!=null"> AND a.borehole_no IN
+            <foreach collection="boreholeNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY g.borehole_id ORDER BY g.measure_date DESC
+    </select>
+    <!--查询钻孔始抽效果分析-->
+    <select id="getGasAnalyzeBegin" resultType="com.ruoyi.hh.business.domain.TDrainageParameter">
+        select g.id,a.borehole_no,g.gas_concentration,g.negative_pressure,g.measurer, g.measure_date, p.purpose_borehole,a.azimuth_angle as azimuth_angle,a.angle as angle,
+        a.inclination_angle as inclination_angle,a.borehole_length as borehole_length,
+        a.see_rock_coal_case,n.navigation_point_name,a.distance_to_navigation_point,t.hole_seal_type,
+        a.actual_coal_amount_flushed,g.borehole_id,
+        g.beginningcon, g.create_by, g.create_time, g.update_by, g.update_time, g.remark
+        from t_drainage_parameter g
+        LEFT JOIN t_bk_act_borehole_info a ON a.id =g.borehole_id
+        LEFT JOIN t_purpose_borehole p ON a.purpose_borehole_id=p.id
+        LEFT JOIN t_roadway r ON r.id =a.roadway_id
+        LEFT JOIN t_navigation_point n ON a.navigation_point_id=n.id
+        LEFT JOIN t_holeseal_type t ON a.holeseal_type_id=t.id
+        where beginningcon =true and gas_concentration &gt; #{low} and gas_concentration &lt; #{height}
+        <if test="roadwayId!=null">AND a.roadway_id IN
+            <foreach collection="roadwayId" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="purposeboreholeid!=null">AND a.purpose_borehole_id IN
+            <foreach collection="purposeboreholeid" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="groupNo!=null"> AND a.group_no IN
+            <foreach collection="groupNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="boreholeNo!=null"> AND a.borehole_no IN
+            <foreach collection="boreholeNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        GROUP BY g.borehole_id ORDER BY g.measure_date DESC
+    </select>
+
+    <!--显示未录入的钻孔-->
+    <select id="getBoreholeInfoNotRecord" resultType="com.ruoyi.hh.physical.domain.TActualBorehole">
+        select r.roadway,a.* from t_bk_act_borehole_info a
+        LEFT JOIN t_roadway r ON r.id= a.roadway_id
+        where a.id NOT IN (SELECT borehole_id from t_drainage_parameter)
+    </select>
+    <!--根据实钻ID和是否始抽值查询始抽日期-->
+    <select id="getBeginningcondate" resultType="java.util.Date">
+        select beginningcon_date from t_drainage_parameter where borehole_id =#{boreholeId} and beginningcon is true
+    </select>
+    <!--根据钻孔ID查询始抽浓度记录的ID-->
+    <select id="getIdByBoreholeid" resultType="Integer">
+        select id from t_drainage_parameter where borehole_id =#{boreholeId} and beginningcon is true
+    </select>
+</mapper>

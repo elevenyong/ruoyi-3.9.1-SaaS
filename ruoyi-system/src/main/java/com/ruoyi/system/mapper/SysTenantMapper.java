@@ -33,4 +33,8 @@ public interface SysTenantMapper
     SysTenant selectTenantById(Long tenantId);
 
     int updateTenantStatus(@Param("tenantId")Long tenantId, @Param("status")String status);
+
+    int updateTenant(SysTenant tenant);
+
+    int deleteTenantByIds(Long[] tenantIds);
 }

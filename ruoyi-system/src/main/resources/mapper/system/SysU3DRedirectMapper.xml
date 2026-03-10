@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysU3DRedirectMapper">
+
+    <resultMap type="SysU3DRedirect" id="SysU3DRedirectResult">
+        <result property="id" column="id"/>
+        <result property="redirect" column="redirect"/>
+    </resultMap>
+
+    <sql id="selectSysU3DRedirectVo">
+        select id, redirect
+        from sys_u3dredirect
+    </sql>
+
+    <select id="selectSysU3DRedirectList" parameterType="SysU3DRedirect" resultMap="SysU3DRedirectResult">
+        <include refid="selectSysU3DRedirectVo"/>
+        <where>
+            <if test="redirect != null  and redirect != ''">and redirect = #{redirect}</if>
+        </where>
+    </select>
+
+    <select id="selectSysU3DRedirectById" parameterType="Long" resultMap="SysU3DRedirectResult">
+        <include refid="selectSysU3DRedirectVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysU3DRedirect" parameterType="SysU3DRedirect">
+        insert into sys_u3dredirect
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="redirect != null">redirect,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="redirect != null">#{redirect},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysU3DRedirect" parameterType="SysU3DRedirect">
+        update sys_u3dredirect
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="redirect != null">redirect = #{redirect},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysU3DRedirectById" parameterType="Long">
+        delete
+        from sys_u3dredirect
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteSysU3DRedirectByIds" parameterType="String">
+        delete from sys_u3dredirect where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

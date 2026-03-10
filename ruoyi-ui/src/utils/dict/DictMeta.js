@@ -1,4 +1,4 @@
-import { mergeRecursive } from "@/utils/ruoyi"
+import { mergeRecursive } from "@/utils/ruoyi";
 import DictOptions from './DictOptions'
 
 /**
@@ -11,7 +11,7 @@ import DictOptions from './DictOptions'
 export default class DictMeta {
   constructor(options) {
     this.type = options.type
-    this.request = options.request
+    this.request = options.request,
     this.responseConverter = options.responseConverter
     this.labelField = options.labelField
     this.valueField = options.valueField

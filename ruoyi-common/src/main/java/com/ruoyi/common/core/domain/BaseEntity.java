@@ -7,6 +7,8 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.ruoyi.common.utils.DateUtils;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Entity基类
@@ -41,6 +43,19 @@ public class BaseEntity implements Serializable
     /** 请求参数 */
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> params;
+    /** 当前时间 */
+    @JsonIgnore
+    @ApiModelProperty(hidden = true)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date nowDate;
+
+    public Date getNowDate() {
+        return DateUtils.getNowDate();
+    }
+
+    public void setNowDate(Date nowDate) {
+        this.nowDate = nowDate;
+    }
 
     public String getSearchValue()
     {

@@ -1,0 +1,333 @@
+<el-col :span="4" v-if="false">
+        <!--      <el-col :span="4" v-if="currentStep===3||currentStep===4">-->
+
+        <!--        <el-button style="margin-top: 20px;margin-left: -80px;" @click="changePage(1)" icon="el-icon-back">返回数据页
+                </el-button>-->
+        <el-collapse v-model="activeNames" style="margin-left: -80px;margin-right: 0px">
+          <el-collapse-item title="" name="1">
+            <template slot="title">
+              <h3 style="width: 100%;padding-left: 10px;">空白带信息</h3>
+            </template>
+            <el-scrollbar style="overflow-x: hidden;">
+              <el-table
+                  key="uuid"
+                  v-if="!noneEmptyBand && emptyBandInfoList.length>0"
+                  :data="emptyBandInfoList"
+                  :default-sort="{prop: 'volume', order: 'descending'}"
+                  height="250"
+              >
+                <el-table-column label="空白带编号" prop="uuid" width="85px" :formatter="sub5" align="center"/>
+                <el-table-column label="中心点坐标" prop="position" :formatter="fixed2"
+                                 align="center"></el-table-column>
+                <el-table-column label="体积(m³)" prop="volume" width="75px" align="center"/>
+                <el-table-column label="操作" prop="volume" width="55px" align="center">
+                  <template slot-scope="scope">
+                    <el-button @click="seeEmptyBand(scope.row)" type="text" icon="el-icon-eye" size="small">定位
+                    </el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <div v-if="noneEmptyBand || emptyBandInfoList.length===0" style="width: 100%;text-align: center">
+                <h3 style="color: #00afff">未发现任何空白带</h3>
+              </div>
+            </el-scrollbar>
+          </el-collapse-item>
+          <el-collapse-item name="2" v-if="emptyBandInfoList.length>0">
+            <template slot="title">
+              <h3 style="width: 100%;padding-left: 10px;">补钻操作区</h3>
+            </template>
+            <el-form style="display: inline-block;float: left" size="small" :inline="true">
+              <div style="padding: 10px 10px 10px 10px">
+                <el-form-item label="补钻算法">
+                  <el-select v-model="addDrillForm.workPlace">
+                    <el-option
+                        v-for="item in workPlaces"
+                        :key="item.id"
+                        :label="item.label"
+                        :value="item.id"
+                    />
+                  </el-select>
+                </el-form-item>
+                <!--<el-form-item label="施工点选择">
+                  <el-radio-group v-model="addDrillForm.workPlace">
+                    <el-radio :label="1">原始施工点</el-radio>
+                    <el-radio :label="2">巷道最近点</el-radio>
+                  </el-radio-group>
+                </el-form-item>-->
+                <!--              <el-collapse>
+                                <el-collapse-item title="手动补钻" name="1">-->
+                <el-form-item label="补钻抽采半径">
+                  <el-input v-model="addDrillRadius"
+                            size="mini"
+                            style="width: 110px"
+                            @blur="addDrillRadius !='' ? Number(addDrillRadius):0">
+                    <template slot="append">m</template>
+                  </el-input>
+                </el-form-item>
+                <br>
+                <el-form-item label="开启手动补钻模式">
+                  <el-switch v-model="addDrillForm.drillDesMode" @change="desModStatChange"></el-switch>
+                </el-form-item>
+                <br>
+                <el-form-item label="全自动补钻模式">
+                  <el-button type="primary" size="mini" @click="autoAddDrillLoading">一键自动补钻</el-button>
+                </el-form-item>
+                <br>
+                <el-form-item label="补钻体积 >">
+                  <el-input v-model="addEmptyVolumeThreshold"
+                            size="mini"
+                            style="width: 110px"
+                            @blur="addEmptyVolumeThreshold !='' ? Number(addEmptyVolumeThreshold):0">
+                    <template slot="append">m³</template>
+                  </el-input>
+                  <el-tooltip style="margin-left: 5px" effect="light" content="空白带体积小于该阈值将不会被自动补钻"
+                              placement="top">
+                    <i class="el-icon-info"></i>
+                  </el-tooltip>
+                </el-form-item>
+                <br>
+                <el-form-item label="补钻参数">
+                  <el-button type="primary" size="mini" @click="showAddDrillData"
+                             style="margin-bottom: 5px;margin-right: 5px">
+                    显示补钻参数表
+                  </el-button>
+                </el-form-item>
+              </div>
+            </el-form>
+          </el-collapse-item>
+          <el-collapse-item name="3">
+            <template slot="title">
+              <h3 style="width: 100%;padding-left: 10px;">显示元素控制</h3>
+            </template>
+            <div style="padding: 10px 10px 10px 10px">
+              <el-form size="mini" :inline="true">
+                <span>煤层</span>
+                <br>
+                <el-form-item label="煤层体">
+                  <el-switch
+                      v-model="param.showCoalCube"
+                      active-color="#409eff"
+                      inactive-color="#eaecf0"
+                      @change="showOrHideCoal"
+                      :width="30"
+                  />
+                </el-form-item>
+                <el-form-item label="煤层顶板">
+                  <el-switch
+                      v-model="param.showCoalTopMesh"
+                      active-color="#409eff"
+                      inactive-color="#eaecf0"
+                      @change="showOrHideTop"
+                      :width="30"
+                  />
+                </el-form-item>
+                <el-form-item label="煤层底板">
+                  <el-switch
+                      v-model="param.showCoalBottomMesh"
+                      active-color="#409eff"
+                      inactive-color="#eaecf0"
+                      @change="showOrHideBottom"
+                      :width="30"
+                  />
+                </el-form-item>
+                <br>
+                <span>实钻钻孔</span>
+                <br>
+                <el-form-item label="实钻钻孔">
+                  <el-switch
+                      v-model="param.showOriginDrill"
+                      active-color="#409eff"
+                      inactive-color="#eaecf0"
+                      @change="showOrHideOriginDrill"
+                      :width="30"
+                  />
+                </el-form-item>
+                <el-form-item label="煤孔段">
+                  <el-switch
+                      v-model="param.showOriginDrillInCoal"
+                      active-color="#409eff"
+                      inactive-color="#eaecf0"
+                      @change="showOrHideOriginDrillInCoal"
+                      :width="30"
+                  />
+                </el-form-item>
+                <el-form-item label="过煤段">
+                  <el-switch
+                      v-model="param.showOriginDrillBeyondCoal"
+                      active-color="#409eff"
+                      inactive-color="#eaecf0"
+                      @change="showOrHideOriginDrillBeyondCoal"
+                      :width="30"
+                  />
+                </el-form-item>
+                <el-form-item label="抽采范围">
+                  <el-switch
+                      v-model="param.showOriginDrillRange"
+                      active-color="#409eff"
+                      inactive-color="#eaecf0"
+                      @change="showOrHideOriginDrillRange"
+                      :width="30"
+                  />
+                </el-form-item>
+                <!--                <el-form-item label="按列显示元素" label-width="90px" prop="threshold">
+                                  &lt;!&ndash;              <el-cascader
+                                                    v-model="groupDrillSelects"
+                                                    :options="groupDrillOptions"
+                                                    :props="{ multiple: true }"
+                                                    collapse-tags
+                                                    clearable></el-cascader>&ndash;&gt;
+                                  <my-cascader
+                                      :options="groupDrillOptions"
+                                      :is_deep="true"
+                                      :has_all_select="true"
+                                      @getOptions="getOptions" style="width: 180px">
+                                  </my-cascader>
+                                  <el-button type="text" @click="nextLine">下一列 -></el-button>
+                                </el-form-item>-->
+                <br>
+                <span>补空白设计钻孔</span>
+                <br>
+                <el-form-item label="补钻钻孔">
+                  <el-switch
+                      v-model="param.showAddDrill"
+                      active-color="#409eff"
+                      inactive-color="#eaecf0"
+                      @change="showOrHideAddDrill"
+                      :width="30"
+                  />
+                </el-form-item>
+                <el-form-item label="煤孔段">
+                  <el-switch
+                      v-model="param.showAddDrillInCoal"
+                      active-color="#409eff"
+                      inactive-color="#eaecf0"
+                      @change="showOrHideAddDrillInCoal"
+                      :width="30"
+                  />
+                </el-form-item>
+                <el-form-item label="抽采范围">
+                  <el-switch
+                      v-model="param.showAddDrillRange"
+                      active-color="#409eff"
+                      inactive-color="#eaecf0"
+                      @change="showOrHideAddDrillRange"
+                      :width="30"
+                  />
+                </el-form-item>
+                <br>
+                <span>空白带</span>
+                <br>
+                <el-form-item label="初始空白带">
+                  <el-switch
+                      v-model="param.showOriginEmptyBand"
+                      active-color="#409eff"
+                      inactive-color="#eaecf0"
+                      @change="showOrHideOriginEmptyBand"
+                      :width="30"
+                  />
+                </el-form-item>
+                <el-form-item label="剩余空白带">
+                  <el-switch
+                      v-model="param.showEmptyBand"
+                      active-color="#409eff"
+                      inactive-color="#eaecf0"
+                      @change="showOrHideEmptyBand"
+                      :width="30"
+                  />
+                </el-form-item>
+                <el-form-item label="包围盒">
+                  <el-switch
+                      v-model="param.showOutCube"
+                      active-color="#409eff"
+                      inactive-color="#eaecf0"
+                      @change="showOrHideEmptyBandCube"
+                      :width="30"
+                  />
+                </el-form-item>
+                <br>
+                <span>巷道元素</span>
+                <br>
+                <el-form-item label="巷道">
+                  <el-switch
+                      v-model="param.showRoad"
+                      active-color="#409eff"
+                      inactive-color="#eaecf0"
+                      @change="showOrHideRoad"
+                      :width="30"
+                  />
+                </el-form-item>
+                <el-form-item label="施工点位">
+                  <el-switch
+                      v-model="param.showWorkPoint"
+                      active-color="#409eff"
+                      inactive-color="#eaecf0"
+                      @change="showOrHideWorkPoint"
+                      :width="30"
+                  />
+                </el-form-item>
+                <br>
+                <span>CAD预览</span>
+                <br>
+                <el-form-item label="钻孔平面图">
+                  <el-button type="primary" size="mini" @click="showCADPage(null,1,2)"
+                             style="margin-bottom: 5px;margin-right: 5px">
+                    预览平面图
+                  </el-button>
+                  <el-button type="primary" size="mini" @click="showCADPage(null,1,3)"
+                             style="margin-bottom: 5px;margin-right: 5px">
+                    预览剖面图
+                  </el-button>
+                </el-form-item>
+                <br>
+                <div v-if="emptyBandInfoList.length<=0">
+                  <span>参数信息</span>
+                  <br>
+                  <el-form-item label="补钻参数">
+                    <el-button type="primary" size="mini" @click="showAddDrillData"
+                               style="margin-bottom: 5px;margin-right: 5px">
+                      显示补钻参数表
+                    </el-button>
+                  </el-form-item>
+                  <br>
+                  <!--                  <el-form-item label="补钻CAD图">
+                                      <el-button type="primary" size="mini" @click="showCADPage"
+                                                 style="margin-bottom: 5px;margin-right: 5px">
+                                        显示补钻CAD图
+                                      </el-button>
+                                    </el-form-item>-->
+                </div>
+              </el-form>
+              <!--              <el-descriptions :column="1">
+                              <el-descriptions-item label="列号">{{ selectedDrill.group }}</el-descriptions-item>
+                              <el-descriptions-item label="序号">{{ selectedDrill.id }}</el-descriptions-item>
+                              <el-descriptions-item label="钻孔方位角">{{ selectedDrill.azimuth }}</el-descriptions-item>
+                              <el-descriptions-item label="钻孔倾角">{{ selectedDrill.inclination }}</el-descriptions-item>
+                              <el-descriptions-item label="与导线点距离">{{ selectedDrill.disNav }}</el-descriptions-item>
+                              <el-descriptions-item label="距底板高度">{{ selectedDrill.disBottom }}</el-descriptions-item>
+                              <el-descriptions-item label="据中心线距离">{{ selectedDrill.disCenter }}</el-descriptions-item>
+                              <el-descriptions-item label="见煤深度">{{ selectedDrill.seeLen }}</el-descriptions-item>
+                              <el-descriptions-item label="止煤深度">{{ selectedDrill.overLen }}</el-descriptions-item>
+                              <el-descriptions-item label="类型">
+                                <el-tag v-if="selectedDrill.type===1" size="small" type="warning">实钻钻孔</el-tag>
+                                <el-tag v-if="selectedDrill.type===2" size="small">补空白设计钻孔</el-tag>
+                              </el-descriptions-item>
+                              <el-descriptions-item v-if="selectedDrill.type===2" label="操作">
+                                <el-popover
+                                  placement="top"
+                                  width="160"
+                                  v-model="delAddDrillVisible">
+                                  <p>删除后将重新计算空白区域, 确定删除么？</p>
+                                  <div style="text-align: right; margin: 0">
+                                    <el-button size="mini" type="text" @click="delAddDrillVisible = false">取消</el-button>
+                                    <el-button size="mini" type="danger" @click="delAddDrill">确定</el-button>
+                                  </div>
+                                  <el-button slot="reference" type="danger" size="mini">
+                                    删除此钻孔
+                                  </el-button>
+                                </el-popover>
+                              </el-descriptions-item>
+                            </el-descriptions>-->
+            </div>
+          </el-collapse-item>
+        </el-collapse>
+      </el-col>

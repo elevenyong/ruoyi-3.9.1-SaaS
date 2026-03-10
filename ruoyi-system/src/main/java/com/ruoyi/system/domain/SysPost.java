@@ -22,6 +22,8 @@ public class SysPost extends BaseEntity
     @Excel(name = "岗位序号", cellType = ColumnType.NUMERIC)
     private Long postId;
 
+    @Excel(name = "归属部门ID", cellType = ColumnType.NUMERIC)
+    private Long deptId;
     /** 岗位编码 */
     @Excel(name = "岗位编码")
     private String postCode;
@@ -41,8 +43,9 @@ public class SysPost extends BaseEntity
     /** 用户是否存在此岗位标识 默认不存在 */
     private boolean flag = false;
 
-    public Long getPostId()
-    {
+    private Long[] menuIds;
+
+    public Long getPostId() {
         return postId;
     }
 
@@ -51,6 +54,14 @@ public class SysPost extends BaseEntity
         this.postId = postId;
     }
 
+    //@NotBlank(message = "归属部门不能为空")
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
+    }
     @NotBlank(message = "岗位编码不能为空")
     @Size(min = 0, max = 64, message = "岗位编码长度不能超过64个字符")
     public String getPostCode()
@@ -106,19 +117,27 @@ public class SysPost extends BaseEntity
         this.flag = flag;
     }
     
+    public Long[] getMenuIds() {
+        return menuIds;
+    }
+
+    public void setMenuIds(Long[] menuIds) {
+        this.menuIds = menuIds;
+    }
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("postId", getPostId())
-            .append("postCode", getPostCode())
-            .append("postName", getPostName())
-            .append("postSort", getPostSort())
-            .append("status", getStatus())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .append("remark", getRemark())
-            .toString();
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("postId", getPostId())
+                .append("deptId", getDeptId())
+                .append("postCode", getPostCode())
+                .append("postName", getPostName())
+                .append("postSort", getPostSort())
+                .append("status", getStatus())
+                .append("createBy", getCreateBy())
+                .append("createTime", getCreateTime())
+                .append("updateBy", getUpdateBy())
+                .append("updateTime", getUpdateTime())
+                .append("remark", getRemark())
+                .toString();
     }
 }

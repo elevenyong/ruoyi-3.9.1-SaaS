@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
-    <el-row :gutter="10">
+    <el-row>
       <el-col :span="12" class="card-box">
         <el-card>
-          <div slot="header"><span><i class="el-icon-cpu"></i> CPU</span></div>
+          <div slot="header"><span>CPU</span></div>
           <div class="el-table el-table--enable-row-hover el-table--medium">
             <table cellspacing="0" style="width: 100%;">
               <thead>
@@ -37,7 +37,7 @@
 
       <el-col :span="12" class="card-box">
         <el-card>
-          <div slot="header"><span><i class="el-icon-tickets"></i> 内存</span></div>
+          <div slot="header"><span>内存</span></div>
           <div class="el-table el-table--enable-row-hover el-table--medium">
             <table cellspacing="0" style="width: 100%;">
               <thead>
@@ -77,7 +77,7 @@
       <el-col :span="24" class="card-box">
         <el-card>
           <div slot="header">
-            <span><i class="el-icon-monitor"></i> 服务器信息</span>
+            <span>服务器信息</span>
           </div>
           <div class="el-table el-table--enable-row-hover el-table--medium">
             <table cellspacing="0" style="width: 100%;">
@@ -103,10 +103,10 @@
       <el-col :span="24" class="card-box">
         <el-card>
           <div slot="header">
-            <span><i class="el-icon-coffee-cup"></i> Java虚拟机信息</span>
+            <span>Java虚拟机信息</span>
           </div>
           <div class="el-table el-table--enable-row-hover el-table--medium">
-            <table cellspacing="0" style="width: 100%;table-layout:fixed;">
+            <table cellspacing="0" style="width: 100%;">
               <tbody>
                 <tr>
                   <td class="el-table__cell is-leaf"><div class="cell">Java名称</div></td>
@@ -141,7 +141,7 @@
       <el-col :span="24" class="card-box">
         <el-card>
           <div slot="header">
-            <span><i class="el-icon-receiving"></i> 磁盘状态</span>
+            <span>磁盘状态</span>
           </div>
           <div class="el-table el-table--enable-row-hover el-table--medium">
             <table cellspacing="0" style="width: 100%;">
@@ -176,7 +176,7 @@
 </template>
 
 <script>
-import { getServer } from "@/api/monitor/server"
+import { getServer } from "@/api/monitor/server";
 
 export default {
   name: "Server",
@@ -184,24 +184,24 @@ export default {
     return {
       // 服务器信息
       server: []
-    }
+    };
   },
   created() {
-    this.getList()
-    this.openLoading()
+    this.getList();
+    this.openLoading();
   },
   methods: {
     /** 查询服务器信息 */
     getList() {
       getServer().then(response => {
-        this.server = response.data
-        this.$modal.closeLoading()
-      })
+        this.server = response.data;
+        this.$modal.closeLoading();
+      });
     },
     // 打开加载层
     openLoading() {
-      this.$modal.loading("正在加载服务监控数据，请稍候！")
+      this.$modal.loading("正在加载服务监控数据，请稍候！");
     }
   }
-}
+};
 </script>

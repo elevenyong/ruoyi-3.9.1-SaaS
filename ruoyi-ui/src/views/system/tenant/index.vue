@@ -32,26 +32,25 @@
           v-hasPermi="['system:tenant:add']"
         >新增</el-button>
       </el-col>
-
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
+      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" />
     </el-row>
 
-    <!-- 表格 -->
+    <!-- 列表 -->
     <el-table v-loading="loading" :data="tenantList">
-      <el-table-column label="租户ID" align="center" prop="tenantId" width="90" />
-      <el-table-column label="租户编码" align="center" prop="tenantCode" width="160" />
-      <el-table-column label="租户名称" align="center" prop="tenantName" min-width="180" />
-      <el-table-column label="状态" align="center" prop="status" width="90">
+      <el-table-column label="租户ID" align="center" prop="tenantId" width="80" />
+      <el-table-column label="租户编码" align="center" prop="tenantCode" width="180" />
+      <el-table-column label="租户名称" align="center" prop="tenantName" min-width="160" />
+      <el-table-column label="状态" align="center" prop="status" width="80">
         <template slot-scope="scope">
           <el-tag v-if="scope.row.status === '0'" type="success">正常</el-tag>
           <el-tag v-else type="danger">停用</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" align="center" prop="createTime" width="180" />
-      <el-table-column label="备注" align="center" prop="remark" min-width="200" />
+      <el-table-column label="创建时间" align="center" prop="createTime" width="160" />
+
       <el-table-column label="操作" align="center" width="120" fixed="right">
         <template slot-scope="scope">
-          <!-- 统一操作入口：一个按钮下拉菜单，包含编辑/停用/初始化/重置密码 -->
+          <!-- 统一操作入口：一个按钮下拉菜单，包含修改/停用/初始化/重置密码 -->
           <el-dropdown
             trigger="click"
             @command="(cmd) => handleCommand(cmd, scope.row)"
@@ -60,12 +59,15 @@
               操作<i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="edit" icon="el-icon-edit" v-hasPermi="['system:tenant:edit']">编辑</el-dropdown-item>
+              <!-- ✅ 新增：修改（原来被注释掉了） -->
+              <el-dropdown-item command="edit" icon="el-icon-edit" v-hasPermi="['system:tenant:edit']">修改</el-dropdown-item>
+
               <el-dropdown-item
                 command="toggle"
                 :icon="scope.row.status === '0' ? 'el-icon-close' : 'el-icon-check'"
                 v-hasPermi="['system:tenant:edit']"
               >{{ scope.row.status === '0' ? '停用' : '启用' }}</el-dropdown-item>
+
               <el-dropdown-item command="init" icon="el-icon-refresh" v-hasPermi="['system:tenant:init']">初始化基础</el-dropdown-item>
               <el-dropdown-item command="resetPwd" icon="el-icon-key" v-hasPermi="['system:tenant:resetPwd']">重置密码</el-dropdown-item>
             </el-dropdown-menu>
@@ -108,6 +110,21 @@
                 <el-radio label="0">正常</el-radio>
                 <el-radio label="1">停用</el-radio>
               </el-radio-group>
+            </el-form-item>
+          </el-col>
+
+          <!-- ✅ 只新增：失效时间 expire_time（前端字段：expireTime） -->
+          <el-col :span="12">
+            <el-form-item label="失效时间" prop="adminExpireTime">
+              <el-date-picker
+                v-model="form.adminExpireTime"
+                type="datetime"
+                value-format="yyyy-MM-dd HH:mm:ss"
+                format="yyyy-MM-dd HH:mm:ss"
+                placeholder="请选择失效时间"
+                clearable
+                style="width: 100%;"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -162,8 +179,9 @@
         <el-button type="primary" @click="submitForm">确 定</el-button>
       </div>
     </el-dialog>
-          <!-- 初始化租户基础数据弹窗 -->
-          <el-dialog title="初始化租户基础数据" :visible.sync="initOpen" width="520px" append-to-body>
+
+    <!-- 初始化租户基础数据弹窗 -->
+    <el-dialog title="初始化租户基础数据" :visible.sync="initOpen" width="520px" append-to-body>
       <el-form ref="initFormRef" :model="initForm" label-width="120px">
         <el-form-item label="租户ID">
           <el-input v-model="currentTenantId" disabled />
@@ -214,26 +232,22 @@ export default {
           callback();
           return;
         }
-        if (value === undefined || value === null || String(value).trim() === '') {
+        if (!value) {
           callback(new Error(msg));
-        } else {
-          callback();
+          return;
         }
+        callback();
       };
     };
+
     return {
-      loading: false,
-      showSearch: true,
+      // 列表
+      loading: true,
       total: 0,
       tenantList: [],
-      title: "",
-      open: false,
-      initOpen: false,
-      resetOpen: false,
-      currentTenantId: undefined,
-      initForm: { templateTenantId: 1 },
-      // 注意：不能叫 resetForm，会覆盖 RuoYi 全局方法 this.resetForm(refName)
-      resetPwdForm: { adminUserName: '', newPassword: '' },
+
+      // 查询
+      showSearch: true,
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -241,7 +255,27 @@ export default {
         tenantName: undefined,
         status: undefined
       },
+
+      // 弹窗
+      open: false,
+      title: "",
       form: {},
+
+      // 初始化基础
+      initOpen: false,
+      initForm: {
+        templateTenantId: 1
+      },
+
+      // 重置密码
+      resetOpen: false,
+      resetPwdForm: {
+        adminUserName: "admin",
+        newPassword: ""
+      },
+
+      currentTenantId: undefined,
+
       rules: {
         tenantCode: [
           { required: true, message: "租户编码不能为空", trigger: "blur" },
@@ -270,7 +304,28 @@ export default {
     this.getList();
   },
   methods: {
-    /** 统一操作下拉菜单 */
+    /** 查询列表 */
+    getList() {
+      this.loading = true;
+      listTenant(this.queryParams).then(res => {
+        this.tenantList = res.rows || [];
+        this.total = res.total || 0;
+        this.loading = false;
+      }).catch(() => {
+        this.loading = false;
+      });
+    },
+    /** 搜索 */
+    handleQuery() {
+      this.queryParams.pageNum = 1;
+      this.getList();
+    },
+    /** 重置 */
+    resetQuery() {
+      this.resetForm("queryForm");
+      this.handleQuery();
+    },
+    /** 下拉操作入口 */
     handleCommand(cmd, row) {
       switch (cmd) {
         case 'edit':
@@ -289,12 +344,13 @@ export default {
           break;
       }
     },
-      /** 编辑租户 */
+    /** 编辑租户 */
     handleUpdate(row) {
       this.reset();
       const tenantId = row.tenantId;
       getTenant(tenantId).then(res => {
         this.form = res.data;
+        this.form.adminExpireTime = this.form.adminExpireTime || this.form.expireTime || this.form.expire_time;
         this.open = true;
         this.title = "编辑租户";
       });
@@ -303,36 +359,49 @@ export default {
     handleStatusChange(row) {
       const text = row.status === '0' ? '停用' : '启用';
       const newStatus = row.status === '0' ? '1' : '0';
-      this.$modal.confirm(`确认要${text}租户【${row.tenantCode}】吗？`)
-        .then(() => {
-          // 最稳：直接复用 updateTenant（后端 update 里允许改 status）
-          return changeTenantStatus(row.tenantId, newStatus);
-          // 如果你后端有 changeStatus 接口，就改成：
-          // return changeTenantStatus(row.tenantId, newStatus);
-        })
-        .then(() => {
-          this.$modal.msgSuccess(`${text}成功`);
-          this.getList();
-        })
-        .catch(() => {});
+      this.$modal.confirm(`确认要${text}租户【${row.tenantCode}】吗？`).then(() => {
+        return changeTenantStatus({ tenantId: row.tenantId, status: newStatus });
+      }).then(() => {
+        this.$modal.msgSuccess(`${text}成功`);
+        this.getList();
+      }).catch(() => {});
     },
-    getList() {
-      this.loading = true;
-      listTenant(this.queryParams).then(response => {
-        this.tenantList = response.rows || [];
-        this.total = response.total || 0;
-        this.loading = false;
-      }).catch(() => {
-        this.loading = false;
+    /** 点击“初始化基础” */
+    handleInitBase(row) {
+      this.currentTenantId = row.tenantId;
+      this.initForm.templateTenantId = 1;
+      this.initOpen = true;
+    },
+    /** 提交初始化 */
+    submitInitBase() {
+      initTenantBase(this.currentTenantId, this.initForm.templateTenantId).then(() => {
+        this.$modal.msgSuccess("初始化成功");
+        this.initOpen = false;
       });
     },
-    handleQuery() {
-      this.queryParams.pageNum = 1;
-      this.getList();
+    /** 点击“重置密码” */
+    handleResetPwd(row) {
+      this.currentTenantId = row.tenantId;
+      this.resetPwdForm.adminUserName = "admin";
+      this.resetPwdForm.newPassword = "";
+      this.resetOpen = true;
     },
-    resetQuery() {
-      this.resetForm("queryForm");
-      this.handleQuery();
+    /** 提交重置密码 */
+    submitResetPwd() {
+      resetTenantAdminPwd({
+        tenantId: this.currentTenantId,
+        adminUserName: this.resetPwdForm.adminUserName,
+        newPassword: this.resetPwdForm.newPassword
+      }).then(() => {
+        this.$modal.msgSuccess("重置成功");
+        this.resetOpen = false;
+      });
+    },
+    /** 新增 */
+    handleAdd() {
+      this.reset();
+      this.open = true;
+      this.title = "新增租户（同步创建租户管理员）";
     },
     reset() {
       this.form = {
@@ -342,84 +411,33 @@ export default {
         status: "0",
         remark: "",
         adminUserName: "admin",
-        adminPassword: "Admin@123456",
+        adminPassword: "admin@123",
         adminNickName: "租户管理员",
         adminPhone: "",
-        adminEmail: ""
+        adminEmail: "",
+        // ✅ 新增：失效时间
+        adminExpireTime: null
       };
       this.resetForm("form");
     },
-    handleAdd() {
-      this.reset();
-      this.open = true;
-      this.title = "新增租户（同步创建租户管理员）";
-    },
-          /** 点击“初始化基础” */
-          handleInitBase(row) {
-      this.currentTenantId = row.tenantId;
-      this.initForm = { templateTenantId: 1 };
-      this.initOpen = true;
-    },
-
-    /** 提交：初始化租户基础数据 */
-    submitInitBase() {
-      const tenantId = this.currentTenantId;
-      const templateTenantId = this.initForm.templateTenantId;
-      if (!tenantId) {
-        this.$modal.msgError("tenantId 为空");
-        return;
-      }
-      this.$modal.confirm(`确认初始化租户 ${tenantId} 的基础数据？（模板租户：${templateTenantId}）`)
-        .then(() => initTenantBase(tenantId, templateTenantId))
-        .then((res) => {
-          this.$modal.msgSuccess(res.msg || "初始化成功");
-          this.initOpen = false;
-          this.getList();
-        })
-        .catch(() => {});
-    },
-
-    /** 点击“重置密码” */
-    handleResetPwd(row) {
-      this.currentTenantId = row.tenantId;
-      this.resetPwdForm = { adminUserName: "", newPassword: "" };
-      this.resetOpen = true;
-    },
-
-    /** 提交：重置租户管理员密码 */
-    submitResetPwd() {
-      const tenantId = this.currentTenantId;
-      const { adminUserName, newPassword } = this.resetPwdForm || {};
-      if (!tenantId) {
-        this.$modal.msgError("tenantId 为空");
-        return;
-      }
-      if (!adminUserName) {
-        this.$modal.msgError("管理员账号不能为空");
-        return;
-      }
-      if (!newPassword) {
-        this.$modal.msgError("新密码不能为空");
-        return;
-      }
-      this.$modal.confirm(`确认重置租户 ${tenantId} 管理员【${adminUserName}】密码？`)
-        .then(() => resetTenantAdminPwd(tenantId, adminUserName, newPassword))
-        .then((res) => {
-          this.$modal.msgSuccess(res.msg || "重置成功");
-          this.resetOpen = false;
-        })
-        .catch(() => {});
-    },
+    /** 提交表单：新增/编辑 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (!valid) return;
-        // 有 tenantId 视为编辑，否则新增
-        const req = this.form.tenantId ? updateTenant(this.form) : addTenant(this.form);
-        req.then(res => {
-          this.$modal.msgSuccess(res.msg || (this.form.tenantId ? "更新成功" : "创建成功"));
-          this.open = false;
-          this.getList();
-        });
+
+        if (this.form.tenantId) {
+          updateTenant(this.form).then(() => {
+            this.$modal.msgSuccess("修改成功");
+            this.open = false;
+            this.getList();
+          });
+        } else {
+          addTenant(this.form).then(() => {
+            this.$modal.msgSuccess("新增成功");
+            this.open = false;
+            this.getList();
+          });
+        }
       });
     }
   }

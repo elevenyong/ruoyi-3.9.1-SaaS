@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.util.mapper.TCoalPointtypeMapper">
+
+    <resultMap type="TCoalPointtype" id="TCoalPointtypeResult">
+        <result property="id" column="id"/>
+        <result property="type" column="type"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
+    <sql id="selectTCoalPointtypeVo">
+        select id, type, description
+        from t_coal_pointtype
+    </sql>
+
+    <select id="selectTCoalPointtypeList" parameterType="TCoalPointtype" resultMap="TCoalPointtypeResult">
+        <include refid="selectTCoalPointtypeVo"/>
+        <where>
+            <if test="type != null  and type != ''">and type = #{type}</if>
+            <if test="description != null  and description != ''">and description = #{description}</if>
+        </where>
+    </select>
+
+    <select id="selectTCoalPointtypeById" parameterType="Long" resultMap="TCoalPointtypeResult">
+        <include refid="selectTCoalPointtypeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTCoalPointtype" parameterType="TCoalPointtype">
+        insert into t_coal_pointtype
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="type != null">type,</if>
+            <if test="description != null">description,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="type != null">#{type},</if>
+            <if test="description != null">#{description},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTCoalPointtype" parameterType="TCoalPointtype">
+        update t_coal_pointtype
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">type = #{type},</if>
+            <if test="description != null">description = #{description},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTCoalPointtypeById" parameterType="Long">
+        delete
+        from t_coal_pointtype
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTCoalPointtypeByIds" parameterType="String">
+        delete from t_coal_pointtype where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

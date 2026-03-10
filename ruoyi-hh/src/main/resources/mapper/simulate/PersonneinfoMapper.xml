@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.simulate.mapper.PersonneinfoMapper">
+    
+    <resultMap type="Personneinfo" id="PersonneinfoResult">
+        <result property="id"    column="id"    />
+        <result property="personnelType"    column="personnel_type"    />
+        <result property="sum"    column="sum"    />
+    </resultMap>
+
+    <sql id="selectPersonneinfoVo">
+        select id, personnel_type, sum from personneinfo
+    </sql>
+
+    <select id="selectPersonneinfoList" parameterType="Personneinfo" resultMap="PersonneinfoResult">
+        <include refid="selectPersonneinfoVo"/>
+        <where>  
+            <if test="personnelType != null  and personnelType != ''"> and personnel_type = #{personnelType}</if>
+            <if test="sum != null "> and sum = #{sum}</if>
+        </where>
+    </select>
+    
+    <select id="selectPersonneinfoById" parameterType="Integer" resultMap="PersonneinfoResult">
+        <include refid="selectPersonneinfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPersonneinfo" parameterType="Personneinfo" useGeneratedKeys="true" keyProperty="id">
+        insert into personneinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="personnelType != null">personnel_type,</if>
+            <if test="sum != null">sum,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="personnelType != null">#{personnelType},</if>
+            <if test="sum != null">#{sum},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePersonneinfo" parameterType="Personneinfo">
+        update personneinfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="personnelType != null">personnel_type = #{personnelType},</if>
+            <if test="sum != null">sum = #{sum},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePersonneinfoById" parameterType="Integer">
+        delete from personneinfo where id = #{id}
+    </delete>
+
+    <delete id="deletePersonneinfoByIds" parameterType="String">
+        delete from personneinfo where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

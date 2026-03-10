@@ -1,39 +1,20 @@
 import request from '@/utils/request'
 
-// // 登录方法
-// export function login(username, password, code, uuid, tenantCode) {
-//   const data = {
-//     username,
-//     password,
-//     code,
-//     uuid
-//   }
-//   return request({
-//     url: '/login',
-//     headers: {
-//       isToken: false,
-//       repeatSubmit: false,
-//       tenantCode: tenantCode || 'default'
-//     },
-//     method: 'post',
-//     data: data
-//   })
-// }
-
+// 登录方法
 export function login(username, password, code, uuid, tenantCode) {
+  const data = {
+    username,
+    password,
+    code,
+    uuid
+  }
   return request({
     url: '/login',
+    headers: { isToken: false, tenantCode },
     method: 'post',
-    headers: { tenantCode },   // ⭐ 关键
-    data: {
-      username,
-      password,
-      code,
-      uuid
-    }
+    data: data
   })
 }
-
 
 // 注册方法
 export function register(data) {

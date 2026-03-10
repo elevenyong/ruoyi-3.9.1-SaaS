@@ -9,6 +9,17 @@ export function list(query) {
   })
 }
 
+/**
+ * 分类统计
+ * @returns {*}
+ */
+export function groupByCount() {
+  return request({
+    url: '/monitor/operlog/countInfo',
+    method: 'get'
+  })
+}
+
 // 删除操作日志
 export function delOperlog(operId) {
   return request({

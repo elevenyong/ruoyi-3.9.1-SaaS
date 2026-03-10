@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.attribute.mapper.TBZKYLMapper">
+    
+    <resultMap type="TBZKYL" id="TBZKYLResult">
+        <result property="id"    column="id"    />
+        <result property="measurePointCode"    column="measure_point_code"    />
+        <result property="areaName"    column="area_name"    />
+        <result property="sensorTypeName"    column="sensor_type_name"    />
+        <result property="sensorLocal"    column="sensor_local"    />
+        <result property="stressmeterDepth"    column="stressmeter_depth"    />
+        <result property="installationTime"    column="installation_time"    />
+        <result property="X"    column="X"    />
+        <result property="Y"    column="Y"    />
+        <result property="Z"    column="Z"    />
+        <result property="direction"    column="direction"    />
+        <result property="initializationStress"    column="initialization_stress"    />
+    </resultMap>
+
+    <sql id="selectTBZKYLVo">
+        select id, measure_point_code, area_name, sensor_type_name, sensor_local, stressmeter_depth, installation_time, X, Y, Z, direction, initialization_stress from t_stressmeter_info
+    </sql>
+
+    <select id="selectTBZKYLList" parameterType="TBZKYL" resultMap="TBZKYLResult">
+        <include refid="selectTBZKYLVo"/>
+        <where>  
+            <if test="measurePointCode != null  and measurePointCode != ''"> and measure_point_code = #{measurePointCode}</if>
+            <if test="areaName != null  and areaName != ''"> and area_name like concat('%', #{areaName}, '%')</if>
+            <if test="sensorTypeName != null  and sensorTypeName != ''"> and sensor_type_name like concat('%', #{sensorTypeName}, '%')</if>
+            <if test="sensorLocal != null  and sensorLocal != ''"> and sensor_local = #{sensorLocal}</if>
+            <if test="stressmeterDepth != null "> and stressmeter_depth = #{stressmeterDepth}</if>
+            <if test="installationTime != null "> and installation_time = #{installationTime}</if>
+            <if test="X != null "> and X = #{X}</if>
+            <if test="Y != null "> and Y = #{Y}</if>
+            <if test="Z != null "> and Z = #{Z}</if>
+            <if test="direction != null  and direction != ''"> and direction = #{direction}</if>
+            <if test="initializationStress != null "> and initialization_stress = #{initializationStress}</if>
+        </where>
+    </select>
+    
+    <select id="selectTBZKYLById" parameterType="Integer" resultMap="TBZKYLResult">
+        <include refid="selectTBZKYLVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTBZKYL" parameterType="TBZKYL">
+        insert into t_stressmeter_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="measurePointCode != null">measure_point_code,</if>
+            <if test="areaName != null">area_name,</if>
+            <if test="sensorTypeName != null">sensor_type_name,</if>
+            <if test="sensorLocal != null">sensor_local,</if>
+            <if test="stressmeterDepth != null">stressmeter_depth,</if>
+            <if test="installationTime != null">installation_time,</if>
+            <if test="X != null">X,</if>
+            <if test="Y != null">Y,</if>
+            <if test="Z != null">Z,</if>
+            <if test="direction != null">direction,</if>
+            <if test="initializationStress != null">initialization_stress,</if>
+            update_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="measurePointCode != null">#{measurePointCode},</if>
+            <if test="areaName != null">#{areaName},</if>
+            <if test="sensorTypeName != null">#{sensorTypeName},</if>
+            <if test="sensorLocal != null">#{sensorLocal},</if>
+            <if test="stressmeterDepth != null">#{stressmeterDepth},</if>
+            <if test="installationTime != null">#{installationTime},</if>
+            <if test="X != null">#{X},</if>
+            <if test="Y != null">#{Y},</if>
+            <if test="Z != null">#{Z},</if>
+            <if test="direction != null">#{direction},</if>
+            <if test="initializationStress != null">#{initializationStress},</if>
+            datetime(CURRENT_TIMESTAMP,'localtime')
+         </trim>
+    </insert>
+
+    <update id="updateTBZKYL" parameterType="TBZKYL">
+        update t_stressmeter_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="measurePointCode != null">measure_point_code = #{measurePointCode},</if>
+            <if test="areaName != null">area_name = #{areaName},</if>
+            <if test="sensorTypeName != null">sensor_type_name = #{sensorTypeName},</if>
+            <if test="sensorLocal != null">sensor_local = #{sensorLocal},</if>
+            <if test="stressmeterDepth != null">stressmeter_depth = #{stressmeterDepth},</if>
+            <if test="installationTime != null">installation_time = #{installationTime},</if>
+            <if test="X != null">X = #{X},</if>
+            <if test="Y != null">Y = #{Y},</if>
+            <if test="Z != null">Z = #{Z},</if>
+            <if test="direction != null">direction = #{direction},</if>
+            <if test="initializationStress != null">initialization_stress = #{initializationStress},</if>
+            update_time = datetime(CURRENT_TIMESTAMP,'localtime')
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTBZKYLById" parameterType="Integer">
+        delete from t_stressmeter_info where id = #{id}
+    </delete>
+
+    <delete id="deleteTBZKYLByIds" parameterType="String">
+        delete from t_stressmeter_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

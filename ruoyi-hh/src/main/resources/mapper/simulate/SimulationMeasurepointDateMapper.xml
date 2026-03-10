@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.simulate.mapper.SimulationMeasurepointDateMapper">
+
+    <resultMap type="com.ruoyi.hh.simulate.domain.SimulationMeasurepointData" id="SimulationMeasurepointDateResult">
+        <result property="id"    column="id"    />
+        <result property="measurePointId"    column="measure_point_id"    />
+        <result property="drainageUnitId"    column="drainage_unit_id"    />
+        <result property="workfaceId"    column="workface_id"    />
+        <result property="mixTureFlow"    column="mix_ture_flow"    />
+        <result property="pureFlow"    column="pure_flow"    />
+        <result property="temperature"    column="temperature"    />
+        <result property="ch4Concentration"    column="ch4_concentration"    />
+        <result property="coConcentration"    column="co_concentration"    />
+        <result property="co2Concentration"    column="co2_concentration"    />
+        <result property="negativePressure"    column="negative_pressure"    />
+        <result property="totalMixTureFlow"    column="total_mix_ture_flow"    />
+        <result property="totalPureFlow"    column="total_pure_flow"    />
+    </resultMap>
+
+    <sql id="selectSimulationMeasurepointDateVo">
+        /*select id, measure_point_id, drainageUnitId, workfaceId, mixTureFlow, pureflow, temperature, ch4concentration, coConcentration, negative_pressure from simulation_measurepoint_date*/
+        SELECT m.measuring_point_name,d.unit_name,w.workface_name,s.*
+        from simulation_measurepoint_date s
+        LEFT JOIN t_measuring_point m ON s.measure_point_id=m.id
+        LEFT JOIN t_drainage_unit d ON s.drainage_unit_id=d.id
+        LEFT JOIN t_working_face w ON s.workface_id=w.id
+    </sql>
+
+    <select id="selectSimulationMeasurepointDateList" parameterType="com.ruoyi.hh.simulate.domain.SimulationMeasurepointData" resultMap="SimulationMeasurepointDateResult">
+        <include refid="selectSimulationMeasurepointDateVo"/>
+        <where>
+          <if test="id!=null">and s.id=#{id}</if>
+            <if test="measurePointId != null "> and s.measure_point_id = #{measurePointId}</if>
+            <if test="drainageUnitId != null "> and s.drainage_unit_id = #{drainageUnitId}</if>
+            <if test="workfaceId != null "> and s.workface_id = #{workfaceId}</if>
+            <if test="mixTureFlow != null "> and s.mix_ture_flow = #{mixTureFlow}</if>
+            <if test="pureFlow != null "> and s.pure_flow = #{pureFlow}</if>
+            <if test="temperature != null "> and s.temperature = #{temperature}</if>
+            <if test="ch4Concentration != null "> and s.ch4_concentration = #{ch4Concentration}</if>
+            <if test="coConcentration != null "> and s.co_concentration = #{coConcentration}</if>
+            <if test="negativePressure != null "> and s.negative_pressure = #{negativePressure}</if>
+            <if test="totalMixTureFlow != null "> and s.total_mix_ture_flow = #{totalMixTureFlow}</if>
+            <if test="totalPureFlow != null "> and s.total_pure_flow = #{totalPureFlow}</if>
+        </where>
+    </select>
+
+    <select id="selectSimulationMeasurepointDateById" parameterType="java.lang.Integer" resultMap="SimulationMeasurepointDateResult">
+        <include refid="selectSimulationMeasurepointDateVo"/>
+        where s.id = #{id}
+    </select>
+
+    <insert id="insertSimulationMeasurepointDate" parameterType="com.ruoyi.hh.simulate.domain.SimulationMeasurepointData" useGeneratedKeys="true" keyProperty="id">
+        insert into simulation_measurepoint_date
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="measurePointId != null">measure_point_id,</if>
+            <if test="drainageUnitId != null">drainage_unit_id,</if>
+            <if test="workfaceId != null">workface_id,</if>
+            <if test="mixTureFlow != null">mix_ture_flow,</if>
+            <if test="pureFlow != null">pure_flow,</if>
+            <if test="temperature != null">temperature,</if>
+            <if test="ch4Concentration != null">ch4_concentration,</if>
+            <if test="coConcentration != null">co_concentration,</if>
+            <if test="negativePressure != null">negative_pressure,</if>
+            <if test="totalMixTureFlow != null">total_mix_ture_flow,</if>
+            <if test="totalPureFlow != null">total_pure_flow,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="measurePointId != null">#{measurePointid},</if>
+            <if test="drainageUnitId != null">#{drainageUnitId},</if>
+            <if test="workfaceId != null">#{workfaceId},</if>
+            <if test="mixTureFlow != null">#{mixTureFlow},</if>
+            <if test="pureFlow != null">#{pureFlow},</if>
+            <if test="temperature != null">#{temperature},</if>
+            <if test="ch4Concentration != null">#{ch4Concentration},</if>
+            <if test="coConcentration != null">#{coConcentration},</if>
+            <if test="negativePressure != null">#{negativePressure},</if>
+            <if test="totalMixTureFlow != null">#{totalMixTureFlow},</if>
+            <if test="totalPureFlow != null">#{totalPureFlow},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSimulationMeasurepointDate" parameterType="com.ruoyi.hh.simulate.domain.SimulationMeasurepointData">
+        update simulation_measurepoint_date
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="measurePointId != null">measure_point_id = #{measurePointId},</if>
+            <if test="drainageUnitId != null">drainage_unit_id = #{drainageUnitId},</if>
+            <if test="workfaceId != null">workface_id = #{workfaceId},</if>
+            <if test="mixTureFlow != null">mix_ture_flow = #{mixTureFlow},</if>
+            <if test="pureFlow != null">pure_flow = #{pureFlow},</if>
+            <if test="temperature != null">temperature = #{temperature},</if>
+            <if test="ch4Concentration != null">ch4_concentration = #{ch4Concentration},</if>
+            <if test="coConcentration != null">co_concentration = #{coConcentration},</if>
+            <if test="negativePressure != null">negative_pressure = #{negativePressure},</if>
+            <if test="totalMixTureFlow != null">total_mix_ture_flow = #{totalMixTureFlow},</if>
+            <if test="totalPureFlow != null">total_pure_flow = #{totalPureFlow},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSimulationMeasurepointDateById" parameterType="java.lang.Integer">
+        delete from simulation_measurepoint_date where id = #{id}
+    </delete>
+
+    <delete id="deleteSimulationMeasurepointDateByIds" parameterType="java.lang.String">
+        delete from simulation_measurepoint_date where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getList" resultType="com.ruoyi.hh.simulate.domain.SimulationMeasurepointData">
+        select * from simulation_measurepoint_date
+    </select>
+</mapper>

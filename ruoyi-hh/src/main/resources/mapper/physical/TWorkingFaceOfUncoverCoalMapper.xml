@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TWorkingFaceOfUncoverCoalMapper">
+
+    <resultMap type="TWorkingFaceOfUncoverCoal" id="TWorkingFaceOfUncoverCoalResult">
+        <result property="id" column="id"/>
+        <result property="workfaceName" column="workface_name"/>
+        <result property="towardsLength" column="towards_length"/>
+        <result property="cutLength" column="cut_length"/>
+        <result property="height" column="height"/>
+        <result property="bottomExtractionRoadway" column="bottom_extraction_roadway"/>
+        <result property="airIntakeRoadway" column="air_intake_roadway"/>
+        <result property="airReturnRoadway" column="air_return_roadway"/>
+        <result property="cutEyeRoadway" column="cut_eye_roadway"/>
+        <result property="miningAreaRoadway" column="mining_area_roadway"/>
+    </resultMap>
+
+    <sql id="selectTWorkingFaceOfUncoverCoalVo">
+        select id,
+               workface_name,
+               towards_length,
+               cut_length,
+               height,
+               bottom_extraction_roadway,
+               air_intake_roadway,
+               air_return_roadway,
+               cut_eye_roadway,
+               mining_area_roadway
+        from t_working_face_of_uncover_coal
+    </sql>
+
+    <select id="selectTWorkingFaceOfUncoverCoalList" parameterType="TWorkingFaceOfUncoverCoal"
+            resultMap="TWorkingFaceOfUncoverCoalResult">
+        <include refid="selectTWorkingFaceOfUncoverCoalVo"/>
+        <where>
+            <if test="workfaceName != null  and workfaceName != ''">and workface_name like concat('%',
+                #{workfaceName}, '%')
+            </if>
+            <if test="towardsLength != null ">and towards_length = #{towardsLength}</if>
+            <if test="cutLength != null ">and cut_length = #{cutLength}</if>
+            <if test="height != null ">and height = #{height}</if>
+            <if test="bottomExtractionRoadway != null  and bottomExtractionRoadway != ''">and bottom_extraction_roadway
+                = #{bottomExtractionRoadway}
+            </if>
+            <if test="airIntakeRoadway != null  and airIntakeRoadway != ''">and air_intake_roadway =
+                #{airIntakeRoadway}
+            </if>
+            <if test="airReturnRoadway != null  and airReturnRoadway != ''">and air_return_roadway =
+                #{airReturnRoadway}
+            </if>
+            <if test="cutEyeRoadway != null  and cutEyeRoadway != ''">and cut_eye_roadway = #{cutEyeRoadway}</if>
+            <if test="miningAreaRoadway != null  and miningAreaRoadway != ''">and mining_area_roadway =
+                #{miningAreaRoadway}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectTWorkingFaceOfUncoverCoalById" parameterType="Integer"
+            resultMap="TWorkingFaceOfUncoverCoalResult">
+        <include refid="selectTWorkingFaceOfUncoverCoalVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTWorkingFaceOfUncoverCoal" parameterType="TWorkingFaceOfUncoverCoal" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_working_face_of_uncover_coal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="workfaceName != null">workface_name,</if>
+            <if test="towardsLength != null">towards_length,</if>
+            <if test="cutLength != null">cut_length,</if>
+            <if test="height != null">height,</if>
+            <if test="bottomExtractionRoadway != null">bottom_extraction_roadway,</if>
+            <if test="airIntakeRoadway != null">air_intake_roadway,</if>
+            <if test="airReturnRoadway != null">air_return_roadway,</if>
+            <if test="cutEyeRoadway != null">cut_eye_roadway,</if>
+            <if test="miningAreaRoadway != null">mining_area_roadway,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="workfaceName != null">#{workfaceName},</if>
+            <if test="towardsLength != null">#{towardsLength},</if>
+            <if test="cutLength != null">#{cutLength},</if>
+            <if test="height != null">#{height},</if>
+            <if test="bottomExtractionRoadway != null">#{bottomExtractionRoadway},</if>
+            <if test="airIntakeRoadway != null">#{airIntakeRoadway},</if>
+            <if test="airReturnRoadway != null">#{airReturnRoadway},</if>
+            <if test="cutEyeRoadway != null">#{cutEyeRoadway},</if>
+            <if test="miningAreaRoadway != null">#{miningAreaRoadway},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTWorkingFaceOfUncoverCoal" parameterType="TWorkingFaceOfUncoverCoal">
+        update t_working_face_of_uncover_coal
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workfaceName != null">workface_name = #{workfaceName},</if>
+            <if test="towardsLength != null">towards_length = #{towardsLength},</if>
+            <if test="cutLength != null">cut_length = #{cutLength},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="bottomExtractionRoadway != null">bottom_extraction_roadway = #{bottomExtractionRoadway},</if>
+            <if test="airIntakeRoadway != null">air_intake_roadway = #{airIntakeRoadway},</if>
+            <if test="airReturnRoadway != null">air_return_roadway = #{airReturnRoadway},</if>
+            <if test="cutEyeRoadway != null">cut_eye_roadway = #{cutEyeRoadway},</if>
+            <if test="miningAreaRoadway != null">mining_area_roadway = #{miningAreaRoadway},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTWorkingFaceOfUncoverCoalById" parameterType="Integer">
+        delete
+        from t_working_face_of_uncover_coal
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTWorkingFaceOfUncoverCoalByIds" parameterType="String">
+        delete from t_working_face_of_uncover_coal where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

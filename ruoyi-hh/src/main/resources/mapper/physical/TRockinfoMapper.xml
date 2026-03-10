@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TRockinfoMapper">
+
+    <resultMap type="TRockinfo" id="TRockinfoResult">
+        <result property="id" column="id"/>
+        <result property="workfaceId" column="workface_id"/>
+        <result property="rockType" column="rock_type"/>
+        <result property="thickness" column="thickness"/>
+        <result property="serialNumber" column="serial_number"/>
+        <result property="rockDesc" column="rock_desc"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectTRockinfoVo">
+        select id,
+               workface_id,
+               rock_type,
+               thickness,
+               serial_number,
+               rock_desc,
+               create_by,
+               create_time,
+               update_by,
+               update_time,
+               remark
+        from t_geo_rockinfo
+    </sql>
+
+    <select id="selectTRockinfoList" parameterType="TRockinfo" resultMap="TRockinfoResult">
+        <include refid="selectTRockinfoVo"/>
+        <where>
+            <if test="workfaceId != null and workfaceId != 0 ">and workface_id = #{workfaceId}</if>
+            <if test="rockType != null ">and rock_type = #{rockType}</if>
+            <if test="thickness != null ">and thickness = #{thickness}</if>
+            <if test="serialNumber != null ">and serial_number = #{serialNumber}</if>
+            <if test="rockDesc != null ">and rock_desc = #{rockDesc}</if>
+        </where>
+    </select>
+
+    <select id="selectTRockinfoById" parameterType="Integer" resultMap="TRockinfoResult">
+        <include refid="selectTRockinfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTRockinfo" parameterType="TRockinfo" useGeneratedKeys="true" keyProperty="id">
+        insert into t_geo_rockinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="workfaceId != null and workfaceId != 0">workface_id,</if>
+            <if test="rockType != null">rock_type,</if>
+            <if test="thickness != null">thickness,</if>
+            <if test="serialNumber != null">serial_number,</if>
+            <if test="rockDesc != null">rock_desc,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="workfaceId != null and workfaceId != 0">#{workfaceId},</if>
+            <if test="rockType != null">#{rockType},</if>
+            <if test="thickness != null">#{thickness},</if>
+            <if test="serialNumber != null">#{serialNumber},</if>
+            <if test="rockDesc != null">#{rockDesc},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTRockinfo" parameterType="TRockinfo">
+        update t_geo_rockinfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workfaceId != null and workfaceId != 0">workface_id = #{workfaceId},</if>
+            <if test="rockType != null">rock_type = #{rockType},</if>
+            <if test="thickness != null">thickness = #{thickness},</if>
+            <if test="serialNumber != null">serial_number = #{serialNumber},</if>
+            <if test="rockDesc != null">rock_desc = #{rockDesc},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTRockinfoById" parameterType="Integer">
+        delete
+        from t_geo_rockinfo
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTRockinfoByIds" parameterType="String">
+        delete from t_geo_rockinfo where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

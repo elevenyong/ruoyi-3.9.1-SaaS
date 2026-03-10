@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.util.mapper.TBoreholeCategoryMapper">
+
+    <resultMap type="TBoreholeCategory" id="TBoreholeCategoryResult">
+        <result property="id"    column="id"    />
+        <result property="boreholeCategory"    column="borehole_category"    />
+        <result property="categoryCode"    column="category_code"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTBoreholeCategoryVo">
+        select id, borehole_category,category_code, create_by, create_time, update_by, update_time, remark from t_borehole_category
+    </sql>
+
+    <select id="selectTBoreholeCategoryList" parameterType="TBoreholeCategory" resultMap="TBoreholeCategoryResult">
+        <include refid="selectTBoreholeCategoryVo"/>
+        <where>
+            <if test="id!=null and id!=0">and id=#{id}</if>
+            <if test="boreholeCategory != null  and boreholeCategory != ''"> and borehole_category = #{boreholeCategory}</if>
+            <if test="categoryCode != null  and categoryCode != ''"> and category_code = #{categoryCode}</if>
+        </where>
+    </select>
+
+    <select id="selectTBoreholeCategoryById" parameterType="Integer" resultMap="TBoreholeCategoryResult">
+        <include refid="selectTBoreholeCategoryVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTBoreholeCategory" parameterType="TBoreholeCategory" useGeneratedKeys="true" keyProperty="id">
+        insert into t_borehole_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="boreholeCategory != null">borehole_category,</if>
+            <if test="categoryCode != null">category_code,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="boreholeCategory != null">#{boreholeCategory},</if>
+            <if test="categoryCode != null">#{categoryCode},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTBoreholeCategory" parameterType="TBoreholeCategory">
+        update t_borehole_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="boreholeCategory != null">borehole_category = #{boreholeCategory},</if>
+            <if test="categoryCode != null">category_code = #{categoryCode},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateByCode" parameterType="TBoreholeCategory">
+        update t_borehole_category
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="boreholeCategory != null">borehole_category = #{boreholeCategory},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where category_code = #{categoryCode}
+    </update>
+
+    <delete id="deleteTBoreholeCategoryById" parameterType="Integer">
+        delete from t_borehole_category where id = #{id}
+    </delete>
+
+    <delete id="deleteTBoreholeCategoryByIds" parameterType="java.util.List">
+        delete from t_borehole_category where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="insertTBoreholeCategoryList" parameterType="java.util.List">
+        insert IGNORE into t_borehole_category(borehole_category)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.boreholeCategory}
+            )
+        </foreach>
+    </insert>
+    <!--查询列表-->
+    <select id="getPageList" resultType="com.ruoyi.hh.util.domain.TBoreholeCategory">
+        select * from t_borehole_category
+    </select>
+    <!--通过钻孔类别名称查询钻孔类别id-->
+    <select id="getIdByBoreholeCategory" parameterType="string" resultType="java.lang.Integer">
+        select Id from t_borehole_category where borehole_category=#{boreholeCategory}
+    </select>
+</mapper>

@@ -1,0 +1,652 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TActualBoreholeMapper">
+
+    <resultMap type="TActualBorehole" id="TActualBoreholeResult">
+        <result property="id" column="id"/>
+        <result property="groupNo" column="group_no"/>
+        <result property="boreholeNo" column="borehole_no"/>
+        <result property="roadwayId" column="roadway_id"/>
+        <result property="roadwayZoneId" column="roadway_zone_id"/>
+        <result property="boreholeSiteId" column="borehole_site_id"/>
+        <result property="shiftId" column="shift_id"/>
+        <result property="drillingDate" column="drilling_date"/>
+        <result property="boreholeCategoryId" column="borehole_category_id"/>
+        <result property="purposeBoreholeId" column="purpose_borehole_id"/>
+        <result property="drillingId" column="drilling_id"/>
+        <result property="measurePointId" column="measure_point_id"/>
+        <result property="aperture" column="aperture"/>
+        <result property="azimuthAngle" column="azimuth_angle"/>
+        <result property="inclinationAngle" column="inclination_angle"/>
+        <result property="angle" column="angle"/>
+        <result property="depth1stRockSeamStart" column="depth_1st_rock_seam_start"/>
+        <result property="depth1stRockSeamEnd" column="depth_1st_rock_seam_end"/>
+        <result property="depth1stCoalSeamStart" column="depth_1st_coal_seam_start"/>
+        <result property="depth1stCoalSeamend" column="depth_1st_coal_seam_end"/>
+        <result property="depth2stCoalSeamStart" column="depth_2st_coal_seam_start"/>
+        <result property="depth2stCoalSeamend" column="depth_2st_coal_seam_end"/>
+        <result property="depth2stRockSeamStart" column="depth_2st_rock_seam_start"/>
+        <result property="depth2stRockSeamEnd" column="depth_2st_rock_seam_end"/>
+        <result property="depth3stRockSeamStart" column="depth_3st_rock_seam_start"/>
+        <result property="depth3stRockSeamEnd" column="depth_3st_rock_seam_end"/>
+        <result property="extractionRadius" column="extraction_radius"/>
+        <result property="boreholeLength" column="borehole_length"/>
+        <result property="navigationPointId" column="navigation_point_id"/>
+        <result property="distanceToNavigationPoint" column="distance_to_navigation_point"/>
+        <result property="directionToNavigation" column="direction_to_navigation"/>
+        <result property="distanceToCentrallineTunnel" column="distance_to_centralline_tunnel"/>
+        <result property="heightArchBaseline" column="height_arch_baseline"/>
+        <result property="adjacentBoreholeNo" column="adjacent_borehole_no"/>
+        <result property="distanceAdjacentBorehole" column="distance_adjacent_borehole"/>
+        <result property="pullDrillDate" column="pull_drill_date"/>
+        <result property="pulledGasConcentration" column="pulled_gas_concentration"/>
+        <result property="pulledCOConcentration" column="pulled_CO_concentration"/>
+        <result property="exceptionDuringDrilling" column="exception_during_drilling"/>
+        <result property="holesealTypeId" column="holeseal_type_id"/>
+        <result property="downTubeTimeStart" column="down_tube_time_start"/>
+        <result property="downTubeTimeEnd" column="down_tube_time_end"/>
+        <result property="tubeLength" column="tube_length"/>
+        <result property="solidPipelineLength" column="solid_pipeline_length"/>
+        <result property="sievePipelineLength" column="sieve_pipeline_length"/>
+        <result property="holeSealingSpecification" column="hole_sealing_specification"/>
+        <result property="gasChecker" column="gas_checker"/>
+        <result property="personConstruction" column="person_construction"/>
+        <result property="chargehand" column="chargehand"/>
+        <result property="validFootage" column="valid_footage"/>
+        <result property="personChecking" column="person_checking"/>
+        <result property="checkingDate" column="checking_date"/>
+        <result property="sign" column="sign"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+    <sql id="selectTActualBoreholeVo">
+        select d.*,
+               r.roadway,
+               f.shift_info,
+               c.borehole_category,
+               p.purpose_borehole,
+               n.navigation_point_name,
+               h.hole_seal_type,
+               m.measuring_point_name,
+               z.zone_name
+        from t_actual_borehole d
+                 LEFT JOIN t_roadway r ON d.roadway_id = r.id
+                 LEFT JOIN t_borehole_category c ON d.borehole_category_id = c.Id
+                 LEFT JOIN t_navigation_point n ON d.navigation_point_id = n.id
+                 LEFT JOIN t_purpose_borehole p ON d.purpose_borehole_id = p.Id
+                 LEFT JOIN t_measuring_point m ON d.measure_point_id = m.id
+                 LEFT JOIN t_roadway_zone z ON z.id = d.roadway_zone_id
+                 LEFT JOIN t_shiftinfo f ON f.id = d.shift_id
+                 LEFT JOIN t_holeseal_type h ON h.id = d.holeseal_type_id
+
+
+    </sql>
+
+    <select id="selectTActualBoreholeList" parameterType="TActualBorehole" resultMap="TActualBoreholeResult">
+        <include refid="selectTActualBoreholeVo"/>
+        <where>
+            <if test="id!=null and id!=0">and d.id=#{id}</if>
+            <if test="groupNo != null and groupNo!=0">and d.group_no = #{groupNo}</if>
+            <if test="boreholeNo != null and boreholeNo!=0">and d.borehole_no = #{boreholeNo}</if>
+            <if test="roadwayId != null and roadwayId!=0">and d.roadway_id = #{roadwayId}</if>
+            <if test="roadwayZoneId != null and roadwayZoneId!=0">and d.roadway_zone_id = #{roadwayZoneId}</if>
+            <if test="boreholeSiteId != null and boreholeSiteId!=0">and d.borehole_site_id = #{boreholeSiteId}</if>
+            <if test="shiftId != null and shiftId!=0">and d.shift_id = #{shiftId}</if>
+            <if test="drillingDate != null ">and d.drilling_date = #{drillingDate}</if>
+            <if test="boreholeCategoryId != null and boreholeCategoryId!=0">and d.borehole_category_id =
+                #{boreholeCategoryId}
+            </if>
+            <if test="purposeBoreholeId != null and purposeBoreholeId!=0">and d.purpose_borehole_id =
+                #{purposeBoreholeId}
+            </if>
+            <if test="drillingId != null and drillingId!=0">and d.drillingId = #{drillingId}</if>
+            <if test="measurePointId != null and measurePointId!=0">and d.measure_point_id = #{measurePointId}</if>
+            <if test="aperture != null and aperture!=0">and d.aperture = #{aperture}</if>
+            <if test="azimuthAngle != null ">and d.azimuth_angle = #{azimuthAngle}</if>
+            <if test="inclinationAngle != null ">and d.inclination_angle = #{inclinationAngle}</if>
+            <if test="angle != null ">and d.angle = #{angle}</if>
+            <if test="depth1stRockSeamStart != null ">and d.depth_1st_rock_seam_start = #{depth1stRockSeamStart}</if>
+            <if test="depth1stRockSeamEnd != null ">and d.depth_1st_rock_seam_end = #{depth1stRockSeamEnd}</if>
+            <if test="depth1stCoalSeamStart != null ">and d.depth_1st_coal_seam_start = #{depth1stCoalSeamStart}</if>
+            <if test="depth1stCoalSeamend != null ">and d.depth_1st_coal_seam_end = #{depth1stCoalSeamend}</if>
+            <if test="depth2stCoalSeamStart != null ">and d.depth_2st_coal_seam_start = #{depth2stCoalSeamStart}</if>
+            <if test="depth2stCoalSeamend != null ">and d.depth_2st_coal_seam_end = #{depth2stCoalSeamend}</if>
+            <if test="depth2stRockSeamStart != null ">and d.depth_2st_rock_seam_start = #{depth2stRockSeamStart}</if>
+            <if test="depth2stRockSeamEnd != null  and depth2stRockSeamEnd != ''">and d.depth_2st_rock_seam_end =
+                #{depth2stRockSeamEnd}
+            </if>
+            <if test="depth3stRockSeamStart != null ">and d.depth_3st_rock_seam_start = #{depth3stRockSeamStart}</if>
+            <if test="depth3stRockSeamEnd != null ">and d.depth_3st_rock_seam_end = #{depth3stRockSeamEnd}</if>
+            <if test="extractionRadius != null ">and d.extraction_radius = #{extractionRadius}</if>
+            <if test="boreholeLength != null ">and d.borehole_length = #{boreholeLength}</if>
+            <if test="navigationPointId != null and navigationPointId!=0">and d.navigation_point_id =
+                #{navigationPointId}
+            </if>
+            <if test="distanceToNavigationPoint != null ">and d.distance_to_navigation_point =
+                #{distanceToNavigationPoint}
+            </if>
+            <if test="directionToNavigation != null ">and d.direction_to_navigation = #{directionToNavigation}</if>
+            <if test="distanceToCentrallineTunnel != null ">and d.distance_to_centralline_tunnel =
+                #{distanceToCentrallineTunnel}
+            </if>
+            <if test="heightArchBaseline != null ">and d.height_arch_baseline = #{heightArchBaseline}</if>
+            <if test="adjacentBoreholeNo != null  and adjacentBoreholeNo != ''">and d.adjacent_borehole_no =
+                #{adjacentBoreholeNo}
+            </if>
+            <if test="distanceAdjacentBorehole != null ">and d.distance_adjacent_borehole =
+                #{distanceAdjacentBorehole}
+            </if>
+            <if test="pullDrillDate != null ">and d.pull_drill_date = #{pullDrillDate}</if>
+            <if test="pulledGasConcentration != null  and pulledGasConcentration != ''">and d.pulled_gas_concentration =
+                #{pulledGasConcentration}
+            </if>
+            <if test="pulledCOConcentration != null  and pulledCOConcentration != ''">and d.pulled_CO_concentration =
+                #{pulledCOConcentration}
+            </if>
+            <if test="exceptionDuringDrilling != null  and exceptionDuringDrilling != ''">and
+                d.exception_during_drilling = #{exceptionDuringDrilling}
+            </if>
+            <if test="holesealTypeId != null and holesealTypeId!=0">and d.holeseal_type_id = #{holesealTypeId}</if>
+            <if test="downTubeTimeStart != null ">and d.down_tube_time_start = #{downTubeTimeStart}</if>
+            <if test="downTubeTimeEnd != null ">and d.down_tube_time_end = #{downTubeTimeEnd}</if>
+            <if test="tubeLength != null ">and d.tube_length = #{tubeLength}</if>
+            <if test="solidPipelineLength != null ">and d.solid_pipeline_length = #{solidPipelineLength}</if>
+            <if test="sievePipelineLength != null ">and d.sieve_pipeline_length = #{sievePipelineLength}</if>
+            <if test="holeSealingSpecification != null  and holeSealingSpecification != ''">and
+                d.hole_sealing_specification = #{holeSealingSpecification}
+            </if>
+            <if test="gasChecker != null  and gasChecker != ''">and d.gas_checker = #{gasChecker}</if>
+            <if test="personConstruction != null  and personConstruction != ''">and d.person_construction =
+                #{personConstruction}
+            </if>
+            <if test="chargehand != null  and chargehand != ''">and d.chargehand = #{chargehand}</if>
+            <if test="validFootage != null and validFootage!=0">and d.valid_footage = #{validFootage}</if>
+            <if test="personChecking != null  and personChecking != ''">and d.person_checking = #{personChecking}</if>
+            <if test="checkingDate != null ">and d.checking_date = #{checkingDate}</if>
+            <if test="sign != null  and sign != ''">and d.sign = #{sign}</if>
+            <if test="remark != null  and remark != ''">and d.remark = #{remark}</if>
+        </where>
+    </select>
+
+    <select id="selectTActualBoreholeById" parameterType="java.lang.Integer" resultMap="TActualBoreholeResult">
+        <include refid="selectTActualBoreholeVo"/>
+        where d.id = #{id}
+    </select>
+
+    <insert id="insertTActualBorehole" parameterType="TActualBorehole" useGeneratedKeys="true" keyProperty="id">
+        insert into t_actual_borehole
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="groupNo != null and groupNo!=0">group_no,</if>
+            <if test="boreholeNo != null and boreholeNo!=0">borehole_no,</if>
+            <if test="roadwayId != null and roadwayId!=0">roadway_id,</if>
+            <if test="roadwayZoneId != null and roadwayZoneId!=0">roadway_zone_id,</if>
+            <if test="boreholeSiteId != null and boreholeSiteId!=0">borehole_site_id,</if>
+            <if test="shiftId != null and shiftId!=0">shift_id,</if>
+            <if test="drillingDate != null">drilling_date,</if>
+            <if test="boreholeCategoryId != null and boreholeCategoryId!=0">borehole_category_id,</if>
+            <if test="purposeBoreholeId != null and purposeBoreholeId!=0">purpose_borehole_id,</if>
+            <if test="drillingId != null and drillingId!=0">drillingId,</if>
+            <if test="measurePointId != null and measurePointId!=0">measure_point_id,</if>
+            <if test="aperture != null and aperture!=0">aperture,</if>
+            <if test="azimuthAngle != null">azimuth_angle,</if>
+            <if test="inclinationAngle != null">inclination_angle,</if>
+            <if test="angle != null">angle,</if>
+            <if test="depth1stRockSeamStart != null">depth_1st_rock_seam_start,</if>
+            <if test="depth1stRockSeamEnd != null">depth_1st_rock_seam_end,</if>
+            <if test="depth1stCoalSeamStart != null">depth_1st_coal_seam_start,</if>
+            <if test="depth1stCoalSeamend != null">depth_1st_coal_seam_end,</if>
+            <if test="depth2stCoalSeamStart != null">depth_2st_coal_seam_start,</if>
+            <if test="depth2stCoalSeamend != null">depth_2st_coal_seam_end,</if>
+            <if test="depth2stRockSeamStart != null">depth_2st_rock_seam_start,</if>
+            <if test="depth2stRockSeamEnd != null">depth_2st_rock_seam_end,</if>
+            <if test="depth3stRockSeamStart != null">depth_3st_rock_seam_start,</if>
+            <if test="depth3stRockSeamEnd != null">depth_3st_rock_seam_end,</if>
+            <if test="extractionRadius != null">extraction_radius,</if>
+            <if test="boreholeLength != null">borehole_length,</if>
+            <if test="navigationPointId != null and navigationPointId!=0">navigation_point_id,</if>
+            <if test="distanceToNavigationPoint != null">distance_to_navigation_point,</if>
+            <if test="directionToNavigation != null">direction_to_navigation,</if>
+            <if test="distanceToCentrallineTunnel != null">distance_to_centralline_tunnel,</if>
+            <if test="heightArchBaseline != null">height_arch_baseline,</if>
+            <if test="adjacentBoreholeNo != null">adjacent_borehole_no,</if>
+            <if test="distanceAdjacentBorehole != null">distance_adjacent_borehole,</if>
+            <if test="pullDrillDate != null">pull_drill_date,</if>
+            <if test="pulledGasConcentration != null">pulled_gas_concentration,</if>
+            <if test="pulledCOConcentration != null">pulled_CO_concentration,</if>
+            <if test="exceptionDuringDrilling != null">exception_during_drilling,</if>
+            <if test="holesealTypeId != null and holesealTypeId!=0">holeseal_type_id,</if>
+            <if test="downTubeTimeStart != null">down_tube_time_start,</if>
+            <if test="downTubeTimeEnd != null">down_tube_time_end,</if>
+            <if test="tubeLength != null">tube_length,</if>
+            <if test="solidPipelineLength != null">solid_pipeline_length,</if>
+            <if test="sievePipelineLength != null">sieve_pipeline_length,</if>
+            <if test="holeSealingSpecification != null">hole_sealing_specification,</if>
+            <if test="gasChecker != null">gas_checker,</if>
+            <if test="personConstruction != null">person_construction,</if>
+            <if test="chargehand != null">chargehand,</if>
+            <if test="validFootage != null and validFootage!=0">valid_footage,</if>
+            <if test="personChecking != null">person_checking,</if>
+            <if test="checkingDate != null">checking_date,</if>
+            <if test="sign != null">sign,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="groupNo != null and groupNo!=0">#{groupNo},</if>
+            <if test="boreholeNo != null and boreholeNo!=0">#{boreholeNo},</if>
+            <if test="roadwayId != null and roadwayId!=0">#{roadwayId},</if>
+            <if test="roadwayZoneId != null and roadwayZoneId!=0">#{roadwayZoneId},</if>
+            <if test="boreholeSiteId != null and boreholeSiteId!=0">#{boreholeSiteId},</if>
+            <if test="shiftId != null and shiftId!=0">#{shift_id},</if>
+            <if test="drillingDate != null">#{drillingDate},</if>
+            <if test="boreholeCategoryId != null and boreholeCategoryId!=0">#{boreholeCategoryId},</if>
+            <if test="purposeBoreholeId != null and purposeBoreholeId!=0">#{purposeBoreholeId},</if>
+            <if test="drillingId != null and drillingId!=0">#{drillingId},</if>
+            <if test="measurePointId != null and measurePointId!=0">#{measurePointId},</if>
+            <if test="aperture != null and aperture!=0">#{aperture},</if>
+            <if test="azimuthAngle != null">#{azimuthAngle},</if>
+            <if test="inclinationAngle != null">#{inclinationAngle},</if>
+            <if test="angle != null">#{angle},</if>
+            <if test="depth1stRockSeamStart != null">#{depth1stRockSeamStart},</if>
+            <if test="depth1stRockSeamEnd != null">#{depth1stRockSeamEnd},</if>
+            <if test="depth1stCoalSeamStart != null">#{depth1stCoalSeamStart},</if>
+            <if test="depth1stCoalSeamend != null">#{depth1stCoalSeamend},</if>
+            <if test="depth2stCoalSeamStart != null">#{depth2stCoalSeamStart},</if>
+            <if test="depth2stCoalSeamend != null">#{depth2stCoalSeamend},</if>
+            <if test="depth2stRockSeamStart != null">#{depth2stRockSeamStart},</if>
+            <if test="depth2stRockSeamEnd != null">#{depth2stRockSeamEnd},</if>
+            <if test="depth3stRockSeamStart != null">#{depth3stRockSeamStart},</if>
+            <if test="depth3stRockSeamEnd != null">#{depth3stRockSeamEnd},</if>
+            <if test="extractionRadius != null">#{extractionRadius},</if>
+            <if test="boreholeLength != null">#{boreholeLength},</if>
+            <if test="navigationPointId != null and navigationPointId!=0">#{navigationPointId},</if>
+            <if test="distanceToNavigationPoint != null">#{distanceToNavigationPoint},</if>
+            <if test="directionToNavigation != null">#{directionToNavigation},</if>
+            <if test="distanceToCentrallineTunnel != null">#{distanceToCentrallineTunnel},</if>
+            <if test="heightArchBaseline != null">#{heightArchBaseline},</if>
+            <if test="adjacentBoreholeNo != null">#{adjacentBoreholeNo},</if>
+            <if test="distanceAdjacentBorehole != null">#{distanceAdjacentBorehole},</if>
+            <if test="pullDrillDate != null">#{pullDrillDate},</if>
+            <if test="pulledGasConcentration != null">#{pulledGasConcentration},</if>
+            <if test="pulledCOConcentration != null">#{pulledCOConcentration},</if>
+            <if test="exceptionDuringDrilling != null">#{exceptionDuringDrilling},</if>
+            <if test="holesealTypeId != null and holesealTypeId!=0">#{holesealTypeId},</if>
+            <if test="downTubeTimeStart != null">#{downTubeTimeStart},</if>
+            <if test="downTubeTimeEnd != null">#{downTubeTimeEnd},</if>
+            <if test="tubeLength != null">#{tubeLength},</if>
+            <if test="solidPipelineLength != null">#{solidPipelineLength},</if>
+            <if test="sievePipelineLength != null">#{sievePipelineLength},</if>
+            <if test="holeSealingSpecification != null">#{holeSealingSpecification},</if>
+            <if test="gasChecker != null">#{gasChecker},</if>
+            <if test="personConstruction != null">#{personConstruction},</if>
+            <if test="chargehand != null">#{chargehand},</if>
+            <if test="validFootage != null and validFootage!=0">#{validFootage},</if>
+            <if test="personChecking != null">#{personChecking},</if>
+            <if test="checkingDate != null">#{checkingDate},</if>
+            <if test="sign != null">#{sign},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTActualBorehole" parameterType="TActualBorehole">
+        update t_actual_borehole
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="groupNo != 0">group_no = #{groupNo},</if>
+            <if test="boreholeNo != 0">borehole_no = #{boreholeNo},</if>
+            <if test="roadwayId != 0">roadway_id = #{roadwayId},</if>
+            <if test="roadwayZoneId != 0">roadway_zone_id = #{roadwayZoneId},</if>
+            <if test="boreholeSiteId != 0">borehole_site_id = #{boreholeSiteId},</if>
+            <if test="shiftId != 0">shiftId = #{shift_id},</if>
+            <if test="drillingDate != null">drilling_date = #{drillingDate},</if>
+            <if test="boreholeCategoryId != 0">borehole_category_id = #{boreholeCategoryId},</if>
+            <if test="purposeBoreholeId != 0">purpose_borehole_id = #{purposeBoreholeId},</if>
+            <if test="drillingId != 0">drillingId = #{drillingId},</if>
+            <if test="measurePointId != 0">measure_point_id = #{measurePointId},</if>
+            <if test="aperture != null">aperture = #{aperture},</if>
+            <if test="azimuthAngle != null">azimuth_angle = #{azimuthAngle},</if>
+            <if test="inclinationAngle != null">inclination_angle = #{inclinationAngle},</if>
+            <if test="angle != null">angle = #{angle},</if>
+            <if test="depth1stRockSeamStart != null">depth_1st_rock_seam_start = #{depth1stRockSeamStart},</if>
+            <if test="depth1stRockSeamEnd != null">depth_1st_rock_seam_end = #{depth1stRockSeamEnd},</if>
+            <if test="depth1stCoalSeamStart != null">depth_1st_coal_seam_start = #{depth1stCoalSeamStart},</if>
+            <if test="depth1stCoalSeamend != null">depth_1st_coal_seam_end = #{depth1stCoalSeamend},</if>
+            <if test="depth2stCoalSeamStart != null">depth_2st_coal_seam_start = #{depth2stCoalSeamStart},</if>
+            <if test="depth2stCoalSeamend != null">depth_2st_coal_seam_end = #{depth2stCoalSeamend},</if>
+            <if test="depth2stRockSeamStart != null">depth_2st_rock_seam_start = #{depth2stRockSeamStart},</if>
+            <if test="depth2stRockSeamEnd != null">depth_2st_rock_seam_end = #{depth2stRockSeamEnd},</if>
+            <if test="depth3stRockSeamStart != null">depth_3st_rock_seam_start = #{depth3stRockSeamStart},</if>
+            <if test="depth3stRockSeamEnd != null">depth_3st_rock_seam_end = #{depth3stRockSeamEnd},</if>
+            <if test="extractionRadius != null">extraction_radius = #{extractionRadius},</if>
+            <if test="boreholeLength != 0">borehole_length = #{boreholeLength},</if>
+            <if test="navigationPointId != 0">navigation_point_id = #{navigationPointId},</if>
+            <if test="distanceToNavigationPoint != null">distance_to_navigation_point = #{distanceToNavigationPoint},
+            </if>
+            <if test="directionToNavigation != null">direction_to_navigation = #{directionToNavigation},</if>
+            <if test="distanceToCentrallineTunnel != null">distance_to_centralline_tunnel =
+                #{distanceToCentrallineTunnel},
+            </if>
+            <if test="heightArchBaseline != null">height_arch_baseline = #{heightArchBaseline},</if>
+            <if test="adjacentBoreholeNo != null">adjacent_borehole_no = #{adjacentBoreholeNo},</if>
+            <if test="distanceAdjacentBorehole != null">distance_adjacent_borehole = #{distanceAdjacentBorehole},</if>
+            <if test="pullDrillDate != null">pull_drill_date = #{pullDrillDate},</if>
+            <if test="pulledGasConcentration != null">pulled_gas_concentration = #{pulledGasConcentration},</if>
+            <if test="pulledCOConcentration != null">pulled_CO_concentration = #{pulledCOConcentration},</if>
+            <if test="exceptionDuringDrilling != null">exception_during_drilling = #{exceptionDuringDrilling},</if>
+            <if test="holesealTypeId != 0">holeseal_type_id = #{holesealTypeId},</if>
+            <if test="downTubeTimeStart != null">down_tube_time_start = #{downTubeTimeStart},</if>
+            <if test="downTubeTimeEnd != null">down_tube_time_end = #{downTubeTimeEnd},</if>
+            <if test="tubeLength != null">tube_length = #{tubeLength},</if>
+            <if test="solidPipelineLength != null">solid_pipeline_length = #{solidPipelineLength},</if>
+            <if test="sievePipelineLength != null">sieve_pipeline_length = #{sievePipelineLength},</if>
+            <if test="holeSealingSpecification != null">hole_sealing_specification = #{holeSealingSpecification},</if>
+            <if test="gasChecker != null">gas_checker = #{gasChecker},</if>
+            <if test="personConstruction != null">person_construction = #{personConstruction},</if>
+            <if test="chargehand != null">chargehand = #{chargehand},</if>
+            <if test="validFootage != 0">valid_footage = #{validFootage},</if>
+            <if test="personChecking != null">person_checking = #{personChecking},</if>
+            <if test="checkingDate != null">checking_date = #{checkingDate},</if>
+            <if test="sign != null">sign = #{sign},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where Id = #{id}
+    </update>
+
+    <delete id="deleteTActualBoreholeById" parameterType="java.lang.Integer">
+        delete
+        from t_actual_borehole
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTActualBoreholeByIds" parameterType="java.util.List">
+        delete from t_actual_borehole where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <select id="getPageList" resultType="com.ruoyi.hh.physical.domain.TActualBorehole">
+        select d.*,
+               r.roadway,
+               r.id,
+               c.borehole_category,
+               p.purpose_borehole,
+               n.navigation_point_name,
+               z.zone_name,
+               m.measuring_point_name
+        from t_actual_borehole d
+                 LEFT JOIN t_roadway r ON d.roadway_id = r.id
+                 LEFT JOIN t_borehole_category c ON d.borehole_category_id = c.Id
+                 LEFT JOIN t_navigation_point n ON d.navigation_point_id = n.id
+                 LEFT JOIN t_purpose_borehole p ON d.purpose_boreholeId = p.Id
+                 LEFT JOIN t_roadway_zone z ON d.roadway_zone_id = z.Id
+                 LEFT JOIN t_measuring_point m ON d.measure_point_id = m.id
+    </select>
+
+    <!--根据组名查询列表-->
+    <select id="getByGroupNo" resultType="com.ruoyi.hh.physical.domain.TActualBorehole" parameterType="int">
+        select *
+        from t_actual_borehole
+        where group_no = #{groupNo}
+    </select>
+
+    <!--钻孔原始验收单-->
+    <select id="getAcceptanceCertificate" resultType="com.ruoyi.hh.physical.domain.TActualBorehole">
+        SELECT r.roadway,n.navigation_point_name,d.aperture AS desaperture,d.depth_1st_coal_seam_start AS
+        desCoalSeamStart,
+        d.azimuth_angle AS desazimuthAngle,d.inclination_angle AS desinclinationAngle,
+        a.* from t_actual_borehole a
+        LEFT JOIN t_navigation_point n ON n.id=a.navigation_point_id
+        LEFT JOIN t_roadway r ON r.id=a.roadway_id
+        LEFT JOIN t_designed_borehole d ON
+        CONCAT(a.roadway_id,a.group_no,a.borehole_no)=CONCAT(d.roadway_id,d.group_no,d.borehole_no)
+        WHERE 1=1
+        <if test="roadwayId!=null">
+            AND a.roadway_id = #{roadwayId}
+        </if>
+        <if test="groupNo!=null">
+            AND a.group_no = #{groupNo}
+        </if>
+        <if test="boreholeNo!=null">and a.borehole_no IN
+            <foreach collection="boreholeNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="startDate!=null and endDate!=null">
+            AND a.checking_date BETWEEN #{startDate} and #{endDate}
+        </if>
+    </select>
+
+    <!--根据巷道ID查询实钻ID-->
+    <select id="getIdsByRoadWayId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select id
+        from t_actual_borehole
+        where roadway_id = #{roadwayId}
+    </select>
+
+    <!--根据区段ID查询实钻ID列表-->
+    <select id="getIdsRoadWayZoneId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select id
+        from t_actual_borehole
+        where roadway_zone_id = #{roadwayZoneId}
+    </select>
+
+    <!--根据导线点ID查询实钻ID列表-->
+    <select id="getIdsNavigationPointId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select id
+        from t_actual_borehole
+        where navigation_point_id = #{navigationPointId}
+    </select>
+
+    <!--根据组号解绑钻孔和测点的关系-->
+    <update id="unbundleByMeasurePointId" parameterType="java.lang.Integer">
+        update t_actual_borehole
+        set measure_point_id =null
+        where group_no =#{groupNo}
+    </update>
+
+    <!--根据组号绑定钻孔和测点的关系-->
+    <select id="getBoreholeInfo" resultType="com.ruoyi.hh.business.domain.TGasDrillingStandingBook">
+        SELECT r.roadway,a.group_no,a.borehole_no,p.purpose_borehole,d.azimuth_angle AS DesAzimuthAngle,a.azimuth_angle
+        AS ActAzimuthAngle,d.inclination_angle AS DesInclinationAngle,
+        a.inclination_angle AS ActInclinationAngle,d.depth_1st_rock_seam_start AS
+        DesDepth1stCoalSeamStart,a.depth_1st_coal_seam_start AS ActDepth1stCoalSeamStart,
+        d.borehole_length AS DesBoreholeLength,a.borehole_length AS ActBoreholeLength,a.depth_1st_rock_seam_start AS
+        rockseamlength,n.navigation_point_name,a.distance_to_navigation_point,h.hole_seal_type,
+        (af.punching_paragraph2-punching_paragraph1)AS
+        FlushingLength,af.actual_coal_amount_flushed,af.completion_ratio_flushed_coal
+        from t_actual_borehole a
+        LEFT JOIN t_designed_borehole d ON
+        CONCAT(a.roadway_id,a.group_no,a.borehole_no) =CONCAT(d.roadway_id,d.group_no,d.borehole_no)
+        LEFT JOIN t_actual_flushing af ON
+        a.id=af.Id
+        LEFT JOIN t_navigation_point n ON
+        a.navigation_point_id =n.id
+        LEFT JOIN t_sealing_grouting s ON
+        a.id=s.BoreholeId
+        LEFT JOIN t_holeseal_type h ON
+        h.Id = s.holeseal_type_id
+        LEFT JOIN t_roadway r ON
+        r.Id = a.roadway_id
+        LEFT JOIN t_purpose_borehole p ON
+        p.Id = a.purpose_boreholeId
+        WHERE 1=1
+        <if test="roadWayId!=null">AND a.roadway_id=#{roadwayId}</if>
+        <if test="groupNo!=null">AND a.GroupId IN
+            <foreach collection="groupNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="purposeBoreholeId!=null">AND a.purpose_boreholeId IN
+            <foreach collection="purposeBoreholeId" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="boreholeNo!=null">AND a.borehole_no IN
+            <foreach collection="boreholeNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="startDate!=null">
+            AND
+            a.checking_date BETWEEN #{startDate} AND #{endDate}
+        </if>
+
+    </select>
+
+
+    <!--根据巷道ID删除实钻信息-->
+    <update id="bundleByMeasurePointId" parameterType="java.lang.Integer">
+        update t_actual_borehole
+        set measure_point_id ={measurePointId}
+        where group_no =#{groupId}
+    </update>
+    <delete id="delByRoadWayId" parameterType="int">
+        delete
+        from t_actual_borehole
+        where roadway_id = #{roadwayId}
+    </delete>
+
+    <!--根据区段ID删除实际钻孔信息-->
+    <delete id="delByRoadWayIds" parameterType="java.util.List">
+        delete from t_actual_borehole where roadway_id in
+        <foreach item="roadwayIds" collection="list" open="(" separator="," close=")">
+            #{roadwayIds}
+        </foreach>
+    </delete>
+    <delete id="delByRoadwayZoneId" parameterType="int">
+        delete
+        from t_actual_borehole
+        where roadway_zone_id = #{roadwayZoneId}
+    </delete>
+    <!--根据导线点ID删除实际钻孔信息-->
+    <delete id="delByRoadwayZoneIds" parameterType="java.util.List">
+        delete from t_actual_borehole where roadway_zone_id in
+        <foreach item="roadwayZoneIds" collection="list" open="(" separator="," close=")">
+            #{roadwayZoneIds}
+        </foreach>
+    </delete>
+    <delete id="delByNavigationPointId" parameterType="int">
+        delete
+        from t_actual_borehole
+        where navigation_point_id = #{navigationPointId}
+    </delete>
+
+    <!--查询实钻信息-->
+    <delete id="delNavigationPointIds" parameterType="java.util.List">
+        delete from t_actual_borehole where navigation_point_id in
+        <foreach item="navigationPointIds" collection="list" open="(" separator="," close=")">
+            #{navigationPointIds}
+        </foreach>
+    </delete>
+    <!--根据巷道ID，组号和孔号查询钻孔ID-->
+    <select id="getId" resultType="java.lang.Integer">
+        select id
+        from t_actual_borehole
+        where roadway_id = #{roadwayId}
+          and group_no = #{groupNo}
+          and borehole_no = #{boreholeNO}
+    </select>
+
+    <!--根据巷道ID查询实钻信息-->
+    <select id="getByRoadWayId" resultType="com.ruoyi.hh.physical.domain.TActualBorehole">
+        select *
+        from t_actual_borehole
+        where roadway_id = #{roadwayId}
+    </select>
+
+    <select id="getGroupNosByRoadwayId" resultType="java.lang.Integer">
+        select group_no
+        from t_actual_borehole
+        where roadway_id = #{roadwayId}
+        group by group_no
+    </select>
+
+    <!--根据巷道ID和组号查孔号-->
+    <select id="getBoreholenoByRoadwayIdAndGroupNo" resultType="java.lang.Integer">
+        select borehole_no
+        from t_actual_borehole
+        where roadway_id = #{roadwayId}
+          and group_no = #{groupNo}
+    </select>
+    <!--查询孔号和自增序号-->
+    <select id="getIdAndBoreholeNo" resultType="com.ruoyi.hh.business.domain.TSealingGrouting">
+        select id AS boreholeid, borehole_no
+        from t_actual_borehole
+        where roadway_id = #{roadwayId}
+          and group_no = #{groupNo}
+    </select>
+    <!--根据巷道名称，组号，孔号查询实钻ID-->
+    <select id="getIdByRoadWayAndGroupIdBoreholeno" resultType="Integer">
+        select id
+        from t_actual_borehole
+        where group_no = #{groupNo}
+          and borehole_no = #{boreholeNo}
+          and roadway_id = (SELECT id from t_roadway where roadway = #{roadway})
+    </select>
+
+    <select id="selectTActualBoreholeWithException" resultType="com.ruoyi.hh.demo.domain.TActualBorholeException">
+        SELECT t_actual_borehole.id                        id,
+               t_actual_borehole.roadway_id                 roadWayId,
+               t_roadway.roadway                           roadWayName,
+               t_actual_borehole.group_no                   groupNo,
+               t_actual_borehole.borehole_no               boreholeNo,
+               t_actual_borehole.navigation_point_id        navPointId,
+               t_navigation_point.navigation_point_name    navPointName,
+               t_navigation_point.X                        x,
+               t_navigation_point.Y                        y,
+               t_navigation_point.Z                        z,
+               t_actual_borehole.exception_during_drilling exceptions
+        FROM t_actual_borehole,
+             t_navigation_point,
+             t_roadway
+        WHERE t_actual_borehole.navigation_point_id = t_navigation_point.id
+          AND t_actual_borehole.roadway_id = t_roadway.id
+          AND exception_during_drilling != "" AND exception_during_drilling != "无"
+    </select>
+
+    <!--根据工作面查询实钻信息-->
+    <select id="getByWorkfaceId" resultType="com.ruoyi.hh.physical.domain.TActualBorehole">
+        select CONCAT(a.group_no,"-",a.borehole_no) AS holeNo,r.roadway,a.inclination_angle,a.azimuth_angle,
+        (a.depth_1st_coal_seam_end-a.depth_1st_coal_seam_start+a.depth_2st_coal_seam_end-a.depth_2st_coal_seam_start) as coalholelength,
+        a.borehole_length
+        from t_actual_borehole a LEFT JOIN t_roadway r
+        ON a.roadway_id =r.id
+        LEFT JOIN t_working_face w ON r.workfaceId =w.id
+        WHERE w.id=#{workfaceId}
+    </select>
+
+    <!--达标评判之实测瓦斯含量压力情况-->
+    <select id="getGasContentPressureByWorkfaceid" parameterType="java.lang.Integer" resultType="com.ruoyi.hh.physical.domain.TActualBorehole">
+        SELECT CONCAT(a.group_no,"-",a.borehole_no) AS holeNo,g.sampling_prot,g.gas_content,g.gas_pressure
+        from t_actual_borehole a
+        LEFT JOIN t_gas_content_pressure g
+        ON g.boreholeid=a.id
+        LEFT JOIN t_roadway r
+        ON a.roadway_id=r.id
+        LEFT JOIN t_working_face w
+        ON r.workfaceId=w.id
+        where w.id=#{workfaceId}
+    </select>
+</mapper>

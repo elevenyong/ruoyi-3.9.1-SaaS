@@ -1,7 +1,7 @@
 # 项目相关配置
 ruoyi:
   # 名称
-  name: RuoYi
+  name: GeoApplicationServer
   # 版本
   version: 3.9.1
   # 版权年份
@@ -11,12 +11,26 @@ ruoyi:
   # 获取ip地址开关
   addressEnabled: false
   # 验证码类型 math 数字计算 char 字符验证
-  captchaType: math
+  captchaType: none
+  versionLogs:
+    - { version-code: 24051701,version-name: 1.0.0,version-desc: 新增背景颜色参数 }
+    - { version-code: 24051702,version-name: 1.0.1,version-desc: 允许工作面新增其他巷道（只加载模型，暂不应用其他业务） }
+    - { version-code: 24082601,version-name: 1.0.2,version-desc: 支撑v0.1地质软件（不支持自定义工作面区域） }
+    - { version-code: 24120201,version-name: 1.0.3,version-desc: 增加工作面信息导出功能 }
+    - { version-code: 25040701,version-name: 1.0.4,version-desc: 增加工作面属性模型接口 }
+    - { version-code: 25040801,version-name: 1.0.5,version-desc: 增加解析地应力功能 }
+    - { version-code: 25042401,version-name: 1.0.6,version-desc: 1.增加钻孔绑定属性数据；2.增加掘进工作面相关类 }
+    - { version-code: 25060101,version-name: 1.0.7,version-desc: 1.增加程序版本与数据库版本绑定升级机制，设定为后台init版本(之前的版本都会被定义到当前版本) }
+    - { version-code: 25102201,version-name: 1.0.8,version-desc: 1.增加自定义风险区域管理；2.增加项目文档管理(实现在web前端)；3.增加采煤工作(采面)信息管理；4.增加MySQL，SQLite双数据源支持；5.增加/versionLog接口标注后台服务版本；6.接口中增加AI相关测试服务接口； }
+    - { version-code: 25111801,version-name: 1.0.9,version-desc: 1.增加钻孔数据统计 }
+    - { version-code: 25120101,version-name: 1.0.9.1,version-desc: 1.更新版本升级机制，支持非受控版本的后台，更新到受控版本(初始版本25060101，1.0.7) }
+    - { version-code: 25121101,version-name: 1.0.9.2,version-desc: 1.更新数据导入导出功能 }
+    - { version-code: 26012001,version-name: 1.0.9.3,version-desc: 1.增加采面验证孔类型；2.钻孔增加架号，采面ID字段；3.采面信息增加总平均进尺 }
 
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为8080
-  port: 8080
+  port: 8989
   servlet:
     # 应用的访问路径
     context-path: /
@@ -33,9 +47,13 @@ server:
 
 # 日志配置
 logging:
+  config: classpath:logback.xml
   level:
     com.ruoyi: debug
-    org.springframework: warn
+    org.springframework: debug
+    druid:
+      sql:
+        Statement: debug
 
 # 用户配置
 user:
@@ -47,6 +65,14 @@ user:
 
 # Spring配置
 spring:
+  jackson:
+    default-property-inclusion: non_null
+  mvc:
+    view:
+      suffix: .html
+    static-path-pattern: /**
+    resources:
+      static-locations: classpath:/templates/,classpath:/static/
   # 资源信息
   messages:
     # 国际化资源文件路径
@@ -57,14 +83,14 @@ spring:
   servlet:
     multipart:
       # 单个文件大小
-      max-file-size: 10MB
+      max-file-size: 512MB
       # 设置总上传的文件大小
-      max-request-size: 20MB
+      max-request-size: 1024MB
   # 服务模块
   devtools:
     restart:
       # 热部署开关
-      enabled: true
+      enabled: false
   # redis 配置
   redis:
     # 地址
@@ -98,13 +124,40 @@ token:
   expireTime: 30
 
 # MyBatis配置
-mybatis:
-  # 搜索指定包别名
+#mybatis:
+#    # 搜索指定包别名
+#    typeAliasesPackage: com.ruoyi.**.domain
+#    # 配置mapper的扫描，找到所有的mapper.xml映射文件
+#    mapperLocations: classpath*:mapper/**/*Mapper.xml
+#    # 加载全局的配置文件
+#    configLocation: classpath:mybatis/mybatis-config.xml
+
+mybatis-plus:
   typeAliasesPackage: com.ruoyi.**.domain
-  # 配置mapper的扫描，找到所有的mapper.xml映射文件
-  mapperLocations: classpath*:mapper/**/*Mapper.xml
-  # 加载全局的配置文件
-  configLocation: classpath:mybatis/mybatis-config.xml
+    #mapper-locations: classpath*:mapper/**/*Mapper.xml
+  #configuration:
+  # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+  #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  # 该配置就是将带有下划线的表字段映射为驼峰格式的实体类属性
+  #    map-underscore-to-camel-case: true
+  #如果查询结果中包含空值的列，则 MyBatis 在映射的时候，不会映射这个字段
+  #call-setters-on-nulls: true
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  configuration:
+    # 数据库类型识别（关键：让MyBatis-Plus知道当前数据库类型）
+    #    database-id: sqlite  # 用驱动类名作为标识
+    database-id: mysql
+    cache-enabled: true
+    use-generated-keys: true
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+    default-executor-type: SIMPLE
+  #type-aliases-package: com.ruoyi.**.domain,;com.d3code.**.domain
+  #type-aliases-package: com.ruoyi.**.domain
 
 # PageHelper分页插件
 pagehelper:
@@ -134,3 +187,83 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+# minio配置
+minio:
+  endpoint: http://192.168.3.129:9000
+  accessKey: u3duser
+  secretKey: u3duserpassword
+  bucketName: u3dres
+
+# CAD导出配置（废弃）
+CADExport:
+  DXFFilePath: C:\\Users\\Z\\Desktop\\CAD\\DXF\\
+  DWGFilePath: C:\\Users\\Z\\Desktop\\CAD\\DWG\\
+  CoverToolPath: C:\\dev\\z工作\\ODAFileConverter\\
+#CAD转换目录（服务于web端文档管理）
+CADConvert:
+  CADConvertToolPath: D:/cadmxconvert
+  CADConvertOutputPath: D:/cadmxconvert
+# 打印
+printLog: false
+
+# 传感器相关配置（模拟量：废弃）
+sensorinfo:
+  #混合流量传感器类型
+  mixture: 0
+  #纯流量传感器类型
+  pure: 2
+  #抽采负压传感器类型
+  underpressure: 4
+  #抽采浓度传感器类型
+  concentration: 1
+  #温度传感器类型
+  temperature: 5
+  #传感器给值时间间隔(单位min)
+  frequency: 5
+  #统计工作面的测点级别ID
+  workfacelevelid: 1
+  #测点模拟数据发送频率（单位S）
+  sendfrequency: 2
+
+file: E://华鸿慧中//八矿资料//对接测试//
+coalcode: 410403004688
+workfacecode: 15-15080
+readData: false
+deleteRedisCDSS: false
+deleteRedisCDDY: false
+
+#演示：模拟实时发送数据
+demonstrate: false
+
+# 国内访问默认需要代理
+ai:
+  deepseek:
+    api-key: sk-07504d3a44434c4b8e0a995c9d4de741
+    api-host: https://api.deepseek.com/
+
+deepseek:
+  api-key: sk-07504d3a44434c4b8e0a995c9d4de741  # 必填项：你的 API 密钥
+  model: deepseek-chat
+  base-url: https://api.deepseek.com  # 可选，默认为官方 API 地址
+
+# Python服务配置
+python:
+  api:
+    base-url: http://localhost:5000  # Python服务地址
+    connect-timeout: 5000       # 连接超时时间(ms)
+    read-timeout: 10000         # 读取超时时间(ms)
+
+# 钻孔数据定时任务配置
+borehole:
+  task:
+    # 定时器cron表达式（直接配置cron，已废弃schedule-days）
+#    schedule-cron: "0 */1 * * * ?"
+    schedule-cron: "0 0 0 */3 * ?"
+    # 数据天数阈值（天）
+    data-days-threshold: 1
+    # 每天数据量阈值（条）
+    daily-data-threshold: 20
+    # 钻孔类别名称
+    borehole-category-name: "采面验证孔"
+    # 模型训练接口地址
+    train-api-url: "http://localhost:5000/api/model/train"

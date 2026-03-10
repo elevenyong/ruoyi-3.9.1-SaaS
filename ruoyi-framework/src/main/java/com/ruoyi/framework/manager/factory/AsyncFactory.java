@@ -41,6 +41,7 @@ public class AsyncFactory
     {
         final String userAgent = ServletUtils.getRequest().getHeader("User-Agent");
         final String ip = IpUtils.getIpAddr();
+        final Long tenantId = TenantContextHolder.getTenantId();
         return new TimerTask()
         {
             @Override
@@ -67,6 +68,7 @@ public class AsyncFactory
                 logininfor.setBrowser(browser);
                 logininfor.setOs(os);
                 logininfor.setMsg(message);
+                logininfor.setTenantId(tenantId == null ? 0L : tenantId);
                 // 日志状态
                 if (StringUtils.equalsAny(status, Constants.LOGIN_SUCCESS, Constants.LOGOUT, Constants.REGISTER))
                 {

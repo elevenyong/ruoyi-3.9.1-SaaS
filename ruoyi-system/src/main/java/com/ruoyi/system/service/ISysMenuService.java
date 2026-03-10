@@ -140,7 +140,7 @@ public interface ISysMenuService
      * @param menu 菜单信息
      * @return 结果
      */
-    public boolean checkMenuNameUnique(SysMenu menu);
+    public String checkMenuNameUnique(SysMenu menu);
 
     /**
      * 校验路由组合是否唯一
@@ -148,5 +148,5 @@ public interface ISysMenuService
      * @param menu 菜单信息
      * @return 结果
      */
-    public boolean checkRouteConfigUnique(SysMenu menu);
+    public String checkRouteConfigUnique(SysMenu menu);
 }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.hh.simulate.mapper.BoreholeConstructionBookMapper">
+    <select id="selectBoreholeConstructionBook" resultType="com.ruoyi.hh.simulate.domain.BoreholeConstructionBook">
+        SELECT r.Roadway,a.group_no,a.borehole_no,a.pull_drill_date,sh.shift_info,
+        d.angle AS desAngle,a.angle AS actAngle,d.azimuth_angle AS desAzimuthangle, a.azimuth_angle AS actAzimuthangle,
+        ROUND(d.inclination_angle,2) AS desInclinationangle,
+        ROUND(a.inclination_angle,2) AS actInclinationangle,
+        ROUND((a.inclination_angle-d.inclination_angle),2) AS inclinationangleErr,
+        a.bore_diameter,ROUND(d.borehole_length,2) AS desboreholelength,
+        ROUND(a.borehole_length,2) AS actboreholelength,
+        ROUND(d.depth_1st_coal_seam_start,2)AS desdepth1stcoalseamstart,
+        a.depth_1st_coal_seam_start AS actdepth1stcoalseamstart,
+        ROUND((a.depth_1st_coal_seam_start-d.depth_1st_coal_seam_start),2)AS seecoalerr,
+        ROUND((a.depth_1st_coal_seam_start-d.depth_1st_coal_seam_start)/a.depth_1st_coal_seam_start,2) AS seecoalerrratio,
+        d.depth_1st_coal_seam_end AS desdepthstopcoalseamstart, a.depth_1st_coal_seam_end AS actdepthstopcoalseamstart,
+        ROUND((a.depth_1st_coal_seam_end-d.depth_1st_coal_seam_end)/a.depth_1st_coal_seam_end,2) AS stopcoalerr,
+        ROUND((a.depth_1st_coal_seam_end-d.depth_1st_coal_seam_end)/a.depth_1st_coal_seam_end,2) AS stopcoalerrratio,
+        n.navigation_point_name,	a.distance_to_navigation_point, p.purpose_borehole, ht.hole_seal_type, a.pulled_gas_concentration,
+        a.chargehand AS drillingchargehand, a.gas_checker,a.pull_drill_date,
+        a.down_tube_chargehand AS downtubechargehand,a.tube_length,
+        date_format(a.down_tube_time_start,'%Y-%m-%d') AS down_tube_date,sg.chargehand AS sgchargehand,sg.grouting_date,
+        sg.actual_amount_bag_grouting+sg.actual_amount_gap_grouting AS groutamount,
+        sg.exception_label,af.date_flushing, CONCAT(af.punching_paragraph1,'-',af.punching_paragraph2) AS punching_paragraph,
+        ROUND((af.punching_paragraph2-af.punching_paragraph1),2)AS punchinglength, af.total_time_flushing,
+        af.water_pressure_during_flushing, af.chargehand AS afchargehand, af.actual_coal_amount_flushed, af.reception_time
+        FROM
+        t_sealing_grouting s
+        LEFT JOIN t_actual_borehole a ON a.id=s.borehole_id
+        LEFT JOIN t_designed_borehole d ON CONCAT(a.roadway_id,a.group_no,a.borehole_no)=CONCAT(d.roadway_id,d.group_no,d.borehole_no)
+        LEFT JOIN t_designed_flushing df ON df.borehole_id=d.id
+        LEFT JOIN t_actual_flushing af ON af.borehole_id=a.id
+        LEFT JOIN t_roadway r ON r.id = a.roadway_id
+        LEFT JOIN t_shiftinfo sh ON sh.id=s.Shift_id
+        LEFT JOIN t_navigation_point n ON a.navigation_point_Id=n.id
+        LEFT JOIN t_purpose_borehole p ON a.purpose_borehole_Id=p.id
+        LEFT JOIN t_sealing_grouting sg ON sg.borehole_id=a.id
+        LEFT JOIN t_holeseal_type ht ON ht.id=sg.holeseal_type_id
+        WHERE 1=1
+        <if test="roadwayId!=null">
+           AND r.Id = #{roadwayId}
+        </if>
+        <if test="purposeboreholeId!=null">AND p.id IN
+            <foreach collection="purposeboreholeId" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="groupNo!=null">AND a.group_no IN
+            <foreach collection="groupNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="boreholeNo!=null">AND a.borehole_no IN
+            <foreach collection="boreholeNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="startDate!=null and endDate!=null">
+            AND af.reception_time BETWEEN #{startDate} AND #{endDate}
+        </if>
+    </select>
+</mapper>

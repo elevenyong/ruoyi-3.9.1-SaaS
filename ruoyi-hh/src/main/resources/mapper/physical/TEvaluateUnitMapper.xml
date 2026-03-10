@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TEvaluateUnitMapper">
+    
+    <resultMap type="TEvaluateUnit" id="TEvaluateUnitResult">
+        <result property="id"    column="id"    />
+        <result property="evaluateUnitName"    column="evaluate_unit_name"    />
+        <result property="wide"    column="wide"    />
+        <result property="length"    column="length"    />
+        <result property="coalThickness"    column="coal_thickness"    />
+        <result property="coalReserves"    column="coal_reserves"    />
+        <result property="area"    column="area"    />
+        <result property="capacity"    column="capacity"    />
+        <result property="workfaceId"    column="workface_id"    />
+        <result property="gasContentOriginal"    column="gas_content_original"    />
+        <result property="gasTotalReserves"    column="gas_total_reserves"    />
+        <result property="startConstruction"    column="start_construction"    />
+        <result property="endConstruction"    column="end_construction"    />
+        <result property="accumulatedAmount"    column="accumulated_amount"    />
+        <result property="longestTimeBoreholeId"    column="longest_time_borehole_id"    />
+        <result property="startTimeL"    column="start_time_L"    />
+        <result property="endTimeL"    column="end_time_L"    />
+        <result property="shortestTimeBoreholeId"    column="shortest_time_borehole_id"    />
+        <result property="startTimeS"    column="start_time_S"    />
+        <result property="endTimeS"    column="end_time_S"    />
+        <result property="daysL"    column="days_L"    />
+        <result property="daysS"    column="days_S"    />
+        <result property="diffCoefficient"    column="diff_coefficient"    />
+        <result property="diffCoefficientStandard"    column="diff_coefficient_standard"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTEvaluateUnitVo">
+    select e.id, e.evaluate_unit_name, e.wide, e.length, e.coal_thickness, e.coal_reserves, e.area, e.capacity, e.workface_id,w.workface_name, e.gas_content_original,
+           e.gas_total_reserves,e.start_construction,e.end_construction,e.accumulated_amount, e.longest_time_borehole_id, e.start_time_L, e.end_time_L,
+           e.shortest_time_borehole_id, e.start_time_S, e.end_time_S, e.days_L, e.days_S, e.diff_coefficient, e.diff_coefficient_standard, e.create_time,
+           e.create_by, e.update_time, e.update_by, e.remark from t_evaluate_unit e
+    left join t_working_face w on e.workface_id =w.id
+    </sql>
+
+    <select id="selectTEvaluateUnitList" parameterType="TEvaluateUnit" resultMap="TEvaluateUnitResult">
+        <include refid="selectTEvaluateUnitVo"/>
+        <where>
+            <if test="id != null and id != 0"> and e.id = #{id}</if>
+            <if test="evaluateUnitName != null  and evaluateUnitName != ''"> and e.evaluate_unit_name like concat('%', #{evaluateUnitName}, '%')</if>
+            <if test="wide != null "> and e.wide = #{wide}</if>
+            <if test="length != null "> and e.length = #{length}</if>
+            <if test="coalThickness != null "> and e.coal_thickness = #{coalThickness}</if>
+            <if test="coalReserves != null "> and e.coal_reserves = #{coalReserves}</if>
+            <if test="area != null "> and e.area = #{area}</if>
+            <if test="capacity != null "> and e.capacity = #{capacity}</if>
+            <if test="workfaceId != null and workfaceId != 0 "> and e.workface_id = #{workfaceId}</if>
+            <if test="gasContentOriginal != null "> and e.gas_content_original = #{gasContentOriginal}</if>
+            <if test="gasTotalReserves != null "> and e.gas_total_reserves = #{gasTotalReserves}</if>
+            <if test="startConstruction != null "> and e.start_construction = #{startConstruction}</if>
+            <if test="endConstruction != null "> and e.end_construction = #{endConstruction}</if>
+            <if test="accumulatedAmount != null "> and e.accumulated_amount = #{accumulatedAmount}</if>
+            <if test="longestTimeBoreholeId != null and longestTimeBoreholeId != 0 "> and e.longest_time_borehole_id = #{longestTimeBoreholeId}</if>
+            <if test="startTimeL != null "> and e.start_time_L = #{startTimeL}</if>
+            <if test="endTimeL != null "> and e.end_time_L = #{endTimeL}</if>
+            <if test="shortestTimeBoreholeId != null "> and e.shortest_time_borehole_id = #{shortestTimeBoreholeId}</if>
+            <if test="startTimeS != null "> and e.start_time_S = #{startTimeS}</if>
+            <if test="endTimeS != null "> and e.end_time_S = #{endTimeS}</if>
+            <if test="daysL != null "> and e.days_L = #{daysL}</if>
+            <if test="daysS != null "> and e.days_S = #{daysS}</if>
+            <if test="diffCoefficient != null  and diffCoefficient != ''"> and e.diff_coefficient = #{diffCoefficient}</if>
+            <if test="diffCoefficientStandard != null  and diffCoefficientStandard != ''"> and e.diff_coefficient_standard = #{diffCoefficientStandard}</if>
+        </where>
+    </select>
+    
+    <select id="selectTEvaluateUnitById" parameterType="Integer" resultMap="TEvaluateUnitResult">
+        <include refid="selectTEvaluateUnitVo"/>
+        where e.id = #{id}
+    </select>
+        
+    <insert id="insertTEvaluateUnit" parameterType="TEvaluateUnit">
+        insert into t_evaluate_unit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="evaluateUnitName != null">evaluate_unit_name,</if>
+            <if test="wide != null">wide,</if>
+            <if test="length != null">length,</if>
+            <if test="coalThickness != null">coal_thickness,</if>
+            <if test="coalReserves != null">coal_reserves,</if>
+            <if test="area != null">area,</if>
+            <if test="capacity != null">capacity,</if>
+            <if test="workfaceId != null and workfaceId != 0">workface_id,</if>
+            <if test="gasContentOriginal != null">gas_content_original,</if>
+            <if test="gasTotalReserves != null">gas_total_reserves,</if>
+            <if test="startConstruction != null">start_construction,</if>
+            <if test="endConstruction != null">end_construction,</if>
+            <if test="accumulatedAmount != null">accumulated_amount,</if>
+            <if test="longestTimeBoreholeId != null and longestTimeBoreholeId != 0">longest_time_borehole_id,</if>
+            <if test="startTimeL != null">start_time_L,</if>
+            <if test="endTimeL != null">end_time_L,</if>
+            <if test="shortestTimeBoreholeId != null">shortest_time_borehole_id,</if>
+            <if test="startTimeS != null">start_time_S,</if>
+            <if test="endTimeS != null">end_time_S,</if>
+            <if test="daysL != null">days_L,</if>
+            <if test="daysS != null">days_S,</if>
+            <if test="diffCoefficient != null">diff_coefficient,</if>
+            <if test="diffCoefficientStandard != null">diff_coefficient_standard,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="evaluateUnitName != null">#{evaluateUnitName},</if>
+            <if test="wide != null">#{wide},</if>
+            <if test="length != null">#{length},</if>
+            <if test="coalThickness != null">#{coalThickness},</if>
+            <if test="coalReserves != null">#{coalReserves},</if>
+            <if test="area != null">#{area},</if>
+            <if test="capacity != null">#{capacity},</if>
+            <if test="workfaceId != null and workfaceId != 0">#{workfaceId},</if>
+            <if test="gasContentOriginal != null">#{gasContentOriginal},</if>
+            <if test="gasTotalReserves != null">#{gasTotalReserves},</if>
+            <if test="startConstruction != null">#{startConstruction},</if>
+            <if test="endConstruction != null">#{endConstruction},</if>
+            <if test="accumulatedAmount != null">#{accumulatedAmount},</if>
+            <if test="longestTimeBoreholeId != null and longestTimeBoreholeId != 0">#{longestTimeBoreholeId},</if>
+            <if test="startTimeL != null">#{startTimeL},</if>
+            <if test="endTimeL != null">#{endTimeL},</if>
+            <if test="shortestTimeBoreholeId != null">#{shortestTimeBoreholeId},</if>
+            <if test="startTimeS != null">#{startTimeS},</if>
+            <if test="endTimeS != null">#{endTimeS},</if>
+            <if test="daysL != null">#{daysL},</if>
+            <if test="daysS != null">#{daysS},</if>
+            <if test="diffCoefficient != null">#{diffCoefficient},</if>
+            <if test="diffCoefficientStandard != null">#{diffCoefficientStandard},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+         </trim>
+    </insert>
+
+    <update id="updateTEvaluateUnit" parameterType="TEvaluateUnit">
+        update t_evaluate_unit
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="evaluateUnitName != null">evaluate_unit_name = #{evaluateUnitName},</if>
+            <if test="wide != null">wide = #{wide},</if>
+            <if test="length != null">length = #{length},</if>
+            <if test="coalThickness != null">coal_thickness = #{coalThickness},</if>
+            <if test="coalReserves != null">coal_reserves = #{coalReserves},</if>
+            <if test="area != null">area = #{area},</if>
+            <if test="capacity != null">capacity = #{capacity},</if>
+            <if test="workfaceId != null and workfaceId != 0">workface_id = #{workfaceId},</if>
+            <if test="gasContentOriginal != null">gas_content_original = #{gasContentOriginal},</if>
+            <if test="gasTotalReserves != null">gas_total_reserves = #{gasTotalReserves},</if>
+            <if test="startConstruction != null">start_construction = #{startConstruction},</if>
+            <if test="endConstruction != null">end_construction = #{endConstruction},</if>
+            <if test="accumulatedAmount != null">accumulated_amount = #{accumulatedAmount},</if>
+            <if test="longestTimeBoreholeId != null and longestTimeBoreholeId != 0">longest_time_borehole_id = #{longestTimeBoreholeId},</if>
+            <if test="startTimeL != null">start_time_L = #{startTimeL},</if>
+            <if test="endTimeL != null">end_time_L = #{endTimeL},</if>
+            <if test="shortestTimeBoreholeId != null">shortest_time_borehole_id = #{shortestTimeBoreholeId},</if>
+            <if test="startTimeS != null">start_time_S = #{startTimeS},</if>
+            <if test="endTimeS != null">end_time_S = #{endTimeS},</if>
+            <if test="daysL != null">days_L = #{daysL},</if>
+            <if test="daysS != null">days_S = #{daysS},</if>
+            <if test="diffCoefficient != null">diff_coefficient = #{diffCoefficient},</if>
+            <if test="diffCoefficientStandard != null">diff_coefficient_standard = #{diffCoefficientStandard},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTEvaluateUnitById" parameterType="Integer">
+        delete from t_evaluate_unit where id = #{id}
+    </delete>
+
+    <delete id="deleteTEvaluateUnitByIds" parameterType="java.util.List">
+        delete from t_evaluate_unit where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!--分页查询-->
+    <select id="getPageList" resultType="com.ruoyi.hh.physical.domain.TEvaluateUnit">
+        <include refid="selectTEvaluateUnitVo"/>
+    </select>
+    <!--根据工作面ID查询评价单元-->
+    <select id="getByWorkfaceId" resultType="com.ruoyi.hh.physical.domain.TEvaluateUnit" parameterType="java.lang.Integer">
+        select * from t_evaluate_unit where workface_id =#{workfeceid}
+    </select>
+    <!--根据评价单元ID查询所属工作面信息-->
+    <select id="getWorkfaceByEvaluateUnitId" resultType="com.ruoyi.hh.physical.domain.TWorkingFace" parameterType="java.lang.Integer">
+        select w.* from t_working_face w
+        LEFT JOIN t_evaluate_unit e
+        ON w.id=e.workface_id
+        where e.id=#{evaluateunitid}
+    </select>
+
+    <!--根据工作面ID或者评价单元ID查询评判报告相关信息-->
+    <select id="getJudgeReportInfo" resultType="com.ruoyi.hh.physical.domain.TEvaluateUnit">
+        select id,evaluate_unit_name,wide,length,accumulated_amount,area,coal_thickness,capacity,ROUND((area*coal_thickness*capacity),2) AS coal_reserves,
+        ROUND((coal_reserves*gas_content_original-accumulated_amount),2)AS remnantgasreserves,
+        ROUND(((coal_reserves*gas_content_original-accumulated_amount)/coal_reserves),2)AS remnantgascontentremnant,
+        ROUND(accumulated_amount/(coal_reserves*gas_content_original),2) AS completeratio,
+        gas_content_original,gas_total_reserves,start_construction,end_construction,
+        DATEDIFF(end_time_L,start_time_L) AS daysL,DATEDIFF(end_time_S,start_time_S)AS daysS,
+        (DATEDIFF(end_time_L,start_time_L)-DATEDIFF(end_time_S,start_time_S))/DATEDIFF(end_time_L,start_time_L) AS diff_coefficient
+        from t_evaluate_unit
+        where 1=1
+        <if test="workfaceId!=null">
+            AND
+             workface_id =#{workfaceId}
+         </if>
+         <if test="evaluateunitid!=null">
+             AND
+             id=#{evaluateunitid}
+         </if>
+    </select>
+</mapper>

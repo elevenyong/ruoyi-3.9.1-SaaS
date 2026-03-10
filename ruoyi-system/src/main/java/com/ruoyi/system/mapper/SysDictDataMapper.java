@@ -85,6 +85,13 @@ public interface SysDictDataMapper
     public int updateDictData(SysDictData dictData);
 
     /**
+     * 查询所有的字典数据
+     * @return 字典数据集合信息
+     */
+    public List<SysDictData> selectAllDictData();
+
+
+    /**
      * 同步修改字典类型
      * 
      * @param oldDictType 旧字典类型

@@ -7,20 +7,21 @@ import './assets/styles/element-variables.scss'
 
 import '@/assets/styles/index.scss' // global css
 import '@/assets/styles/ruoyi.scss' // ruoyi css
+import 'floating-vue/dist/style.css'
 import App from './App'
 import store from './store'
 import router from './router'
 import directive from './directive' // directive
 import plugins from './plugins' // plugins
-import { download } from '@/utils/request'
-
+import { download, downloadDoc, downloadTemp } from '@/utils/request'
+import './assets/icons/font_my/iconfont.css'
 import './assets/icons' // icon
 import './permission' // permission control
-import { getDicts } from "@/api/system/dict/data"
-import { getConfigKey } from "@/api/system/config"
-import { parseTime, resetForm, addDateRange, selectDictLabel, selectDictLabels, handleTree } from "@/utils/ruoyi"
+import { getDicts } from "@/api/system/dict/data";
+import { getConfigKey } from "@/api/system/config";
+import { parseTime, resetForm, addDateRange, selectDictLabel, selectDictLabels, handleTree } from "@/utils/ruoyi";
 // 分页组件
-import Pagination from "@/components/Pagination"
+import Pagination from "@/components/Pagination";
 // 自定义表格工具组件
 import RightToolbar from "@/components/RightToolbar"
 // 富文本组件
@@ -33,8 +34,19 @@ import ImageUpload from "@/components/ImageUpload"
 import ImagePreview from "@/components/ImagePreview"
 // 字典标签组件
 import DictTag from '@/components/DictTag'
+// 头部标签组件
+import VueMeta from 'vue-meta'
 // 字典数据组件
 import DictData from '@/components/DictData'
+// 甘特图
+import wlGantt from 'wl-gantt'
+import "wl-gantt/lib/wl-gantt.css"
+// popper组件
+import FloatingVue from 'floating-vue'
+import ElementUIX from 'vue-element-ui-x';
+
+
+
 
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -45,6 +57,8 @@ Vue.prototype.addDateRange = addDateRange
 Vue.prototype.selectDictLabel = selectDictLabel
 Vue.prototype.selectDictLabels = selectDictLabels
 Vue.prototype.download = download
+Vue.prototype.downloadTemp = downloadTemp
+Vue.prototype.downloadDoc = downloadDoc
 Vue.prototype.handleTree = handleTree
 
 // 全局组件挂载
@@ -56,8 +70,12 @@ Vue.component('FileUpload', FileUpload)
 Vue.component('ImageUpload', ImageUpload)
 Vue.component('ImagePreview', ImagePreview)
 
+Vue.use(ElementUIX);
 Vue.use(directive)
 Vue.use(plugins)
+Vue.use(VueMeta)
+Vue.use(wlGantt)
+Vue.use(FloatingVue)
 DictData.install()
 
 /**

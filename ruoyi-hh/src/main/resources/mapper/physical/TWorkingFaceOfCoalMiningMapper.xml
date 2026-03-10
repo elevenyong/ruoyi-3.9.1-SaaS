@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TWorkingFaceOfCoalMiningMapper">
+
+    <resultMap type="TWorkingFaceOfCoalMining" id="TWorkingFaceOfCoalMiningResult">
+        <result property="id" column="id"/>
+        <result property="workfaceName" column="workface_name"/>
+        <result property="coalNumber" column="coal_number"/>
+        <result property="towardsLength" column="towards_length"/>
+        <result property="cutLength" column="cut_length"/>
+        <result property="height" column="height"/>
+        <result property="inclinationAngle" column="inclination_angle"/>
+        <result property="azimuthAngle" column="azimuth_angle"/>
+        <result property="dipDirection" column="dip_direction"/>
+        <result property="numberOfWorkfaceSupports" column="number_of_workface_supports"/>
+        <result property="supportLength" column="support_length"/>
+        <result property="firstSupportPosition" column="first_support_position"/>
+        <result property="outDistanceOfFirstSupport" column="out_distance_of_first_support"/>
+        <result property="bottomExtractionRoadway" column="bottom_extraction_roadway"/>
+        <result property="airIntakeRoadway" column="air_intake_roadway"/>
+        <result property="airIntakeRoadwayLength" column="air_intake_roadway_length"/>
+        <result property="airReturnRoadway" column="air_return_roadway"/>
+        <result property="airReturnRoadwayLength" column="air_return_roadway_length"/>
+        <result property="middleRoadway" column="middle_roadway"/>
+        <result property="cutEyeRoadway" column="cut_eye_roadway"/>
+        <result property="miningAreaRoadway" column="mining_area_roadway"/>
+        <result property="otherRoadway" column="other_roadway" jdbcType="VARCHAR" typeHandler="com.ruoyi.hh.util.handler.JsonIntegerArrayTypeHandler" />
+        <result property="dcAirIntakeRoadway" column="dc_air_intake_roadway"/>
+        <result property="dcAirReturnRoadway" column="dc_air_return_roadway"/>
+        <result property="dcCutEyeRoadway" column="dc_cut_eye_roadway"/>
+        <result property="dcMiddleRoadway" column="dc_middle_roadway"/>
+        <result property="boundaryPoints" column="boundary_points" jdbcType="VARCHAR" typeHandler="com.ruoyi.hh.util.handler.JsonPointArrayTypeHandler"/>
+    </resultMap>
+
+    <sql id="selectTWorkingFaceOfCoalMiningVo">
+        select id,
+               workface_name,
+               coal_number,
+               default_coal_thickness,
+               towards_length,
+               cut_length,
+               height,
+               inclination_angle,
+               azimuth_angle,
+               dip_direction,
+               number_of_workface_supports,
+               support_length,
+               first_support_position,
+               out_distance_of_first_support,
+               bottom_extraction_roadway,
+               air_intake_roadway,
+               air_intake_roadway_length,
+               air_return_roadway,
+               air_return_roadway_length,
+               middle_roadway,
+               cut_eye_roadway,
+               mining_area_roadway,
+               other_roadway,
+               dc_air_intake_roadway,
+               dc_air_return_roadway,
+               dc_cut_eye_roadway,
+               dc_middle_roadway,
+               boundary_points
+        from t_working_face_of_coal_mining
+    </sql>
+
+    <select id="selectAllTWorkingFaceOfCoalMining" resultMap="TWorkingFaceOfCoalMiningResult">
+        <include refid="selectTWorkingFaceOfCoalMiningVo"/>
+    </select>
+
+    <select id="selectTWorkingFaceOfCoalMiningList" parameterType="TWorkingFaceOfCoalMining"
+            resultMap="TWorkingFaceOfCoalMiningResult">
+        <include refid="selectTWorkingFaceOfCoalMiningVo"/>
+        <where>
+            <if test="workfaceName != null  and workfaceName != ''">and workface_name = #{workfaceName}</if>
+            <if test="coalNumber != null  and coalNumber != 0">and coal_number = #{coalNumber}</if>
+            <if test="defaultCoalThickness != null  and defaultCoalThickness != 0">and default_coal_thickness = #{defaultCoalThickness}</if>
+            <if test="towardsLength != null ">and towards_length = #{towardsLength}</if>
+            <if test="cutLength != null ">and cut_length = #{cutLength}</if>
+            <if test="height != null ">and height = #{height}</if>
+            <if test="inclinationAngle != null ">and inclination_angle = #{inclinationAngle}</if>
+            <if test="azimuthAngle != null ">and azimuth_angle = #{azimuthAngle}</if>
+            <if test="dipDirection != null ">and dip_direction = #{dipDirection}</if>
+            <if test="numberOfWorkfaceSupports != null ">and number_of_workface_supports =
+                #{numberOfWorkfaceSupports}
+            </if>
+            <if test="supportLength != null ">and support_length = #{supportLength}</if>
+            <if test="firstSupportPosition != null ">and first_support_position = #{firstSupportPosition}</if>
+            <if test="outDistanceOfFirstSupport != null ">and out_distance_of_first_support =
+                #{outDistanceOfFirstSupport}
+            </if>
+            <if test="bottomExtractionRoadway != null  and bottomExtractionRoadway != ''">and bottom_extraction_roadway
+                = #{bottomExtractionRoadway}
+            </if>
+            <if test="airIntakeRoadway != null  and airIntakeRoadway != 0">and air_intake_roadway =#{airIntakeRoadway}
+            </if>
+            <if test="airIntakeRoadwayLength != null  and airIntakeRoadwayLength != ''">and air_intake_roadway_length =#{airIntakeRoadwayLength}
+            </if>
+            <if test="airReturnRoadway != null  and airReturnRoadway != 0">and air_return_roadway =#{airReturnRoadway}
+            </if>
+            <if test="airReturnRoadwayLength != null  and airReturnRoadwayLength != ''">and air_return_roadway_length =#{airReturnRoadwayLength}
+            </if>
+            <if test="middleRoadway != null">and middle_roadway =#{middleRoadway}
+            </if>
+            <if test="cutEyeRoadway != null  and cutEyeRoadway != 0">and cut_eye_roadway = #{cutEyeRoadway}</if>
+            <if test="miningAreaRoadway != null  and miningAreaRoadway != 0">and mining_area_roadway =#{miningAreaRoadway}</if>
+            <if test="otherRoadway != null  and otherRoadway != ''">and other_roadway =#{otherRoadway}</if>
+            <if test="dcAirIntakeRoadway != null  and dcAirIntakeRoadway != 0">and dc_air_intake_roadway =#{dcAirIntakeRoadway}</if>
+            <if test="dcAirReturnRoadway != null  and dcAirReturnRoadway != 0">and dc_air_return_roadway =#{dcAirReturnRoadway}</if>
+            <if test="dcCutEyeRoadway != null  and dcCutEyeRoadway != 0">and dc_cut_eye_roadway =#{dcCutEyeRoadway}</if>
+            <if test="dcMiddleRoadway != null  and dcMiddleRoadway != 0">and dc_middle_roadway =#{dcMiddleRoadway}</if>
+        </where>
+    </select>
+
+    <select id="selectTWorkingFaceOfCoalMiningById" parameterType="Integer" resultMap="TWorkingFaceOfCoalMiningResult">
+        <include refid="selectTWorkingFaceOfCoalMiningVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTWorkingFaceOfCoalMining" parameterType="TWorkingFaceOfCoalMining" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_working_face_of_coal_mining
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="workfaceName != null">workface_name,</if>
+            <if test="coalNumber != null">coal_number,</if>
+            <if test="defaultCoalThickness != null">default_coal_thickness,</if>
+            <if test="towardsLength != null">towards_length,</if>
+            <if test="cutLength != null">cut_length,</if>
+            <if test="height != null">height,</if>
+            <if test="inclinationAngle != null">inclination_angle,</if>
+            <if test="azimuthAngle != null">azimuth_angle,</if>
+            <if test="dipDirection != null">dip_direction,</if>
+            <if test="numberOfWorkfaceSupports != null">number_of_workface_supports,</if>
+            <if test="supportLength != null">support_length,</if>
+            <if test="firstSupportPosition != null">first_support_position,</if>
+            <if test="outDistanceOfFirstSupport != null">out_distance_of_first_support,</if>
+            <if test="bottomExtractionRoadway != null">bottom_extraction_roadway,</if>
+            <if test="airIntakeRoadway != null">air_intake_roadway,</if>
+            <if test="airIntakeRoadwayLength != null">air_intake_roadway_length,</if>
+            <if test="airReturnRoadway != null">air_return_roadway,</if>
+            <if test="airReturnRoadwayLength != null">air_return_roadway_length,</if>
+            <if test="middleRoadway != null">middle_roadway,</if>
+            <if test="cutEyeRoadway != null">cut_eye_roadway,</if>
+            <if test="miningAreaRoadway != null">mining_area_roadway,</if>
+            <if test="otherRoadway != null">other_roadway,</if>
+            <if test="dcAirIntakeRoadway != null">dc_air_intake_roadway,</if>
+            <if test="dcAirReturnRoadway != null">dc_air_return_roadway,</if>
+            <if test="dcCutEyeRoadway != null">dc_cut_eye_roadway,</if>
+            <if test="dcMiddleRoadway != null">dc_middle_roadway,</if>
+            <if test="boundaryPoints != null">boundary_points,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="workfaceName != null">#{workfaceName},</if>
+            <if test="coalNumber != null">#{coalNumber},</if>
+            <if test="defaultCoalThickness != null">#{defaultCoalThickness},</if>
+            <if test="towardsLength != null">#{towardsLength},</if>
+            <if test="cutLength != null">#{cutLength},</if>
+            <if test="height != null">#{height},</if>
+            <if test="inclinationAngle != null">#{inclinationAngle},</if>
+            <if test="azimuthAngle != null">#{azimuthAngle},</if>
+            <if test="dipDirection != null">#{dipDirection},</if>
+            <if test="numberOfWorkfaceSupports != null">#{numberOfWorkfaceSupports},</if>
+            <if test="supportLength != null">#{supportLength},</if>
+            <if test="firstSupportPosition != null">#{firstSupportPosition},</if>
+            <if test="outDistanceOfFirstSupport != null">#{outDistanceOfFirstSupport},</if>
+            <if test="bottomExtractionRoadway != null">#{bottomExtractionRoadway},</if>
+            <if test="airIntakeRoadway != null">#{airIntakeRoadway},</if>
+            <if test="airIntakeRoadwayLength != null">#{airIntakeRoadwayLength},</if>
+            <if test="airReturnRoadway != null">#{airReturnRoadway},</if>
+            <if test="airReturnRoadwayLength != null">#{airReturnRoadwayLength},</if>
+            <if test="middleRoadway != null">#{middleRoadway},</if>
+            <if test="cutEyeRoadway != null">#{cutEyeRoadway},</if>
+            <if test="miningAreaRoadway != null">#{miningAreaRoadway},</if>
+            <if test="otherRoadway != null">
+                #{otherRoadway,jdbcType=VARCHAR,typeHandler=com.ruoyi.hh.util.handler.JsonIntegerArrayTypeHandler},
+            </if>
+            <if test="dcAirIntakeRoadway != null">#{dcAirIntakeRoadway},</if>
+            <if test="dcAirReturnRoadway != null">#{dcAirReturnRoadway},</if>
+            <if test="dcCutEyeRoadway != null">#{dcCutEyeRoadway},</if>
+            <if test="dcMiddleRoadway != null">#{dcMiddleRoadway},</if>
+            <if test="boundaryPoints != null">#{boundaryPoints,jdbcType=VARCHAR,typeHandler=com.ruoyi.hh.util.handler.JsonPointArrayTypeHandler},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTWorkingFaceOfCoalMining" parameterType="TWorkingFaceOfCoalMining">
+        update t_working_face_of_coal_mining
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workfaceName != null  and workfaceName != ''">workface_name = #{workfaceName},</if>
+            <if test="coalNumber != null  and coalNumber != 0">coal_number = #{coalNumber},</if>
+            <if test="defaultCoalThickness != null  and defaultCoalThickness != 0">default_coal_thickness = #{defaultCoalThickness},</if>
+            <if test="towardsLength != null ">towards_length = #{towardsLength},</if>
+            <if test="cutLength != null ">cut_length = #{cutLength},</if>
+            <if test="height != null ">height = #{height},</if>
+            <if test="inclinationAngle != null ">inclination_angle = #{inclinationAngle},</if>
+            <if test="azimuthAngle != null ">azimuth_angle = #{azimuthAngle},</if>
+            <if test="dipDirection != null ">dip_direction = #{dipDirection},</if>
+            <if test="numberOfWorkfaceSupports != null ">number_of_workface_supports =#{numberOfWorkfaceSupports},</if>
+            <if test="supportLength != null ">support_length = #{supportLength},</if>
+            <if test="firstSupportPosition != null ">first_support_position = #{firstSupportPosition},</if>
+            <if test="outDistanceOfFirstSupport != null ">out_distance_of_first_support =#{outDistanceOfFirstSupport},</if>
+            <if test="bottomExtractionRoadway != null  and bottomExtractionRoadway != ''">bottom_extraction_roadway= #{bottomExtractionRoadway},</if>
+            <if test="airIntakeRoadway != null  and airIntakeRoadway != 0">air_intake_roadway =#{airIntakeRoadway},</if>
+            <if test="airIntakeRoadwayLength != null  and airIntakeRoadwayLength != ''">air_intake_roadway_length=#{airIntakeRoadwayLength},</if>
+            <if test="airReturnRoadway != null  and airReturnRoadway != 0">air_return_roadway =#{airReturnRoadway},</if>
+            <if test="airReturnRoadwayLength != null  and airReturnRoadwayLength != ''">air_return_roadway_length=#{airReturnRoadwayLength},</if>
+            <if test="middleRoadway != null">middle_roadway=#{middleRoadway},</if>
+            <if test="cutEyeRoadway != null  and cutEyeRoadway != 0">cut_eye_roadway = #{cutEyeRoadway},</if>
+            <if test="miningAreaRoadway != null  and miningAreaRoadway != 0">mining_area_roadway=#{miningAreaRoadway},</if>
+            <if test="otherRoadway != null  and otherRoadway != 0">other_roadway=#{otherRoadway,jdbcType=VARCHAR,typeHandler=com.ruoyi.hh.util.handler.JsonIntegerArrayTypeHandler},</if>
+            <if test="dcAirIntakeRoadway != null  and dcAirIntakeRoadway != 0">dc_air_intake_roadway=#{dcAirIntakeRoadway},</if>
+            <if test="dcAirReturnRoadway != null  and dcAirReturnRoadway != 0">dc_air_return_roadway=#{dcAirReturnRoadway},</if>
+            <if test="dcCutEyeRoadway != null  and dcCutEyeRoadway != 0">dc_cut_eye_roadway =#{dcCutEyeRoadway},</if>
+            <if test="dcMiddleRoadway != null  and dcMiddleRoadway != 0">dc_middle_roadway =#{dcMiddleRoadway},</if>
+            <if test="boundaryPoints != null">boundary_points=#{boundaryPoints,jdbcType=VARCHAR,typeHandler=com.ruoyi.hh.util.handler.JsonPointArrayTypeHandler},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTWorkingFaceOfCoalMiningById" parameterType="Integer">
+        delete
+        from t_working_face_of_coal_mining
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTWorkingFaceOfCoalMiningByIds" parameterType="String">
+        delete from t_working_face_of_coal_mining where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

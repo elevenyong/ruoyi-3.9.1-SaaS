@@ -1,11 +1,13 @@
 package com.ruoyi.system.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.domain.SysOperLog;
 import com.ruoyi.system.mapper.SysOperLogMapper;
 import com.ruoyi.system.service.ISysOperLogService;
+
+import javax.annotation.Resource;
 
 /**
  * 操作日志 服务层处理
@@ -15,7 +17,7 @@ import com.ruoyi.system.service.ISysOperLogService;
 @Service
 public class SysOperLogServiceImpl implements ISysOperLogService
 {
-    @Autowired
+    @Resource
     private SysOperLogMapper operLogMapper;
 
     /**
@@ -72,5 +74,11 @@ public class SysOperLogServiceImpl implements ISysOperLogService
     public void cleanOperLog()
     {
         operLogMapper.cleanOperLog();
+    }
+
+    @Override
+    public List<HashMap<String, String>> selectOperLogCount() {
+        List<HashMap<String, String>> count = operLogMapper.selectOperLogCount();
+        return count;
     }
 }

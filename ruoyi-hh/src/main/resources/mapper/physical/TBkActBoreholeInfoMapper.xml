@@ -1,0 +1,950 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TBkActBoreholeInfoMapper">
+
+    <resultMap type="TBkActBoreholeInfo" id="TBkActBoreholeInfoResult">
+        <result property="id" column="id"/>
+        <result property="roadwayId" column="roadway_id"/>
+        <result property="roadwayZoneId" column="roadway_zone_id"/>
+        <result property="groupNo" column="group_no"/>
+        <result property="boreholeNo" column="borehole_no"/>
+        <result property="boreholeCode" column="borehole_code"/>
+        <result property="categoryCode" column="category_code"/>
+        <result property="purposeBoreholeId" column="purpose_borehole_id"/>
+        <result property="drillingLocation" column="drilling_location"/>
+        <result property="drillingStartX" column="drilling_start_x"/>
+        <result property="drillingStartY" column="drilling_start_y"/>
+        <result property="drillingStartZ" column="drilling_start_z"/>
+        <result property="isUsedCreateCoal" column="is_used_create_coal"/>
+        <result property="drillingDate" column="drilling_date"/>
+        <result property="shiftId" column="shift_id"/>
+        <result property="drillinginfoId" column="drillinginfo_id"/>
+        <result property="navigationPointId" column="navigation_point_id"/>
+        <result property="distanceToNavigationPoint" column="distance_to_navigation_point"/>
+        <result property="directionToNavigation" column="direction_to_navigation"/>
+        <result property="aperture" column="aperture"/>
+        <result property="checkAperture" column="check_aperture"/>
+        <result property="holeAltitude" column="hole_altitude"/>
+        <result property="checkHoleAltitude" column="check_hole_altitude"/>
+        <result property="azimuthAngle" column="azimuth_angle"/>
+        <result property="checkAzimuthAngle" column="check_azimuth_angle"/>
+        <result property="inclinationAngle" column="inclination_angle"/>
+        <result property="checkInclinationAngle" column="check_inclination_angle"/>
+        <result property="angle" column="angle"/>
+        <result property="checkAngle" column="check_angle"/>
+        <result property="lineSpace" column="line_space"/>
+        <result property="checkLineSpace" column="check_line_space"/>
+        <result property="holeSpace" column="hole_space"/>
+        <result property="checkHoleSpace" column="check_hole_space"/>
+        <result property="boreholeLength" column="borehole_length"/>
+        <result property="checkBoreholeLength" column="check_borehole_length"/>
+        <result property="depth1stRockSeamStart" column="depth_1st_rock_seam_start"/>
+        <result property="depth1stRockSeamEnd" column="depth_1st_rock_seam_end"/>
+        <result property="depth1stCoalSeamStart" column="depth_1st_coal_seam_start"/>
+        <result property="depth1stCoalSeamEnd" column="depth_1st_coal_seam_end"/>
+        <result property="depth2stRockSeamStart" column="depth_2st_rock_seam_start"/>
+        <result property="depth2stRockSeamEnd" column="depth_2st_rock_seam_end"/>
+        <result property="depth2stCoalSeamStart" column="depth_2st_coal_seam_start"/>
+        <result property="depth2stCoalSeamEnd" column="depth_2st_coal_seam_end"/>
+        <result property="depth3stRockSeamStart" column="depth_3st_rock_seam_start"/>
+        <result property="depth3stRockSeamEnd" column="depth_3st_rock_seam_end"/>
+        <result property="depth3stCoalSeamStart" column="depth_3st_coal_seam_start"/>
+        <result property="depth3stCoalSeamEnd" column="depth_3st_coal_seam_end"/>
+        <result property="depth4stRockSeamStart" column="depth_4st_rock_seam_start"/>
+        <result property="depth4stRockSeamEnd" column="depth_4st_rock_seam_end"/>
+        <result property="bindCoal1st" column="bind_coal_1st"/>
+        <result property="bindCoal2st" column="bind_coal_2st"/>
+        <result property="bindCoal3st" column="bind_coal_3st"/>
+        <result property="isUsedCreateCoal1st" column="is_used_create_coal_1st"/>
+        <result property="isUsedCreateCoal2st" column="is_used_create_coal_2st"/>
+        <result property="isUsedCreateCoal3st" column="is_used_create_coal_3st"/>
+        <result property="extractionRadius" column="extraction_radius"/>
+        <result property="distanceToCentrallineTunnel" column="distance_to_centralline_tunnel"/>
+        <result property="pullDrillDate" column="pull_drill_date"/>
+        <result property="adjacentBoreholeNo" column="adjacent_borehole_no"/>
+        <result property="distanceAdjacentBorehole" column="distance_adjacent_borehole"/>
+        <result property="sprayHoleCondition" column="spray_hole_condition"/>
+        <result property="exceptionDuringDrilling" column="exception_during_drilling"/>
+        <result property="exceptionConstruction" column="exception_construction"/>
+        <result property="acceptanceStatus" column="acceptance_status"/>
+        <result property="downTubeTimeStart" column="down_tube_time_start"/>
+        <result property="downTubeTimeEnd" column="down_tube_time_end"/>
+        <result property="tubeLength" column="tube_length"/>
+        <result property="downTubeChargehand" column="down_tube_chargehand"/>
+        <result property="solidPipelineLength" column="solid_pipeline_length"/>
+        <result property="sievePipelineLength" column="sieve_pipeline_length"/>
+        <result property="holesealLength" column="holeseal_length"/>
+        <result property="holesealDepth" column="holeseal_depth"/>
+        <result property="sealingHoleDiameter" column="sealing_hole_diameter"/>
+        <result property="holeSealingSpecification" column="hole_sealing_specification"/>
+        <result property="sealingMaterial" column="sealing_material"/>
+        <result property="sieveTubeLength" column="sieve_tube_length"/>
+        <result property="holesealDate" column="holeseal_date"/>
+        <result property="holesealChargehand" column="holeseal_chargehand"/>
+        <result property="validFootage" column="valid_footage"/>
+        <result property="personConstruction" column="person_construction"/>
+        <result property="chargehand" column="chargehand"/>
+        <result property="personCheckingVideo" column="person_checking_video"/>
+        <result property="personCheckingSite" column="person_checking_site"/>
+        <result property="checkingDate" column="checking_date"/>
+        <result property="sign" column="sign"/>
+        <result property="timeBeginFlushing" column="time_begin_flushing"/>
+        <result property="timeEndFlushing" column="time_end_flushing"/>
+        <result property="totalTimeFlushing" column="total_time_flushing"/>
+        <result property="waterPressureDuringFlushing" column="water_pressure_during_flushing"/>
+        <result property="punchingParagraph1" column="punching_paragraph1"/>
+        <result property="punchingParagraph2" column="punching_paragraph2"/>
+        <result property="seeRockCoalCase" column="see_rock_coal_case"/>
+        <result property="actualCoalAmountFlushed" column="actual_coal_amount_flushed"/>
+        <result property="completionRatioFlushedCoal" column="completion_ratio_flushed_coal"/>
+        <result property="exceptionPhenomena" column="exception_phenomena"/>
+        <result property="personConstructionFlushing" column="person_construction_flushing"/>
+        <result property="otherPerson" column="other_person"/>
+        <result property="chargehandFlushing" column="chargehand_flushing"/>
+        <result property="terminalHoleDate" column="terminal_hole_date"/>
+        <result property="remarkFlushing" column="remark_flushing"/>
+        <result property="file" column="file"/>
+        <result property="groutingDate" column="grouting_date"/>
+        <result property="groutingShiftId" column="grouting_shift_id"/>
+        <result property="groutingStartTime" column="grouting_start_time"/>
+        <result property="groutingEndTime" column="grouting_end_time"/>
+        <result property="groutingCements" column="grouting_cements"/>
+        <result property="groutingWaters" column="grouting_waters"/>
+        <result property="actualAmountBagGrouting" column="actual_amount_bag_grouting"/>
+        <result property="actualBagPressure" column="actual_bag_pressure"/>
+        <result property="actualAmountGapGrouting" column="actual_amount_gap_grouting"/>
+        <result property="interludeGroutingPressure" column="interlude_grouting_pressure"/>
+        <result property="groutingPerson" column="grouting_person"/>
+        <result property="groutingExceptionLabel" column="grouting_exception_label"/>
+        <result property="groutingPersonConstruction" column="grouting_person_construction"/>
+        <result property="groutingChargehand" column="grouting_chargehand"/>
+        <result property="personCheckingSiteGrouting" column="person_checking_site_grouting"/>
+        <result property="personCheckingVideoGrouting" column="person_checking_video_grouting"/>
+        <result property="monitor" column="monitor"/>
+        <result property="warden" column="warden"/>
+        <result property="eliminate" column="eliminate"/>
+        <result property="eliminateDeputyGeneralManager" column="eliminate_deputy_general_manager"/>
+        <result property="eliminateBarmaster" column="eliminate_barmaster"/>
+        <result property="remark" column="remark"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="selectTBkActBoreholeInfoVo">
+        select bkab.*,
+               r.roadway,
+               z.zone_name,
+               bc.borehole_category,
+               d.drilling_name,
+               pb.purpose_borehole,
+               s.shift_info,
+               np.navigation_point_name,
+               s.shift_info AS groutingShift,
+               bkab.monitor,
+               bkab.warden,
+               bkab.eliminate,
+               bkab.eliminate_deputy_general_manager,
+               bkab.eliminate_barmaster,
+               bkab.create_time
+        from t_bk_act_borehole_info bkab
+                 LEFT JOIN t_roadway r ON bkab.roadway_id = r.id
+                 LEFT JOIN t_roadway_zone z ON bkab.roadway_zone_id = z.id
+                 LEFT JOIN t_borehole_category bc ON bkab.category_code = bc.category_code
+                 LEFT JOIN t_purpose_borehole pb ON bkab.purpose_borehole_id = pb.id
+                 LEFT JOIN t_shiftinfo s ON bkab.shift_id = s.id
+                 LEFT JOIN t_navigation_point np ON bkab.navigation_point_id = np.id
+                 left join t_drillinginfo d ON bkab.drillinginfo_id = d.id
+
+    </sql>
+
+    <select id="selectAdvanceExplorationDrillByRoadwayId" parameterType="Integer" resultMap="TBkActBoreholeInfoResult">
+        <include refid="selectTBkActBoreholeInfoVo"/>
+        where bkab.category_code = 9 AND bkab.roadway_id = #{roadwayId}
+    </select>
+
+    <select id="getByRoadWayId" parameterType="Integer" resultMap="TBkActBoreholeInfoResult">
+        <include refid="selectTBkActBoreholeInfoVo"/>
+        where bkab.roadway_id = #{roadwayId}
+    </select>
+
+    <select id="selectTBkActBoreholeInfoList" parameterType="TBkActBoreholeInfo" resultMap="TBkActBoreholeInfoResult">
+        <include refid="selectTBkActBoreholeInfoVo"/>
+        <where>
+            <if test="roadwayId != null and roadwayId != 0 ">and bkab.roadway_id = #{roadwayId}</if>
+            <if test="roadwayZoneId != null and roadwayZoneId != 0 ">and bkab.roadway_zone_id = #{roadwayZoneId}</if>
+            <if test="groupNo != null  and groupNo != ''">and bkab.group_no = #{groupNo}</if>
+            <if test="boreholeNo != null  and boreholeNo != ''">and bkab.borehole_no = #{boreholeNo}</if>
+            <if test="boreholeCode != null  and boreholeCode != ''">and bkab.borehole_code = #{boreholeCode}</if>
+            <if test="categoryCode != null and categoryCode != 0">and bkab.category_code = #{categoryCode}</if>
+            <if test="purposeBoreholeId != null and purposeBoreholeId != 0 ">and bkab.purpose_borehole_id =
+                #{purposeBoreholeId}
+            </if>
+            <if test="drillingLocation != null  and drillingLocation != ''">and bkab.drilling_location =
+                #{drillingLocation}
+            </if>
+            <if test="drillingStartX != null  and drillingStartX != ''">and bkab.drilling_start_x = #{drillingStartX}
+            </if>
+            <if test="drillingStartY != null  and drillingStartY != ''">and bkab.drilling_start_y = #{drillingStartY}
+            </if>
+            <if test="drillingStartZ != null  and drillingStartZ != ''">and bkab.drilling_start_z = #{drillingStartZ}
+            </if>
+            <if test="isUsedCreateCoal != null  and isUsedCreateCoal != ''">and bkab.is_used_create_coal =
+                #{isUsedCreateCoal}
+            </if>
+            <if test="drillingDate != null ">and bkab.drilling_date = #{drillingDate}</if>
+            <if test="shiftId != null ">and bkab.shift_id = #{shiftId}</if>
+            <if test="drillinginfoId != null ">and bkab.drillinginfo_id = #{drillinginfoId}</if>
+            <if test="navigationPointId != null and navigationPointId != 0 ">and bkab.navigation_point_id =
+                #{navigationPointId}
+            </if>
+            <if test="distanceToNavigationPoint != null ">and bkab.distance_to_navigation_point =
+                #{distanceToNavigationPoint}
+            </if>
+            <if test="directionToNavigation != null ">and bkab.direction_to_navigation = #{directionToNavigation}</if>
+            <if test="aperture != null ">and bkab.aperture = #{aperture}</if>
+            <if test="checkAperture != null ">and bkab.check_aperture = #{checkAperture}</if>
+            <if test="holeAltitude != null ">and bkab.hole_altitude = #{holeAltitude}</if>
+            <if test="checkHoleAltitude != null ">and bkab.check_hole_altitude = #{checkHoleAltitude}</if>
+            <if test="azimuthAngle != null  and azimuthAngle != ''">and bkab.azimuth_angle = #{azimuthAngle}</if>
+            <if test="checkAzimuthAngle != null  and checkAzimuthAngle != ''">and bkab.check_azimuth_angle =
+                #{checkAzimuthAngle}
+            </if>
+            <if test="inclinationAngle != null ">and bkab.inclination_angle = #{inclinationAngle}</if>
+            <if test="checkInclinationAngle != null ">and bkab.check_inclination_angle = #{checkInclinationAngle}</if>
+            <if test="angle != null ">and bkab.angle = #{angle}</if>
+            <if test="checkAngle != null ">and bkab.check_angle = #{checkAngle}</if>
+            <if test="lineSpace != null ">and bkab.line_space = #{lineSpace}</if>
+            <if test="checkLineSpace != null ">and bkab.check_line_space = #{checkLineSpace}</if>
+            <if test="holeSpace != null ">and bkab.hole_space = #{holeSpace}</if>
+            <if test="checkHoleSpace != null ">and bkab.check_hole_space = #{checkHoleSpace}</if>
+            <if test="boreholeLength != null ">and bkab.borehole_length = #{boreholeLength}</if>
+            <if test="checkBoreholeLength != null ">and bkab.check_borehole_length = #{checkBoreholeLength}</if>
+            <if test="depth1stRockSeamStart != null ">and bkab.depth_1st_rock_seam_start = #{depth1stRockSeamStart}</if>
+            <if test="depth1stRockSeamEnd != null ">and bkab.depth_1st_rock_seam_end = #{depth1stRockSeamEnd}</if>
+            <if test="depth1stCoalSeamStart != null ">and bkab.depth_1st_coal_seam_start = #{depth1stCoalSeamStart}</if>
+            <if test="depth1stCoalSeamEnd != null ">and bkab.depth_1st_coal_seam_end = #{depth1stCoalSeamEnd}</if>
+            <if test="depth2stRockSeamStart != null ">and bkab.depth_2st_rock_seam_start = #{depth2stRockSeamStart}</if>
+            <if test="depth2stRockSeamEnd != null ">and bkab.depth_2st_rock_seam_end = #{depth2stRockSeamEnd}</if>
+            <if test="depth2stCoalSeamStart != null ">and bkab.depth_2st_coal_seam_start = #{depth2stCoalSeamStart}</if>
+            <if test="depth2stCoalSeamEnd != null ">and bkab.depth_2st_coal_seam_end = #{depth2stCoalSeamEnd}</if>
+            <if test="depth3stRockSeamStart != null ">and bkab.depth_3st_rock_seam_start = #{depth3stRockSeamStart}</if>
+            <if test="depth3stRockSeamEnd != null ">and bkab.depth_3st_rock_seam_end = #{depth3stRockSeamEnd}</if>
+            <if test="depth3stCoalSeamStart != null ">and bkab.depth_3st_coal_seam_start = #{depth3stCoalSeamStart}</if>
+            <if test="depth3stCoalSeamEnd != null ">and bkab.depth_3st_coal_seam_end = #{depth3stCoalSeamEnd}</if>
+            <if test="depth4stRockSeamStart != null ">and bkab.depth_4st_rock_seam_start = #{depth4stRockSeamStart}</if>
+            <if test="depth4stRockSeamEnd != null ">and bkab.depth_4st_rock_seam_end = #{depth4stRockSeamEnd}</if>
+            <if test="bindCoal1st != null ">and bkab.bind_coal_1st = #{bindCoal1st}</if>
+            <if test="bindCoal2st != null ">and bkab.bind_coal_2st = #{bindCoal2st}</if>
+            <if test="bindCoal3st != null ">and bkab.bind_coal_3st = #{bindCoal3st}</if>
+            <if test="isUsedCreateCoal1st != null ">and bkab.is_used_create_coal_1st = #{isUsedCreateCoal1st}</if>
+            <if test="isUsedCreateCoal2st != null ">and bkab.is_used_create_coal_2st = #{isUsedCreateCoal2st}</if>
+            <if test="isUsedCreateCoal3st != null ">and bkab.is_used_create_coal_3st = #{isUsedCreateCoal3st}</if>
+            <if test="extractionRadius != null ">and bkab.extraction_radius = #{extractionRadius}</if>
+            <if test="distanceToCentrallineTunnel != null ">and bkab.distance_to_centralline_tunnel =
+                #{distanceToCentrallineTunnel}
+            </if>
+            <if test="pullDrillDate != null ">and bkab.pull_drill_date = #{pullDrillDate}</if>
+            <if test="adjacentBoreholeNo != null  and adjacentBoreholeNo != ''">and bkab.adjacent_borehole_no =
+                #{adjacentBoreholeNo}
+            </if>
+            <if test="distanceAdjacentBorehole != null ">and bkab.distance_adjacent_borehole =
+                #{distanceAdjacentBorehole}
+            </if>
+            <if test="sprayHoleCondition != null  and sprayHoleCondition != ''">and bkab.spray_hole_condition =
+                #{sprayHoleCondition}
+            </if>
+            <if test="exceptionDuringDrilling != null  and exceptionDuringDrilling != ''">and
+                bkab.exception_during_drilling = #{exceptionDuringDrilling}
+            </if>
+            <if test="exceptionConstruction != null  and exceptionConstruction != ''">and bkab.exception_construction =
+                #{exceptionConstruction}
+            </if>
+            <if test="acceptanceStatus != null  and acceptanceStatus != ''">and bkab.acceptance_status =
+                #{acceptanceStatus}
+            </if>
+            <if test="downTubeTimeStart != null ">and bkab.down_tube_time_start = #{downTubeTimeStart}</if>
+            <if test="downTubeTimeEnd != null ">and bkab.down_tube_time_end = #{downTubeTimeEnd}</if>
+            <if test="tubeLength != null ">and bkab.tube_length = #{tubeLength}</if>
+            <if test="downTubeChargehand != null  and downTubeChargehand != ''">and bkab.down_tube_chargehand =
+                #{downTubeChargehand}
+            </if>
+            <if test="solidPipelineLength != null ">and bkab.solid_pipeline_length = #{solidPipelineLength}</if>
+            <if test="sievePipelineLength != null ">and bkab.sieve_pipeline_length = #{sievePipelineLength}</if>
+            <if test="holesealLength != null ">and bkab.holeseal_length = #{holesealLength}</if>
+            <if test="holesealDepth != null ">and bkab.holeseal_depth = #{holesealDepth}</if>
+            <if test="sealingHoleDiameter != null ">and bkab.sealing_hole_diameter = #{sealingHoleDiameter}</if>
+            <if test="holeSealingSpecification != null ">and bkab.hole_sealing_specification =
+                #{holeSealingSpecification}
+            </if>
+            <if test="sealingMaterial != null  and sealingMaterial != ''">and bkab.sealing_material =
+                #{sealingMaterial}
+            </if>
+            <if test="sieveTubeLength != null ">and bkab.sieve_tube_length = #{sieveTubeLength}</if>
+            <if test="holesealDate != null ">and bkab.holeseal_date = #{holesealDate}</if>
+            <if test="holesealChargehand != null  and holesealChargehand != ''">and bkab.holeseal_chargehand =
+                #{holesealChargehand}
+            </if>
+            <if test="validFootage != null ">and bkab.valid_footage = #{validFootage}</if>
+            <if test="personConstruction != null  and personConstruction != ''">and bkab.person_construction =
+                #{personConstruction}
+            </if>
+            <if test="chargehand != null  and chargehand != ''">and bkab.chargehand = #{chargehand}</if>
+            <if test="personCheckingVideo != null  and personCheckingVideo != ''">and bkab.person_checking_video =
+                #{personCheckingVideo}
+            </if>
+            <if test="personCheckingSite != null  and personCheckingSite != ''">and bkab.person_checking_site =
+                #{personCheckingSite}
+            </if>
+            <if test="checkingDate != null ">and bkab.checking_date = #{checkingDate}</if>
+            <if test="sign != null  and sign != ''">and bkab.sign = #{sign}</if>
+            <if test="timeBeginFlushing != null ">and bkab.time_begin_flushing = #{timeBeginFlushing}</if>
+            <if test="timeEndFlushing != null ">and bkab.time_end_flushing = #{timeEndFlushing}</if>
+            <if test="totalTimeFlushing != null ">and bkab.total_time_flushing = #{totalTimeFlushing}</if>
+            <if test="waterPressureDuringFlushing != null ">and bkab.water_pressure_during_flushing =
+                #{waterPressureDuringFlushing}
+            </if>
+            <if test="punchingParagraph1 != null ">and bkab.punching_paragraph1 = #{punchingParagraph1}</if>
+            <if test="punchingParagraph2 != null ">and bkab.punching_paragraph2 = #{punchingParagraph2}</if>
+            <if test="seeRockCoalCase != null  and seeRockCoalCase != ''">and bkab.see_rock_coal_case =
+                #{seeRockCoalCase}
+            </if>
+            <if test="actualCoalAmountFlushed != null ">and bkab.actual_coal_amount_flushed =
+                #{actualCoalAmountFlushed}
+            </if>
+            <if test="completionRatioFlushedCoal != null ">and bkab.completion_ratio_flushed_coal =
+                #{completionRatioFlushedCoal}
+            </if>
+            <if test="exceptionPhenomena != null  and exceptionPhenomena != ''">and bkab.exception_phenomena =
+                #{exceptionPhenomena}
+            </if>
+            <if test="personConstructionFlushing != null  and personConstructionFlushing != ''">and
+                bkab.person_construction_flushing = #{personConstructionFlushing}
+            </if>
+            <if test="otherPerson != null  and otherPerson != ''">and bkab.other_person = #{otherPerson}</if>
+            <if test="chargehandFlushing != null  and chargehandFlushing != ''">and bkab.chargehand_flushing =
+                #{chargehandFlushing}
+            </if>
+            <if test="terminalHoleDate != null ">and bkab.terminal_hole_date = #{terminalHoleDate}</if>
+            <if test="remarkFlushing != null  and remarkFlushing != ''">and bkab.remark_flushing = #{remarkFlushing}
+            </if>
+            <if test="file != null  and file != ''">and bkab.file = #{file}</if>
+            <if test="groutingDate != null ">and bkab.grouting_date = #{groutingDate}</if>
+            <if test="groutingShiftId != null and groutingShiftId != 0 ">and bkab.grouting_shift_id =
+                #{groutingShiftId}
+            </if>
+            <if test="groutingStartTime != null ">and bkab.grouting_start_time = #{groutingStartTime}</if>
+            <if test="groutingEndTime != null ">and bkab.grouting_end_time = #{groutingEndTime}</if>
+            <if test="groutingCements != null  and groutingCements != ''">and bkab.grouting_cements =
+                #{groutingCements}
+            </if>
+            <if test="groutingWaters != null  and groutingWaters != ''">and bkab.grouting_waters = #{groutingWaters}
+            </if>
+            <if test="actualAmountBagGrouting != null ">and bkab.actual_amount_bag_grouting =
+                #{actualAmountBagGrouting}
+            </if>
+            <if test="actualBagPressure != null ">and bkab.actual_bag_pressure = #{actualBagPressure}</if>
+            <if test="actualAmountGapGrouting != null ">and bkab.actual_amount_gap_grouting =
+                #{actualAmountGapGrouting}
+            </if>
+            <if test="interludeGroutingPressure != null ">and bkab.interlude_grouting_pressure =
+                #{interludeGroutingPressure}
+            </if>
+            <if test="groutingPerson != null  and groutingPerson != ''">and bkab.grouting_person = #{groutingPerson}
+            </if>
+            <if test="groutingExceptionLabel != null  and groutingExceptionLabel != ''">and
+                bkab.grouting_exception_label = #{groutingExceptionLabel}
+            </if>
+            <if test="groutingPersonConstruction != null  and groutingPersonConstruction != ''">and
+                bkab.grouting_person_construction = #{groutingPersonConstruction}
+            </if>
+            <if test="groutingChargehand != null  and groutingChargehand != ''">and bkab.grouting_chargehand =
+                #{groutingChargehand}
+            </if>
+            <if test="personCheckingSiteGrouting != null  and personCheckingSiteGrouting != ''">and
+                bkab.person_checking_site_grouting = #{personCheckingSiteGrouting}
+            </if>
+            <if test="personCheckingVideoGrouting != null  and personCheckingVideoGrouting != ''">and
+                bkab.person_checking_video_grouting = #{personCheckingVideoGrouting}
+            </if>
+            <if test="monitor != null  and monitor != ''">and bkab.monitor = #{monitor}</if>
+            <if test="warden != null  and warden != ''">and bkab.warden = #{warden}</if>
+            <if test="eliminate != null  and eliminate != ''">and bkab.eliminate = #{eliminate}</if>
+            <if test="eliminateDeputyGeneralManager != null  and eliminateDeputyGeneralManager != ''">and
+                bkab.eliminate_deputy_general_manager = #{eliminateDeputyGeneralManager}
+            </if>
+            <if test="eliminateBarmaster != null  and eliminateBarmaster != ''">and bkab.eliminate_barmaster =
+                #{eliminateBarmaster}
+            </if>
+
+        </where>
+    </select>
+
+    <select id="selectTBkActBoreholeInfoById" parameterType="Integer" resultMap="TBkActBoreholeInfoResult">
+        <include refid="selectTBkActBoreholeInfoVo"/>
+        where bkab.id = #{id}
+    </select>
+
+    <insert id="insertTBkActBoreholeInfo" parameterType="TBkActBoreholeInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into t_bk_act_borehole_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">roadway_id,</if>
+            <if test="roadwayZoneId != null and roadwayZoneId != 0">roadway_zone_id,</if>
+            <if test="groupNo != null">group_no,</if>
+            <if test="boreholeNo != null">borehole_no,</if>
+            <if test="boreholeCode != null">borehole_code,</if>
+            <if test="categoryCode != null and categoryCode != 0">category_code,</if>
+            <if test="purposeBoreholeId != null and purposeBoreholeId != 0">purpose_borehole_id,</if>
+            <if test="drillingLocation != null">drilling_location,</if>
+            <if test="drillingStartX != null">drilling_start_x,</if>
+            <if test="drillingStartY != null">drilling_start_y,</if>
+            <if test="drillingStartZ != null">drilling_start_z,</if>
+            <if test="isUsedCreateCoal != null">is_used_create_coal,</if>
+            <if test="drillingDate != null">drilling_date,</if>
+            <if test="shiftId != null">shift_id,</if>
+            <if test="drillinginfoId != null">drillinginfo_id,</if>
+            <if test="navigationPointId != null and navigationPointId != 0">navigation_point_id,</if>
+            <if test="distanceToNavigationPoint != null">distance_to_navigation_point,</if>
+            <if test="directionToNavigation != null">direction_to_navigation,</if>
+            <if test="aperture != null">aperture,</if>
+            <if test="checkAperture != null">check_aperture,</if>
+            <if test="holeAltitude != null">hole_altitude,</if>
+            <if test="checkHoleAltitude != null">check_hole_altitude,</if>
+            <if test="azimuthAngle != null">azimuth_angle,</if>
+            <if test="checkAzimuthAngle != null">check_azimuth_angle,</if>
+            <if test="inclinationAngle != null">inclination_angle,</if>
+            <if test="checkInclinationAngle != null">check_inclination_angle,</if>
+            <if test="angle != null">angle,</if>
+            <if test="checkAngle != null">check_angle,</if>
+            <if test="lineSpace != null">line_space,</if>
+            <if test="checkLineSpace != null">check_line_space,</if>
+            <if test="holeSpace != null">hole_space,</if>
+            <if test="checkHoleSpace != null">check_hole_space,</if>
+            <if test="boreholeLength != null">borehole_length,</if>
+            <if test="checkBoreholeLength != null">check_borehole_length,</if>
+            <if test="depth1stRockSeamStart != null">depth_1st_rock_seam_start,</if>
+            <if test="depth1stRockSeamEnd != null">depth_1st_rock_seam_end,</if>
+            <if test="depth1stCoalSeamStart != null">depth_1st_coal_seam_start,</if>
+            <if test="depth1stCoalSeamEnd != null">depth_1st_coal_seam_end,</if>
+            <if test="depth2stRockSeamStart != null">depth_2st_rock_seam_start,</if>
+            <if test="depth2stRockSeamEnd != null">depth_2st_rock_seam_end,</if>
+            <if test="depth2stCoalSeamStart != null">depth_2st_coal_seam_start,</if>
+            <if test="depth2stCoalSeamEnd != null">depth_2st_coal_seam_end,</if>
+            <if test="depth3stRockSeamStart != null">depth_3st_rock_seam_start,</if>
+            <if test="depth3stRockSeamEnd != null">depth_3st_rock_seam_end,</if>
+            <if test="depth3stCoalSeamStart != null">depth_3st_coal_seam_start,</if>
+            <if test="depth3stCoalSeamEnd != null">depth_3st_coal_seam_end,</if>
+            <if test="depth4stRockSeamStart != null">depth_4st_rock_seam_start,</if>
+            <if test="depth4stRockSeamEnd != null">depth_4st_rock_seam_end,</if>
+            <if test="bindCoal1st != null">bind_coal_1st,</if>
+            <if test="bindCoal2st != null">bind_coal_2st,</if>
+            <if test="bindCoal3st != null">bind_coal_3st,</if>
+            <if test="isUsedCreateCoal1st != null">is_used_create_coal_1st,</if>
+            <if test="isUsedCreateCoal2st != null">is_used_create_coal_2st,</if>
+            <if test="isUsedCreateCoal3st != null">is_used_create_coal_3st,</if>
+            <if test="extractionRadius != null">extraction_radius,</if>
+            <if test="distanceToCentrallineTunnel != null">distance_to_centralline_tunnel,</if>
+            <if test="pullDrillDate != null">pull_drill_date,</if>
+            <if test="adjacentBoreholeNo != null">adjacent_borehole_no,</if>
+            <if test="distanceAdjacentBorehole != null">distance_adjacent_borehole,</if>
+            <if test="sprayHoleCondition != null">spray_hole_condition,</if>
+            <if test="exceptionDuringDrilling != null">exception_during_drilling,</if>
+            <if test="exceptionConstruction != null">exception_construction,</if>
+            <if test="acceptanceStatus != null">acceptance_status,</if>
+            <if test="downTubeTimeStart != null">down_tube_time_start,</if>
+            <if test="downTubeTimeEnd != null">down_tube_time_end,</if>
+            <if test="tubeLength != null">tube_length,</if>
+            <if test="downTubeChargehand != null">down_tube_chargehand,</if>
+            <if test="solidPipelineLength != null">solid_pipeline_length,</if>
+            <if test="sievePipelineLength != null">sieve_pipeline_length,</if>
+            <if test="holesealLength != null">holeseal_length,</if>
+            <if test="holesealDepth != null">holeseal_depth,</if>
+            <if test="sealingHoleDiameter != null">sealing_hole_diameter,</if>
+            <if test="holeSealingSpecification != null">hole_sealing_specification,</if>
+            <if test="sealingMaterial != null">sealing_material,</if>
+            <if test="sieveTubeLength != null">sieve_tube_length,</if>
+            <if test="holesealDate != null">holeseal_date,</if>
+            <if test="holesealChargehand != null">holeseal_chargehand,</if>
+            <if test="validFootage != null">valid_footage,</if>
+            <if test="personConstruction != null">person_construction,</if>
+            <if test="chargehand != null">chargehand,</if>
+            <if test="personCheckingVideo != null">person_checking_video,</if>
+            <if test="personCheckingSite != null">person_checking_site,</if>
+            <if test="checkingDate != null">checking_date,</if>
+            <if test="sign != null">sign,</if>
+            <if test="timeBeginFlushing != null">time_begin_flushing,</if>
+            <if test="timeEndFlushing != null">time_end_flushing,</if>
+            <if test="totalTimeFlushing != null">total_time_flushing,</if>
+            <if test="waterPressureDuringFlushing != null">water_pressure_during_flushing,</if>
+            <if test="punchingParagraph1 != null">punching_paragraph1,</if>
+            <if test="punchingParagraph2 != null">punching_paragraph2,</if>
+            <if test="seeRockCoalCase != null">see_rock_coal_case,</if>
+            <if test="actualCoalAmountFlushed != null">actual_coal_amount_flushed,</if>
+            <if test="completionRatioFlushedCoal != null">completion_ratio_flushed_coal,</if>
+            <if test="exceptionPhenomena != null">exception_phenomena,</if>
+            <if test="personConstructionFlushing != null">person_construction_flushing,</if>
+            <if test="otherPerson != null">other_person,</if>
+            <if test="chargehandFlushing != null">chargehand_flushing,</if>
+            <if test="terminalHoleDate != null">terminal_hole_date,</if>
+            <if test="remarkFlushing != null">remark_flushing,</if>
+            <if test="file != null">file,</if>
+            <if test="groutingDate != null">grouting_date,</if>
+            <if test="groutingShiftId != null and groutingShiftId != 0">grouting_shift_id,</if>
+            <if test="groutingStartTime != null">grouting_start_time,</if>
+            <if test="groutingEndTime != null">grouting_end_time,</if>
+            <if test="groutingCements != null">grouting_cements,</if>
+            <if test="groutingWaters != null">grouting_waters,</if>
+            <if test="actualAmountBagGrouting != null">actual_amount_bag_grouting,</if>
+            <if test="actualBagPressure != null">actual_bag_pressure,</if>
+            <if test="actualAmountGapGrouting != null">actual_amount_gap_grouting,</if>
+            <if test="interludeGroutingPressure != null">interlude_grouting_pressure,</if>
+            <if test="groutingPerson != null">grouting_person,</if>
+            <if test="groutingExceptionLabel != null">grouting_exception_label,</if>
+            <if test="groutingPersonConstruction != null">grouting_person_construction,</if>
+            <if test="groutingChargehand != null">grouting_chargehand,</if>
+            <if test="personCheckingSiteGrouting != null">person_checking_site_grouting,</if>
+            <if test="personCheckingVideoGrouting != null">person_checking_video_grouting,</if>
+            <if test="monitor != null">monitor,</if>
+            <if test="warden != null">warden,</if>
+            <if test="eliminate != null">eliminate,</if>
+            <if test="eliminateDeputyGeneralManager != null">eliminate_deputy_general_manager,</if>
+            <if test="eliminateBarmaster != null">eliminate_barmaster,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">#{roadwayId},</if>
+            <if test="roadwayZoneId != null and roadwayZoneId != 0">#{roadwayZoneId},</if>
+            <if test="groupNo != null">#{groupNo},</if>
+            <if test="boreholeNo != null">#{boreholeNo},</if>
+            <if test="boreholeCode != null">#{boreholeCode},</if>
+            <if test="categoryCode != null and categoryCode != 0">#{categoryCode},</if>
+            <if test="purposeBoreholeId != null and purposeBoreholeId != 0">#{purposeBoreholeId},</if>
+            <if test="drillingLocation != null">#{drillingLocation},</if>
+            <if test="drillingStartX != null">#{drillingStartX},</if>
+            <if test="drillingStartY != null">#{drillingStartY},</if>
+            <if test="drillingStartZ != null">#{drillingStartZ},</if>
+            <if test="isUsedCreateCoal != null">#{isUsedCreateCoal},</if>
+            <if test="drillingDate != null">#{drillingDate},</if>
+            <if test="shiftId != null">#{shiftId},</if>
+            <if test="drillinginfoId != null">#{drillinginfoId},</if>
+            <if test="navigationPointId != null and navigationPointId != 0">#{navigationPointId},</if>
+            <if test="distanceToNavigationPoint != null">#{distanceToNavigationPoint},</if>
+            <if test="directionToNavigation != null">#{directionToNavigation},</if>
+            <if test="aperture != null">#{aperture},</if>
+            <if test="checkAperture != null">#{checkAperture},</if>
+            <if test="holeAltitude != null">#{holeAltitude},</if>
+            <if test="checkHoleAltitude != null">#{checkHoleAltitude},</if>
+            <if test="azimuthAngle != null">#{azimuthAngle},</if>
+            <if test="checkAzimuthAngle != null">#{checkAzimuthAngle},</if>
+            <if test="inclinationAngle != null">#{inclinationAngle},</if>
+            <if test="checkInclinationAngle != null">#{checkInclinationAngle},</if>
+            <if test="angle != null">#{angle},</if>
+            <if test="checkAngle != null">#{checkAngle},</if>
+            <if test="lineSpace != null">#{lineSpace},</if>
+            <if test="checkLineSpace != null">#{checkLineSpace},</if>
+            <if test="holeSpace != null">#{holeSpace},</if>
+            <if test="checkHoleSpace != null">#{checkHoleSpace},</if>
+            <if test="boreholeLength != null">#{boreholeLength},</if>
+            <if test="checkBoreholeLength != null">#{checkBoreholeLength},</if>
+            <if test="depth1stRockSeamStart != null">#{depth1stRockSeamStart},</if>
+            <if test="depth1stRockSeamEnd != null">#{depth1stRockSeamEnd},</if>
+            <if test="depth1stCoalSeamStart != null">#{depth1stCoalSeamStart},</if>
+            <if test="depth1stCoalSeamEnd != null">#{depth1stCoalSeamEnd},</if>
+            <if test="depth2stRockSeamStart != null">#{depth2stRockSeamStart},</if>
+            <if test="depth2stRockSeamEnd != null">#{depth2stRockSeamEnd},</if>
+            <if test="depth2stCoalSeamStart != null">#{depth2stCoalSeamStart},</if>
+            <if test="depth2stCoalSeamEnd != null">#{depth2stCoalSeamEnd},</if>
+            <if test="depth3stRockSeamStart != null">#{depth3stRockSeamStart},</if>
+            <if test="depth3stRockSeamEnd != null">#{depth3stRockSeamEnd},</if>
+            <if test="depth3stCoalSeamStart != null">#{depth3stCoalSeamStart},</if>
+            <if test="depth3stCoalSeamEnd != null">#{depth3stCoalSeamEnd},</if>
+            <if test="depth4stRockSeamStart != null">#{depth4stRockSeamStart},</if>
+            <if test="depth4stRockSeamEnd != null">#{depth4stRockSeamEnd},</if>
+            <if test="bindCoal1st != null">#{bindCoal1st},</if>
+            <if test="bindCoal2st != null">#{bindCoal2st},</if>
+            <if test="bindCoal3st != null">#{bindCoal3st},</if>
+            <if test="isUsedCreateCoal1st != null">#{isUsedCreateCoal1st},</if>
+            <if test="isUsedCreateCoal2st != null">#{isUsedCreateCoal2st},</if>
+            <if test="isUsedCreateCoal3st != null">#{isUsedCreateCoal3st},</if>
+            <if test="extractionRadius != null">#{extractionRadius},</if>
+            <if test="distanceToCentrallineTunnel != null">#{distanceToCentrallineTunnel},</if>
+            <if test="pullDrillDate != null">#{pullDrillDate},</if>
+            <if test="adjacentBoreholeNo != null">#{adjacentBoreholeNo},</if>
+            <if test="distanceAdjacentBorehole != null">#{distanceAdjacentBorehole},</if>
+            <if test="sprayHoleCondition != null">#{sprayHoleCondition},</if>
+            <if test="exceptionDuringDrilling != null">#{exceptionDuringDrilling},</if>
+            <if test="exceptionConstruction != null">#{exceptionConstruction},</if>
+            <if test="acceptanceStatus != null">#{acceptanceStatus},</if>
+            <if test="downTubeTimeStart != null">#{downTubeTimeStart},</if>
+            <if test="downTubeTimeEnd != null">#{downTubeTimeEnd},</if>
+            <if test="tubeLength != null">#{tubeLength},</if>
+            <if test="downTubeChargehand != null">#{downTubeChargehand},</if>
+            <if test="solidPipelineLength != null">#{solidPipelineLength},</if>
+            <if test="sievePipelineLength != null">#{sievePipelineLength},</if>
+            <if test="holesealLength != null">#{holesealLength},</if>
+            <if test="holesealDepth != null">#{holesealDepth},</if>
+            <if test="sealingHoleDiameter != null">#{sealingHoleDiameter},</if>
+            <if test="holeSealingSpecification != null">#{holeSealingSpecification},</if>
+            <if test="sealingMaterial != null">#{sealingMaterial},</if>
+            <if test="sieveTubeLength != null">#{sieveTubeLength},</if>
+            <if test="holesealDate != null">#{holesealDate},</if>
+            <if test="holesealChargehand != null">#{holesealChargehand},</if>
+            <if test="validFootage != null">#{validFootage},</if>
+            <if test="personConstruction != null">#{personConstruction},</if>
+            <if test="chargehand != null">#{chargehand},</if>
+            <if test="personCheckingVideo != null">#{personCheckingVideo},</if>
+            <if test="personCheckingSite != null">#{personCheckingSite},</if>
+            <if test="checkingDate != null">#{checkingDate},</if>
+            <if test="sign != null">#{sign},</if>
+            <if test="timeBeginFlushing != null">#{timeBeginFlushing},</if>
+            <if test="timeEndFlushing != null">#{timeEndFlushing},</if>
+            <if test="totalTimeFlushing != null">#{totalTimeFlushing},</if>
+            <if test="waterPressureDuringFlushing != null">#{waterPressureDuringFlushing},</if>
+            <if test="punchingParagraph1 != null">#{punchingParagraph1},</if>
+            <if test="punchingParagraph2 != null">#{punchingParagraph2},</if>
+            <if test="seeRockCoalCase != null">#{seeRockCoalCase},</if>
+            <if test="actualCoalAmountFlushed != null">#{actualCoalAmountFlushed},</if>
+            <if test="completionRatioFlushedCoal != null">#{completionRatioFlushedCoal},</if>
+            <if test="exceptionPhenomena != null">#{exceptionPhenomena},</if>
+            <if test="personConstructionFlushing != null">#{personConstructionFlushing},</if>
+            <if test="otherPerson != null">#{otherPerson},</if>
+            <if test="chargehandFlushing != null">#{chargehandFlushing},</if>
+            <if test="terminalHoleDate != null">#{terminalHoleDate},</if>
+            <if test="remarkFlushing != null">#{remarkFlushing},</if>
+            <if test="file != null">#{file},</if>
+            <if test="groutingDate != null">#{groutingDate},</if>
+            <if test="groutingShiftId != null and groutingShiftId != 0">#{groutingShiftId},</if>
+            <if test="groutingStartTime != null">#{groutingStartTime},</if>
+            <if test="groutingEndTime != null">#{groutingEndTime},</if>
+            <if test="groutingCements != null">#{groutingCements},</if>
+            <if test="groutingWaters != null">#{groutingWaters},</if>
+            <if test="actualAmountBagGrouting != null">#{actualAmountBagGrouting},</if>
+            <if test="actualBagPressure != null">#{actualBagPressure},</if>
+            <if test="actualAmountGapGrouting != null">#{actualAmountGapGrouting},</if>
+            <if test="interludeGroutingPressure != null">#{interludeGroutingPressure},</if>
+            <if test="groutingPerson != null">#{groutingPerson},</if>
+            <if test="groutingExceptionLabel != null">#{groutingExceptionLabel},</if>
+            <if test="groutingPersonConstruction != null">#{groutingPersonConstruction},</if>
+            <if test="groutingChargehand != null">#{groutingChargehand},</if>
+            <if test="personCheckingSiteGrouting != null">#{personCheckingSiteGrouting},</if>
+            <if test="personCheckingVideoGrouting != null">#{personCheckingVideoGrouting},</if>
+            <if test="monitor != null">#{monitor},</if>
+            <if test="warden != null">#{warden},</if>
+            <if test="eliminate != null">#{eliminate},</if>
+            <if test="eliminateDeputyGeneralManager != null">#{eliminateDeputyGeneralManager},</if>
+            <if test="eliminateBarmaster != null">#{eliminateBarmaster},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTBkActBoreholeInfo" parameterType="TBkActBoreholeInfo">
+        update t_bk_act_borehole_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">roadway_id = #{roadwayId},</if>
+            <if test="roadwayZoneId != null and roadwayZoneId != 0">roadway_zone_id = #{roadwayZoneId},</if>
+            <if test="groupNo != null">group_no = #{groupNo},</if>
+            <if test="boreholeNo != null">borehole_no = #{boreholeNo},</if>
+            <if test="boreholeCode != null">borehole_code = #{boreholeCode},</if>
+            <if test="categoryCode != null and categoryCode != 0">category_code = #{categoryCode},</if>
+            <if test="purposeBoreholeId != null and purposeBoreholeId != 0">purpose_borehole_id =
+                #{purposeBoreholeId},
+            </if>
+            <if test="drillingLocation != null">drilling_location = #{drillingLocation},</if>
+            <if test="drillingStartX != null">drilling_start_x = #{drillingStartX},</if>
+            <if test="drillingStartY != null">drilling_start_y = #{drillingStartY},</if>
+            <if test="drillingStartZ != null">drilling_start_z = #{drillingStartZ},</if>
+            <if test="isUsedCreateCoal != null">is_used_create_coal = #{isUsedCreateCoal},</if>
+            <if test="drillingDate != null">drilling_date = #{drillingDate},</if>
+            <if test="shiftId != null">shift_id = #{shiftId},</if>
+            <if test="drillinginfoId != null">drillinginfo_id = #{drillinginfoId},</if>
+            <if test="navigationPointId != null and navigationPointId != 0">navigation_point_id =
+                #{navigationPointId},
+            </if>
+            <if test="distanceToNavigationPoint != null">distance_to_navigation_point = #{distanceToNavigationPoint},
+            </if>
+            <if test="directionToNavigation != null">direction_to_navigation = #{directionToNavigation},</if>
+            <if test="aperture != null">aperture = #{aperture},</if>
+            <if test="checkAperture != null">check_aperture = #{checkAperture},</if>
+            <if test="holeAltitude != null">hole_altitude = #{holeAltitude},</if>
+            <if test="checkHoleAltitude != null">check_hole_altitude = #{checkHoleAltitude},</if>
+            <if test="azimuthAngle != null">azimuth_angle = #{azimuthAngle},</if>
+            <if test="checkAzimuthAngle != null">check_azimuth_angle = #{checkAzimuthAngle},</if>
+            <if test="inclinationAngle != null">inclination_angle = #{inclinationAngle},</if>
+            <if test="checkInclinationAngle != null">check_inclination_angle = #{checkInclinationAngle},</if>
+            <if test="angle != null">angle = #{angle},</if>
+            <if test="checkAngle != null">check_angle = #{checkAngle},</if>
+            <if test="lineSpace != null">line_space = #{lineSpace},</if>
+            <if test="checkLineSpace != null">check_line_space = #{checkLineSpace},</if>
+            <if test="holeSpace != null">hole_space = #{holeSpace},</if>
+            <if test="checkHoleSpace != null">check_hole_space = #{checkHoleSpace},</if>
+            <if test="boreholeLength != null">borehole_length = #{boreholeLength},</if>
+            <if test="checkBoreholeLength != null">check_borehole_length = #{checkBoreholeLength},</if>
+            <if test="depth1stRockSeamStart != null">depth_1st_rock_seam_start = #{depth1stRockSeamStart},</if>
+            <if test="depth1stRockSeamEnd != null">depth_1st_rock_seam_end = #{depth1stRockSeamEnd},</if>
+            <if test="depth1stCoalSeamStart != null">depth_1st_coal_seam_start = #{depth1stCoalSeamStart},</if>
+            <if test="depth1stCoalSeamEnd != null">depth_1st_coal_seam_end = #{depth1stCoalSeamEnd},</if>
+            <if test="depth2stRockSeamStart != null">depth_2st_rock_seam_start = #{depth2stRockSeamStart},</if>
+            <if test="depth2stRockSeamEnd != null">depth_2st_rock_seam_end = #{depth2stRockSeamEnd},</if>
+            <if test="depth2stCoalSeamStart != null">depth_2st_coal_seam_start = #{depth2stCoalSeamStart},</if>
+            <if test="depth2stCoalSeamEnd != null">depth_2st_coal_seam_end = #{depth2stCoalSeamEnd},</if>
+            <if test="depth3stRockSeamStart != null">depth_3st_rock_seam_start = #{depth3stRockSeamStart},</if>
+            <if test="depth3stRockSeamEnd != null">depth_3st_rock_seam_end = #{depth3stRockSeamEnd},</if>
+            <if test="depth3stCoalSeamStart != null">depth_3st_coal_seam_start = #{depth3stCoalSeamStart},</if>
+            <if test="depth3stCoalSeamEnd != null">depth_3st_coal_seam_end = #{depth3stCoalSeamEnd},</if>
+            <if test="depth4stRockSeamStart != null">depth_4st_rock_seam_start = #{depth4stRockSeamStart},</if>
+            <if test="depth4stRockSeamEnd != null">depth_4st_rock_seam_end = #{depth4stRockSeamEnd},</if>
+            <if test="bindCoal1st != null">bind_coal_1st = #{bindCoal1st},</if>
+            <if test="bindCoal2st != null">bind_coal_2st = #{bindCoal2st},</if>
+            <if test="bindCoal3st != null">bind_coal_3st = #{bindCoal3st},</if>
+            <if test="isUsedCreateCoal1st != null">is_used_create_coal_1st = #{isUsedCreateCoal1st},</if>
+            <if test="isUsedCreateCoal2st != null">is_used_create_coal_2st = #{isUsedCreateCoal2st},</if>
+            <if test="isUsedCreateCoal3st != null">is_used_create_coal_3st = #{isUsedCreateCoal3st},</if>
+            <if test="extractionRadius != null">extraction_radius = #{extractionRadius},</if>
+            <if test="distanceToCentrallineTunnel != null">distance_to_centralline_tunnel =
+                #{distanceToCentrallineTunnel},
+            </if>
+            <if test="pullDrillDate != null">pull_drill_date = #{pullDrillDate},</if>
+            <if test="adjacentBoreholeNo != null">adjacent_borehole_no = #{adjacentBoreholeNo},</if>
+            <if test="distanceAdjacentBorehole != null">distance_adjacent_borehole = #{distanceAdjacentBorehole},</if>
+            <if test="sprayHoleCondition != null">spray_hole_condition = #{sprayHoleCondition},</if>
+            <if test="exceptionDuringDrilling != null">exception_during_drilling = #{exceptionDuringDrilling},</if>
+            <if test="exceptionConstruction != null">exception_construction = #{exceptionConstruction},</if>
+            <if test="acceptanceStatus != null">acceptance_status = #{acceptanceStatus},</if>
+            <if test="downTubeTimeStart != null">down_tube_time_start = #{downTubeTimeStart},</if>
+            <if test="downTubeTimeEnd != null">down_tube_time_end = #{downTubeTimeEnd},</if>
+            <if test="tubeLength != null">tube_length = #{tubeLength},</if>
+            <if test="downTubeChargehand != null">down_tube_chargehand = #{downTubeChargehand},</if>
+            <if test="solidPipelineLength != null">solid_pipeline_length = #{solidPipelineLength},</if>
+            <if test="sievePipelineLength != null">sieve_pipeline_length = #{sievePipelineLength},</if>
+            <if test="holesealLength != null">holeseal_length = #{holesealLength},</if>
+            <if test="holesealDepth != null">holeseal_depth = #{holesealDepth},</if>
+            <if test="sealingHoleDiameter != null">sealing_hole_diameter = #{sealingHoleDiameter},</if>
+            <if test="holeSealingSpecification != null">hole_sealing_specification = #{holeSealingSpecification},</if>
+            <if test="sealingMaterial != null">sealing_material = #{sealingMaterial},</if>
+            <if test="sieveTubeLength != null">sieve_tube_length = #{sieveTubeLength},</if>
+            <if test="holesealDate != null">holeseal_date = #{holesealDate},</if>
+            <if test="holesealChargehand != null">holeseal_chargehand = #{holesealChargehand},</if>
+            <if test="validFootage != null">valid_footage = #{validFootage},</if>
+            <if test="personConstruction != null">person_construction = #{personConstruction},</if>
+            <if test="chargehand != null">chargehand = #{chargehand},</if>
+            <if test="personCheckingVideo != null">person_checking_video = #{personCheckingVideo},</if>
+            <if test="personCheckingSite != null">person_checking_site = #{personCheckingSite},</if>
+            <if test="checkingDate != null">checking_date = #{checkingDate},</if>
+            <if test="sign != null">sign = #{sign},</if>
+            <if test="timeBeginFlushing != null">time_begin_flushing = #{timeBeginFlushing},</if>
+            <if test="timeEndFlushing != null">time_end_flushing = #{timeEndFlushing},</if>
+            <if test="totalTimeFlushing != null">total_time_flushing = #{totalTimeFlushing},</if>
+            <if test="waterPressureDuringFlushing != null">water_pressure_during_flushing =
+                #{waterPressureDuringFlushing},
+            </if>
+            <if test="punchingParagraph1 != null">punching_paragraph1 = #{punchingParagraph1},</if>
+            <if test="punchingParagraph2 != null">punching_paragraph2 = #{punchingParagraph2},</if>
+            <if test="seeRockCoalCase != null">see_rock_coal_case = #{seeRockCoalCase},</if>
+            <if test="actualCoalAmountFlushed != null">actual_coal_amount_flushed = #{actualCoalAmountFlushed},</if>
+            <if test="completionRatioFlushedCoal != null">completion_ratio_flushed_coal =
+                #{completionRatioFlushedCoal},
+            </if>
+            <if test="exceptionPhenomena != null">exception_phenomena = #{exceptionPhenomena},</if>
+            <if test="personConstructionFlushing != null">person_construction_flushing =
+                #{personConstructionFlushing},
+            </if>
+            <if test="otherPerson != null">other_person = #{otherPerson},</if>
+            <if test="chargehandFlushing != null">chargehand_flushing = #{chargehandFlushing},</if>
+            <if test="terminalHoleDate != null">terminal_hole_date = #{terminalHoleDate},</if>
+            <if test="remarkFlushing != null">remark_flushing = #{remarkFlushing},</if>
+            <if test="file != null">file = #{file},</if>
+            <if test="groutingDate != null">grouting_date = #{groutingDate},</if>
+            <if test="groutingShiftId != null and groutingShiftId != 0">grouting_shift_id = #{groutingShiftId},</if>
+            <if test="groutingStartTime != null">grouting_start_time = #{groutingStartTime},</if>
+            <if test="groutingEndTime != null">grouting_end_time = #{groutingEndTime},</if>
+            <if test="groutingCements != null">grouting_cements = #{groutingCements},</if>
+            <if test="groutingWaters != null">grouting_waters = #{groutingWaters},</if>
+            <if test="actualAmountBagGrouting != null">actual_amount_bag_grouting = #{actualAmountBagGrouting},</if>
+            <if test="actualBagPressure != null">actual_bag_pressure = #{actualBagPressure},</if>
+            <if test="actualAmountGapGrouting != null">actual_amount_gap_grouting = #{actualAmountGapGrouting},</if>
+            <if test="interludeGroutingPressure != null">interlude_grouting_pressure = #{interludeGroutingPressure},
+            </if>
+            <if test="groutingPerson != null">grouting_person = #{groutingPerson},</if>
+            <if test="groutingExceptionLabel != null">grouting_exception_label = #{groutingExceptionLabel},</if>
+            <if test="groutingPersonConstruction != null">grouting_person_construction =
+                #{groutingPersonConstruction},
+            </if>
+            <if test="groutingChargehand != null">grouting_chargehand = #{groutingChargehand},</if>
+            <if test="personCheckingSiteGrouting != null">person_checking_site_grouting =
+                #{personCheckingSiteGrouting},
+            </if>
+            <if test="personCheckingVideoGrouting != null">person_checking_video_grouting =
+                #{personCheckingVideoGrouting},
+            </if>
+            <if test="monitor != null">monitor = #{monitor},</if>
+            <if test="warden != null">warden = #{warden},</if>
+            <if test="eliminate != null">eliminate = #{eliminate},</if>
+            <if test="eliminateDeputyGeneralManager != null">eliminate_deputy_general_manager =
+                #{eliminateDeputyGeneralManager},
+            </if>
+            <if test="eliminateBarmaster != null">eliminate_barmaster = #{eliminateBarmaster},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTBkActBoreholeInfoById" parameterType="Integer">
+        delete
+        from t_bk_act_borehole_info
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTBkActBoreholeInfoByIds" parameterType="String">
+        delete from t_bk_act_borehole_info where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--八矿水力冲孔台帐-->
+    <select id="getTBKFlushingStandingBook" resultType="com.ruoyi.hh.physical.domain.TBKFlushingStandingBook">
+        select desb.borehole_length
+        ,bkab.*,r.roadway,z.zone_name,bc.borehole_category,pb.purpose_borehole,s.shift_info,np.navigation_point_name,
+        s.shift_info AS groutingShift,TIMESTAMPDIFF(HOUR,time_end_flushing,time_begin_flushing) as totalTimeFlushing
+        from t_bk_act_borehole_info bkab
+        LEFT JOIN t_roadway r ON bkab.roadway_id=r.id
+        LEFT JOIN t_roadway_zone z ON bkab.roadway_zone_id=z.id
+        LEFT JOIN t_borehole_category bc ON bkab.category_code=bc.category_code
+        LEFT JOIN t_purpose_borehole pb ON bkab.purpose_borehole_id=pb.id
+        LEFT JOIN t_shiftinfo s ON bkab.shift_id=s.id
+        LEFT JOIN t_navigation_point np ON bkab.navigation_point_id=np.id
+        LEFT JOIN t_designed_borehole desb ON bkab.roadway_id=desb.roadway_id AND bkab.group_no=desb.group_no AND
+        bkab.borehole_no=desb.borehole_no
+        where 1=1
+        <if test="roadwayId!=null and roadwayId!=0">AND bkab.roadway_id IN
+            <foreach collection="roadwayId" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="groupNo!=null">
+            AND bkab.group_no = #{groupNo}
+        </if>
+        <if test="drillinglocation!=null">AND bkab.drilling_location IN
+            <foreach collection="drillinglocation" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="boreholeNo!=null">and bkab.borehole_no IN
+            <foreach collection="boreholeNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="actualcoalamountflushed1!=null and actualcoalamountflushed2!=null">and bkab.actual_coal_amount_flushed
+            between
+            #{actualcoalamountflushed1} and #{actualcoalamountflushed2}
+        </if>
+        <if test="terminalholedate1!=null and terminalholedate2!=null">and bkab.terminal_hole_date between
+            #{terminalholedate1} and #{terminalholedate2}
+        </if>
+    </select>
+    <!--八矿实钻台帐-->
+    <select id="getActBoreholeBook" resultType="com.ruoyi.hh.physical.domain.TBKActBoreholeGeneralized">
+        select concat(a.group_no, "-", a.borehole_no) as boreholdCode,
+               a.*
+        from t_bk_act_borehole_info a
+    </select>
+    <!--获取异常钻孔信息列表-->
+    <select id="selectTActualBoreholeWithException" resultType="com.ruoyi.hh.demo.domain.TActualBorholeException">
+        SELECT t_bk_act_borehole_info.id                        id,
+               t_bk_act_borehole_info.roadway_id                roadwayId,
+               t_roadway.roadway                                roadWayName,
+               t_bk_act_borehole_info.group_no                  groupId,
+               t_bk_act_borehole_info.borehole_no               boreholeNo,
+               t_bk_act_borehole_info.navigation_pointid        navPointId,
+               t_navigation_point.navigation_point_name         navPointName,
+               t_navigation_point.X                             x,
+               t_navigation_point.Y                             y,
+               t_navigation_point.Z                             z,
+               t_bk_act_borehole_info.exception_during_drilling exceptions
+        FROM t_bk_act_borehole_info,
+             t_navigation_point,
+             t_roadway
+        WHERE t_bk_act_borehole_info.navigation_pointid = t_navigation_point.id
+          AND t_bk_act_borehole_info.roadway_id = t_roadway.id
+          AND exception_during_drilling != ""
+          AND exception_during_drilling != "无"
+    </select>
+
+    <!--根据钻孔巷道，组号，孔号钻孔用途和验收时间查询实钻信息(钻孔基础信息)-->
+    <select id="getActBoreholeInfo" resultType="com.ruoyi.hh.physical.domain.TBKActBoreholeFoundationEntity">
+        SELECT a.id,r.roadway,a.drilling_location,a.borehole_code,d.angle as desAngle,a.angle as
+        actAngle,d.inclination_angle as desInclinationAngle,
+        a.inclination_angle as actInclinationAngle,d.borehole_length as desBoreholeLength,a.borehole_length as
+        actBoreholeLength,CONCAT('岩1:',a.depth_1st_rock_seam_start,'-',
+        a.depth_1st_rock_seam_end,',煤1:',a.depth_1st_coal_seam_start,'-',a.depth_1st_coal_seam_end,',岩2:',a.depth_2st_rock_seam_start,
+        '-',a.depth_2st_rock_seam_end,',煤2:',a.depth_2st_coal_seam_start,'-',a.depth_2st_coal_seam_end,',岩3:',a.depth_3st_rock_seam_start,
+        '-',a.depth_3st_rock_seam_end) as
+        seerockcoalcase,a.sealing_material,ROUND(a.punching_paragraph2-a.punching_paragraph1,2)as
+        flushingLength,a.actual_coal_amount_flushed
+        from t_bk_act_borehole_info a
+        LEFT JOIN t_designed_borehole d ON
+        CONCAT(a.roadway_id,a.group_no,a.borehole_no) =CONCAT(d.roadway_id,d.group_no,d.borehole_no)
+        LEFT JOIN t_navigation_point n ON
+        a.navigation_point_id =n.id
+        LEFT JOIN t_sealing_grouting s ON
+        a.id=s.Borehole_id
+        LEFT JOIN t_roadway r ON
+        r.Id = a.roadway_id
+        LEFT JOIN t_purpose_borehole p ON
+        p.Id = a.purpose_borehole_id
+        where 1=1
+        <if test="roadwayId!=null">AND a.roadway_id=#{roadwayId}</if>
+        <if test="groupNo!=null">AND a.group_no IN
+            <foreach collection="groupNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="purposeBoreholeId!=null">AND a.purpose_borehole_Id IN
+            <foreach collection="purposeBoreholeId" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="boreholeNo!=null">AND a.borehole_no IN
+            <foreach collection="boreholeNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="startdate!=null">
+            AND
+            a.checking_date BETWEEN #{startDate} AND #{endDate}
+        </if>
+    </select>
+    <!--根据巷道ID，组号和孔号查询钻孔ID-->
+    <select id="getId" resultType="java.lang.Integer">
+        select id
+        from t_bk_act_borehole_info
+        where roadway_id = #{roadwayId}
+          and group_no = #{groupNo}
+          and borehole_no = #{boreholeNO}
+    </select>
+    <!--根据巷道名称，组号，孔号查询实钻ID-->
+    <select id="getIdByRoadWayAndGroupIdBoreholeno" resultType="Integer">
+        select id
+        from t_bk_act_borehole_info
+        where group_no = #{groupNo}
+          and borehole_no = #{boreholeNO}
+          and roadway_id = (SELECT id from t_roadway where roadway = #{roadway})
+    </select>
+    <!--根据导线点ID删除实际钻孔信息-->
+    <delete id="delByRoadwayZoneIds" parameterType="java.util.List">
+        delete from t_bk_act_borehole_info where roadway_zone_id in
+        <foreach item="roadwayZoneIds" collection="list" open="(" separator="," close=")">
+            #{roadwayZoneIds}
+        </foreach>
+    </delete>
+    <!--根据区段ID查询实钻ID列表-->
+    <select id="getIdsRoadWayZoneId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select id
+        from t_bk_act_borehole_info
+        where roadway_zone_id = #{roadwayZoneId}
+    </select>
+</mapper>

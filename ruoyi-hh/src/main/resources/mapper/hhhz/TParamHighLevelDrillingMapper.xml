@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.hhhz.mapper.TParamHighLevelDrillingMapper">
+
+    <resultMap type="TParamHighLevelDrilling" id="TParamHighLevelDrillingResult">
+        <result property="id" column="id"/>
+        <result property="uid" column="uid"/>
+        <result property="workingFaceId" column="working_face_id"/>
+        <result property="roadId" column="road_id"/>
+        <result property="radius" column="radius"/>
+        <result property="heightToTop" column="height_to_top"/>
+        <result property="distanceFromRoadway" column="distance_from_roadway"/>
+        <result property="drillSiteSpacing" column="drill_site_spacing"/>
+        <result property="overlapLength" column="overlap_length"/>
+        <result property="finalholePositionSpacing" column="finalhole_position_spacing"/>
+        <result property="holesNumberPerDrillSite" column="holes_number_per_drill_site"/>
+        <result property="holeSize" column="hole_size"/>
+        <result property="drillSiteWidth" column="drill_site_width"/>
+        <result property="drillSiteLength" column="drill_site_length"/>
+        <result property="drillSiteHeight" column="drill_site_height"/>
+        <result property="inOrOut" column="in_or_out"/>
+        <result property="inoutDistance" column="inout_distance"/>
+        <result property="openingHeight" column="opening_height"/>
+        <result property="openingDistance" column="opening_distance"/>
+        <result property="drillSpace" column="drill_space"/>
+        <result property="createTime" column="create_Time"/>
+        <result property="sign" column="sign"/>
+        <result property="schemeId"    column="scheme_id"    />
+    </resultMap>
+
+    <sql id="selectTParamHighLevelDrillingVo">
+        select id,
+               uid,
+               working_face_id,
+               road_id,
+               radius,
+               height_to_top,
+               distance_from_roadway,
+               drill_site_spacing,
+               overlap_length,
+               finalhole_position_spacing,
+               holes_number_per_drill_site,
+               hole_size,
+               drill_site_width,
+               drill_site_length,
+               drill_site_height,
+               in_or_out,
+               inout_distance,
+               opening_height,
+               opening_distance,
+               drill_space,
+               create_time,
+               sign,
+               scheme_id
+        from t_param_high_level_drilling
+    </sql>
+
+    <select id="selectTParamHighLevelDrillingList" parameterType="TParamHighLevelDrilling"
+            resultMap="TParamHighLevelDrillingResult">
+        <include refid="selectTParamHighLevelDrillingVo"/>
+        <where>
+            <if test="uid != null ">and uid = #{uid}</if>
+            <if test="workingFaceId != null ">and working_face_id = #{workingFaceId}</if>
+            <if test="roadId != null ">and road_id = #{roadId}</if>
+            <if test="radius != null ">and radius = #{radius}</if>
+            <if test="heightToTop != null ">and height_to_top = #{heightToTop}</if>
+            <if test="distanceFromRoadway != null ">and distance_from_roadway = #{distanceFromRoadway}</if>
+            <if test="drillSiteSpacing != null ">and drill_site_spacing = #{drillSiteSpacing}</if>
+            <if test="overlapLength != null ">and overlap_length = #{overlapLength}</if>
+            <if test="finalholePositionSpacing != null ">and finalhole_position_spacing = #{finalholePositionSpacing}
+            </if>
+            <if test="holesNumberPerDrillSite != null ">and holes_number_per_drill_site = #{holesNumberPerDrillSite}
+            </if>
+            <if test="holeSize != null ">and hole_size = #{holeSize}</if>
+            <if test="drillSiteWidth != null ">and drill_site_width = #{drillSiteWidth}</if>
+            <if test="drillSiteLength != null ">and drill_site_length = #{drillSiteLength}</if>
+            <if test="drillSiteHeight != null ">and drill_site_height = #{drillSiteHeight}</if>
+            <if test="inOrOut != null ">and in_or_out = #{inOrOut}</if>
+            <if test="inoutDistance != null ">and inout_distance = #{inoutDistance}</if>
+            <if test="openingHeight != null ">and opening_height = #{openingHeight}</if>
+            <if test="openingDistance != null ">and opening_distance = #{openingDistance}</if>
+            <if test="drillSpace != null ">and drill_space = #{drillSpace}</if>
+            <if test="createTime != null ">and create_time = #{createTime}</if>
+            <if test="sign != null ">and sign = #{sign}</if>
+            <if test="schemeId != null ">and scheme_id = #{schemeId}</if>
+        </where>
+    </select>
+
+    <select id="selectTParamHighLevelDrillingById" parameterType="Integer" resultMap="TParamHighLevelDrillingResult">
+        <include refid="selectTParamHighLevelDrillingVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTParamHighLevelDrilling" parameterType="TParamHighLevelDrilling" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_param_high_level_drilling
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">uid,</if>
+            <if test="workingFaceId != null">working_face_id,</if>
+            <if test="roadId != null">road_id,</if>
+            <if test="radius != null">radius,</if>
+            <if test="heightToTop != null">height_to_top,</if>
+            <if test="distanceFromRoadway != null">distance_from_roadway,</if>
+            <if test="drillSiteSpacing != null">drill_site_spacing,</if>
+            <if test="overlapLength != null">overlap_length,</if>
+            <if test="finalholePositionSpacing != null">finalhole_position_spacing,</if>
+            <if test="holesNumberPerDrillSite != null">holes_number_per_drill_site,</if>
+            <if test="holeSize != null">hole_size,</if>
+            <if test="drillSiteWidth != null">drill_site_width,</if>
+            <if test="drillSiteLength != null">drill_site_length,</if>
+            <if test="drillSiteHeight != null">drill_site_height,</if>
+            <if test="inOrOut != null">in_or_out,</if>
+            <if test="inoutDistance != null">inout_distance,</if>
+            <if test="openingHeight != null">opening_height,</if>
+            <if test="openingDistance != null">opening_distance,</if>
+            <if test="drillSpace != null">drill_space,</if>
+            <if test="sign != null">sign,</if>
+            <if test="schemeId != null">scheme_id,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">#{uid},</if>
+            <if test="workingFaceId != null">#{workingFaceId},</if>
+            <if test="roadId != null">#{roadId},</if>
+            <if test="radius != null">#{radius},</if>
+            <if test="heightToTop != null">#{heightToTop},</if>
+            <if test="distanceFromRoadway != null">#{distanceFromRoadway},</if>
+            <if test="drillSiteSpacing != null">#{drillSiteSpacing},</if>
+            <if test="overlapLength != null">#{overlapLength},</if>
+            <if test="finalholePositionSpacing != null">#{finalholePositionSpacing},</if>
+            <if test="holesNumberPerDrillSite != null">#{holesNumberPerDrillSite},</if>
+            <if test="holeSize != null">#{holeSize},</if>
+            <if test="drillSiteWidth != null">#{drillSiteWidth},</if>
+            <if test="drillSiteLength != null">#{drillSiteLength},</if>
+            <if test="drillSiteHeight != null">#{drillSiteHeight},</if>
+            <if test="inOrOut != null">#{inOrOut},</if>
+            <if test="inoutDistance != null">#{inoutDistance},</if>
+            <if test="openingHeight != null">#{openingHeight},</if>
+            <if test="openingDistance != null">#{openingDistance},</if>
+            <if test="drillSpace != null">#{drillSpace},</if>
+            <if test="sign != null">#{sign},</if>
+            <if test="schemeId != null">#{schemeId},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTParamHighLevelDrilling" parameterType="TParamHighLevelDrilling">
+        update t_param_high_level_drilling
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="workingFaceId != null">working_face_id = #{workingFaceId},</if>
+            <if test="roadId != null">road_id = #{roadId},</if>
+            <if test="radius != null">radius = #{radius},</if>
+            <if test="heightToTop != null">height_to_top = #{heightToTop},</if>
+            <if test="distanceFromRoadway != null">distance_from_roadway = #{distanceFromRoadway},</if>
+            <if test="drillSiteSpacing != null">drill_site_spacing = #{drillSiteSpacing},</if>
+            <if test="overlapLength != null">overlap_length = #{overlapLength},</if>
+            <if test="finalholePositionSpacing != null">finalhole_position_spacing = #{finalholePositionSpacing},</if>
+            <if test="holesNumberPerDrillSite != null">holes_number_per_drill_site = #{holesNumberPerDrillSite},</if>
+            <if test="holeSize != null">hole_size = #{holeSize},</if>
+            <if test="drillSiteWidth != null">drill_site_width = #{drillSiteWidth},</if>
+            <if test="drillSiteLength != null">drill_site_length = #{drillSiteLength},</if>
+            <if test="drillSiteHeight != null">drill_site_height = #{drillSiteHeight},</if>
+            <if test="inOrOut != null">in_or_out = #{inOrOut},</if>
+            <if test="inoutDistance != null">inout_distance = #{inoutDistance},</if>
+            <if test="openingHeight != null">opening_height = #{openingHeight},</if>
+            <if test="openingDistance != null">opening_distance = #{openingDistance},</if>
+            <if test="drillSpace != null">drill_space = #{drillSpace},</if>
+            <if test="sign != null">sign = #{sign},</if>
+            <if test="schemeId != null">scheme_id = #{schemeId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTParamHighLevelDrillingById" parameterType="Integer">
+        delete
+        from t_param_high_level_drilling
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTParamHighLevelDrillingByIds" parameterType="String">
+        delete from t_param_high_level_drilling where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--获取最新一条数据-->
+    <select id="getLastOne" resultMap="TParamHighLevelDrillingResult">
+        select * from t_param_high_level_drilling order by id desc limit 0,1
+    </select>
+
+    <!--确定方案：将数据库中的标识由0改成1-->
+    <update id="updateSign" >
+        update t_param_high_level_drilling set sign =1 where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+</mapper>

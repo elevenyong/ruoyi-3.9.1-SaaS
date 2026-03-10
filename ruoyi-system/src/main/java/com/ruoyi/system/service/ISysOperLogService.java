@@ -1,5 +1,6 @@
 package com.ruoyi.system.service;
 
+import java.util.HashMap;
 import java.util.List;
 import com.ruoyi.system.domain.SysOperLog;
 
@@ -45,4 +46,6 @@ public interface ISysOperLogService
      * 清空操作日志
      */
     public void cleanOperLog();
+
+    List<HashMap<String, String>> selectOperLogCount();
 }

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TDesignedDirectionalBoreholeMapper">
+
+    <resultMap type="TDesignedDirectionalBorehole" id="TDesignedDirectionalBoreholeResult">
+        <result property="id"    column="id"    />
+        <result property="roadwayId"    column="roadway_id"    />
+        <result property="groupNo"    column="group_no"    />
+        <result property="boreholeNo"    column="borehole_no"    />
+        <result property="boreholeCode"    column="borehole_code"    />
+        <result property="navigationPointId"    column="navigation_point_id"    />
+        <result property="categoryCode"    column="category_code"    />
+        <result property="distanceToNavigationPoint"    column="distance_to_navigation_point"    />
+        <result property="directionToNavigation"    column="direction_to_navigation"    />
+        <result property="distanceToCentrallineTunnel"    column="distance_to_centralline_tunnel"    />
+        <result property="topOrBottom"    column="top_or_bottom"    />
+        <result property="aperture"    column="aperture"    />
+        <result property="drillPipeLength"    column="drill_pipe_length"    />
+        <result property="endAzimuth"    column="end_azimuth"    />
+        <result property="endTilt"    column="end_tilt"    />
+        <result property="desParameterId"    column="des_parameter_id"    />
+        <result property="sign"    column="sign"    />
+        <result property="holeAltitude"    column="hole_altitude"    />
+    </resultMap>
+
+    <sql id="selectTDesignedDirectionalBoreholeVo">
+        select id, roadway_id, group_no, borehole_no, borehole_code,category_code, navigation_point_id, distance_to_navigation_point, direction_to_navigation, distance_to_centralline_tunnel, top_or_bottom, aperture, drill_pipe_length, end_azimuth, end_tilt,des_parameter_id,sign,hole_altitude from t_des_directional_borehole
+    </sql>
+
+    <select id="selectTDesignedDirectionalBoreholeList" parameterType="TDesignedDirectionalBorehole" resultMap="TDesignedDirectionalBoreholeResult">
+        <include refid="selectTDesignedDirectionalBoreholeVo"/>
+        <where>
+            <if test="id != null and id != 0"> and id = #{id}</if>
+            <if test="roadwayId != null and roadwayId!=0"> and roadway_id = #{roadwayId}</if>
+            <if test="groupNo != null  and groupNo != ''"> and group_no = #{groupNo}</if>
+            <if test="boreholeNo != null and boreholeNo !=0"> and borehole_no = #{boreholeNo}</if>
+            <if test="boreholeCode != null  and boreholeCode != ''"> and borehole_code = #{boreholeCode}</if>
+            <if test="categoryCode != null and categoryCode !=0"> and category_code = #{categoryCode}</if>
+            <if test="navigationPointId != null and navigationPointId !=0"> and navigation_point_id = #{navigationPointId}</if>
+            <if test="distanceToNavigationPoint != null and distanceToNavigationPoint !=0"> and distance_to_navigation_point = #{distanceToNavigationPoint}</if>
+            <if test="directionToNavigation != null  and directionToNavigation != ''"> and direction_to_navigation = #{directionToNavigation}</if>
+            <if test="distanceToCentrallineTunnel != null and distanceToCentrallineTunnel !=0"> and distance_to_centralline_tunnel = #{distanceToCentrallineTunnel}</if>
+            <if test="topOrBottom != null "> and top_or_bottom = #{topOrBottom}</if>
+            <if test="aperture != null "> and aperture = #{aperture}</if>
+            <if test="drillPipeLength != null and drillPipeLength !=0"> and drill_pipe_length = #{drillPipeLength}</if>
+            <if test="endAzimuth != null and endAzimuth != 0"> and end_azimuth = #{endAzimuth}</if>
+            <if test="endTilt != null and endTilt !=0"> and end_tilt = #{endTilt}</if>
+            <if test="desParameterId != null and desParameterId !=0"> and des_parameter_id = #{desParameterId}</if>
+            <if test="sign != null"> and sign >= #{sign}</if>
+            <if test="holeAltitude != null and holeAltitude !=0"> and hole_altitude = #{holeAltitude}</if>
+        </where>
+    </select>
+
+    <select id="selectTDesignedDirectionalBoreholeById" parameterType="Integer" resultMap="TDesignedDirectionalBoreholeResult">
+        <include refid="selectTDesignedDirectionalBoreholeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTDesignedDirectionalBorehole" parameterType="TDesignedDirectionalBorehole" useGeneratedKeys="true" keyProperty="id">
+        insert into t_des_directional_borehole
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">roadway_id,</if>
+            <if test="groupNo != null">group_no,</if>
+            <if test="boreholeNo != null">borehole_no,</if>
+            <if test="boreholeCode != null">borehole_code,</if>
+            <if test="categoryCode != null">category_code,</if>
+            <if test="navigationPointId != null and navigationPointId != 0">navigation_point_id,</if>
+            <if test="distanceToNavigationPoint != null">distance_to_navigation_point,</if>
+            <if test="directionToNavigation != null">direction_to_navigation,</if>
+            <if test="distanceToCentrallineTunnel != null">distance_to_centralline_tunnel,</if>
+            <if test="topOrBottom != null">top_or_bottom,</if>
+            <if test="aperture != null">aperture,</if>
+            <if test="drillPipeLength != null">drill_pipe_length,</if>
+            <if test="endAzimuth != null">end_azimuth,</if>
+            <if test="endTilt != null">end_tilt,</if>
+            <if test="desParameterId != null">des_parameter_id,</if>
+            <if test="sign != null">sign,</if>
+            <if test="holeAltitude != null">hole_altitude,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">#{roadwayId},</if>
+            <if test="groupNo != null">#{groupNo},</if>
+            <if test="boreholeNo != null">#{boreholeNo},</if>
+            <if test="boreholeCode != null">#{boreholeCode},</if>
+            <if test="categoryCode != null">#{categoryCode},</if>
+            <if test="navigationPointId != null and navigationPointId != 0">#{navigationPointId},</if>
+            <if test="distanceToNavigationPoint != null">#{distanceToNavigationPoint},</if>
+            <if test="directionToNavigation != null">#{directionToNavigation},</if>
+            <if test="distanceToCentrallineTunnel != null">#{distanceToCentrallineTunnel},</if>
+            <if test="topOrBottom != null">#{topOrBottom},</if>
+            <if test="aperture != null">#{aperture},</if>
+            <if test="drillPipeLength != null">#{drillPipeLength},</if>
+            <if test="endAzimuth != null">#{endAzimuth},</if>
+            <if test="endTilt != null">#{endTilt},</if>
+            <if test="desParameterId != null">#{desParameterId},</if>
+            <if test="sign != null">#{sign},</if>
+            <if test="holeAltitude != null">#{holeAltitude},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTDesignedDirectionalBorehole" parameterType="TDesignedDirectionalBorehole">
+        update t_des_directional_borehole
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">roadway_id = #{roadwayId},</if>
+            <if test="groupNo != null">group_no = #{groupNo},</if>
+            <if test="boreholeNo != null">borehole_no = #{boreholeNo},</if>
+            <if test="boreholeCode != null">borehole_code = #{boreholeCode},</if>
+            <if test="categoryCode != null">category_code = #{categoryCode},</if>
+            <if test="navigationPointId != null and navigationPointId != 0">navigation_point_id = #{navigationPointId},</if>
+            <if test="distanceToNavigationPoint != null">distance_to_navigation_point = #{distanceToNavigationPoint},</if>
+            <if test="directionToNavigation != null">direction_to_navigation = #{directionToNavigation},</if>
+            <if test="distanceToCentrallineTunnel != null">distance_to_centralline_tunnel = #{distanceToCentrallineTunnel},</if>
+            <if test="topOrBottom != null">top_or_bottom = #{topOrBottom},</if>
+            <if test="aperture != null">aperture = #{aperture},</if>
+            <if test="drillPipeLength != null">drill_pipe_length = #{drillPipeLength},</if>
+            <if test="endAzimuth != null">end_azimuth = #{endAzimuth},</if>
+            <if test="endTilt != null">end_tilt = #{endTilt},</if>
+            <if test="desParameterId != null">des_parameter_id = #{desParameterId},</if>
+            <if test="sign != null">sign = #{sign},</if>
+            <if test="holeAltitude != null">hole_altitude = #{holeAltitude},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTDesignedDirectionalBoreholeById" parameterType="Integer">
+        delete from t_des_directional_borehole where id = #{id}
+    </delete>
+
+    <delete id="deleteTDesignedDirectionalBoreholeByIds" parameterType="String">
+        delete from t_des_directional_borehole where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--更改设计钻孔为确定-->
+    <update id="makeSureDesProgramme">
+        update t_des_directional_borehole set sign =#{sign} where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+</mapper>

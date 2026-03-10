@@ -1,16 +1,10 @@
-import router from '@/router'
-import { MessageBox, } from 'element-ui'
 import { login, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
-import { isHttp, isEmpty } from "@/utils/validate"
-import defAva from '@/assets/images/profile.jpg'
 
 const user = {
   state: {
     token: getToken(),
-    id: '',
     name: '',
-    nickName: '',
     avatar: '',
     roles: [],
     permissions: []
@@ -20,14 +14,8 @@ const user = {
     SET_TOKEN: (state, token) => {
       state.token = token
     },
-    SET_ID: (state, id) => {
-      state.id = id
-    },
     SET_NAME: (state, name) => {
       state.name = name
-    },
-    SET_NICK_NAME: (state, nickName) => {
-      state.nickName = nickName
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar
@@ -47,26 +35,19 @@ const user = {
       const password = userInfo.password
       const code = userInfo.code
       const uuid = userInfo.uuid
-      const tenantCode = userInfo.tenantCode || 'default'
-    
-      // ⭐ 登录前清旧 token（防跨租户残留）
+      const tenantCode = userInfo.tenantCode || localStorage.getItem('tenantCode') || 'default'
+      // 登录前清旧 token（防跨租户残留）
       removeToken()
       localStorage.setItem('tenantCode', tenantCode)
-    
       return new Promise((resolve, reject) => {
         login(username, password, code, uuid, tenantCode).then(res => {
-    
-          // ===== 兼容你现在的后端返回格式 =====
-          // 你当前：token 在 msg
           const token = res.token || res.data || res.msg
-    
           if (!token) {
             reject('登录成功但未返回token')
             return
           }
-    
           setToken(token)
-    
+          commit('SET_TOKEN', getToken())
           resolve()
         }).catch(error => {
           reject(error)
@@ -79,32 +60,15 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(res => {
           const user = res.user
-          let avatar = user.avatar || ""
-          if (!isHttp(avatar)) {
-            avatar = (isEmpty(avatar)) ? defAva : process.env.VUE_APP_BASE_API + avatar
-          }
+          const avatar = (user.avatar == "" || user.avatar == null) ? require("@/assets/images/profile.jpg") : process.env.VUE_APP_BASE_API + user.avatar;
           if (res.roles && res.roles.length > 0) { // 验证返回的roles是否是一个非空数组
             commit('SET_ROLES', res.roles)
             commit('SET_PERMISSIONS', res.permissions)
           } else {
             commit('SET_ROLES', ['ROLE_DEFAULT'])
           }
-          commit('SET_ID', user.userId)
           commit('SET_NAME', user.userName)
-          commit('SET_NICK_NAME', user.nickName)
           commit('SET_AVATAR', avatar)
-          /* 初始密码提示 */
-          if(res.isDefaultModifyPwd) {
-            MessageBox.confirm('您的密码还是初始密码，请修改密码！',  '安全提示', {  confirmButtonText: '确定',  cancelButtonText: '取消',  type: 'warning' }).then(() => {
-              router.push({ name: 'Profile', params: { activeTab: 'resetPwd' } })
-            }).catch(() => {})
-          }
-          /* 过期密码提示 */
-          if(!res.isDefaultModifyPwd && res.isPasswordExpired) {
-            MessageBox.confirm('您的密码已过期，请尽快修改密码！',  '安全提示', {  confirmButtonText: '确定',  cancelButtonText: '取消',  type: 'warning' }).then(() => {
-              router.push({ name: 'Profile', params: { activeTab: 'resetPwd' } })
-            }).catch(() => {})
-          }
           resolve(res)
         }).catch(error => {
           reject(error)

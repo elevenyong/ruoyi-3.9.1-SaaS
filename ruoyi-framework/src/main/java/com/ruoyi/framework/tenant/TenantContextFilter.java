@@ -16,13 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @Author：zhangHY
- * @Package：com.ruoyi.framework.tenant
- * @Project：RuoYi-Vue-master
- * @name：TenantContextFilter
- * @Date：2026/2/6 15:59
- * @Filename：TenantContextFilter
- * @Description
+ * 租户上下文过滤器：为每个请求建立 TenantContextHolder.tenantId
  */
 @Component
 public class TenantContextFilter extends OncePerRequestFilter {
@@ -31,11 +25,11 @@ public class TenantContextFilter extends OncePerRequestFilter {
     private TenantService tenantService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
         try {
-            // 1) 优先从 Header 解析 tenantCode（未登录 / 登录中 / 允许匿名的接口也能拿到租户上下文）
+            // 1) 先尝试从 Header 取 tenantCode（适合未登录/登录接口/匿名接口）
             String tenantCode = request.getHeader(TenantConstants.TENANT_CODE_HEADER);
             if (StringUtils.isNotBlank(tenantCode)) {
                 Long tenantId = tenantService.getTenantIdByCode(tenantCode);
@@ -44,18 +38,20 @@ public class TenantContextFilter extends OncePerRequestFilter {
                 }
             }
 
-            // 2) 已登录：以 Token 解析出来的 LoginUser.tenantId 为准（覆盖 Header 解析结果，避免被伪造 header 干扰）
+            // 2) 再尝试从已登录用户取 tenantId（优先级更高，避免伪造 header）
             LoginUser loginUser = null;
             try {
                 loginUser = SecurityUtils.getLoginUser();
             } catch (Exception ignore) {
-                // 未登录/无token时可能抛异常，直接忽略
+                // 未登录/无token时可能抛异常，忽略即可
             }
             if (loginUser != null && loginUser.getTenantId() != null) {
                 TenantContextHolder.setTenantId(loginUser.getTenantId());
             }
+
             filterChain.doFilter(request, response);
         } finally {
+            // 每个请求结束必须清理 ThreadLocal，防止串租户
             TenantContextHolder.clear();
         }
     }

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.util.mapper.THolesealTypeMapper">
+
+    <resultMap type="THolesealType" id="THolesealTypeResult">
+        <result property="id"    column="id"    />
+        <result property="holeSealType"    column="hole_seal_type"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTHolesealTypeVo">
+        select id, hole_seal_type, create_by, create_time, update_by, update_time, remark from t_holeseal_type
+    </sql>
+
+    <select id="selectTHolesealTypeList" parameterType="THolesealType" resultMap="THolesealTypeResult">
+        <include refid="selectTHolesealTypeVo"/>
+        <where>
+            <if test="id != null "> and id = #{id}</if>
+            <if test="holeSealType != null  and holeSealType != ''"> and hole_seal_type = #{holeSealType}</if>
+        </where>
+    </select>
+
+    <select id="selectTHolesealTypeById" parameterType="Integer" resultMap="THolesealTypeResult">
+        <include refid="selectTHolesealTypeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTHolesealType" parameterType="THolesealType" useGeneratedKeys="true" keyProperty="id">
+        insert into t_holeseal_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="holeSealType != null">hole_seal_type,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="holeSealType != null">#{holeSealType},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTHolesealType" parameterType="THolesealType">
+        update t_holeseal_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="holeSealType != null">hole_seal_type = #{holeSealType},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTHolesealTypeById" parameterType="Integer">
+        delete from t_holeseal_type where id = #{id}
+    </delete>
+
+    <delete id="deleteTHolesealTypeByIds" parameterType="java.util.List">
+        delete from t_holeseal_type where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

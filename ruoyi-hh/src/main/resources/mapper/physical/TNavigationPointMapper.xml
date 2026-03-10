@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TNavigationPointMapper">
+
+    <resultMap type="TNavigationPoint" id="TNavigationPointResult">
+        <result property="id" column="id"/>
+        <result property="navigationPointName" column="navigation_point_name"/>
+        <result property="roadwayId" column="roadway_id"/>
+        <result property="x" column="x"/>
+        <result property="y" column="y"/>
+        <result property="z" column="z"/>
+        <result property="isEndPoint" column="is_end_point"/>
+        <result property="isActualPoint" column="is_actual_point"/>
+        <result property="serialNumber" column="serial_number"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectTNavigationPointVo">
+        select r.roadway,
+               n.id,
+               n.navigation_point_name,
+               n.roadway_id,
+               n.x,
+               n.y,
+               n.z,
+               n.is_end_point,
+               n.is_actual_point,
+               n.serial_number,
+               n.create_by,
+               n.create_time,
+               n.update_by,
+               n.update_time,
+               n.remark
+        from t_navigation_point n
+                 LEFT JOIN t_roadway r ON n.roadway_id = r.id
+    </sql>
+
+    <select id="selectTNavigationPointList" parameterType="TNavigationPoint" resultMap="TNavigationPointResult">
+        <include refid="selectTNavigationPointVo"/>
+        <where>
+            <if test="id!=null and id!=0">and n.id=#{id}</if>
+            <if test="navigationPointName != null  and navigationPointName != ''">and n.navigation_point_name =
+                #{navigationPointName}
+            </if>
+            <if test="roadwayId != null and roadwayId != 0 ">and n.roadway_id = #{roadwayId}</if>
+            <if test="x != null ">and n.x = #{x}</if>
+            <if test="y != null ">and n.y = #{y}</if>
+            <if test="z != null ">and n.z = #{z}</if>
+            <if test="isEndPoint != null ">and n.is_end_point = #{isEndPoint}</if>
+            <if test="isActualPoint != null ">and n.is_actual_point = #{isActualPoint}</if>
+            <if test="serialNumber != null ">and n.serial_number = #{serialNumber}</if>
+        </where>
+        ORDER BY serial_number ASC
+    </select>
+
+
+
+    <select id="selectTNavigationPointById" parameterType="java.lang.Integer" resultMap="TNavigationPointResult">
+        <include refid="selectTNavigationPointVo"/>
+        where n.id = #{id}
+    </select>
+
+    <insert id="insertTNavigationPoint" parameterType="TNavigationPoint" useGeneratedKeys="true" keyProperty="id">
+        insert into t_navigation_point
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="navigationPointName != null">navigation_point_name,</if>
+            <if test="roadwayId != null and roadwayId != 0">roadway_id,</if>
+            <if test="x != null">x,</if>
+            <if test="y != null">y,</if>
+            <if test="z != null">z,</if>
+            <if test="isEndPoint != null">is_end_point,</if>
+            <if test="isActualPoint != null">is_actual_point,</if>
+            <if test="serialNumber != null">serial_number,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="navigationPointName != null">#{navigationPointName},</if>
+            <if test="roadwayId != null and roadwayId != 0">#{roadwayId},</if>
+            <if test="x != null">#{x},</if>
+            <if test="y != null">#{y},</if>
+            <if test="z != null">#{z},</if>
+            <if test="isEndPoint != null">#{isEndPoint},</if>
+            <if test="isActualPoint != null">#{isActualPoint},</if>
+            <if test="serialNumber != null">#{serialNumber},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTNavigationPoint" parameterType="TNavigationPoint">
+        update t_navigation_point
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="navigationPointName != null">navigation_point_name = #{navigationPointName},</if>
+            <if test="roadwayId != null and roadwayId != 0">roadway_id = #{roadwayId},</if>
+            <if test="x != null">x = #{x},</if>
+            <if test="y != null">y = #{y},</if>
+            <if test="z != null">z = #{z},</if>
+            <if test="isEndPoint != null">is_end_point = #{isEndPoint},</if>
+            <if test="isActualPoint != null">is_actual_point = #{isActualPoint},</if>
+            <if test="serialNumber != null">serial_number = #{serialNumber},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTNavigationPointById" parameterType="java.lang.Integer">
+        delete
+        from t_navigation_point
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTNavigationPointByIds" parameterType="java.util.List">
+        delete from t_navigation_point where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="insertTNavigationPointList" parameterType="java.util.List">
+        insert IGNORE into t_navigation_point(navigation_point_name,roadway_id,x, y, z,is_end_point,is_actual_point, serial_number)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.navigationPointName},
+            #{item.roadwayId},
+            #{item.x},
+            #{item.y},
+            #{item.z},
+            #{item.isEndPoint},
+            #{item.isActualPoint},
+            #{item.serialNumber}
+            )
+        </foreach>
+    </insert>
+
+    <select id="list" resultType="com.ruoyi.hh.physical.domain.TNavigationPoint">
+        select *
+        from t_navigation_point
+    </select>
+    <!--根据巷道ID查询导线点列表-->
+    <select id="getByRoadwayId" parameterType="int" resultType="com.ruoyi.hh.physical.domain.TNavigationPoint">
+        select *
+        from t_navigation_point
+        where roadway_id = #{roadwayId} ORDER BY serial_number ASC
+    </select>
+    <!--根据导线点名称查询导线点ID-->
+    <select id="getIdByNavigationPointName" resultType="java.lang.Integer">
+        select id
+        from t_navigation_point
+        where navigation_point_name = #{navigationPointName}
+          and roadway_id = #{roadwayId}
+    </select>
+    <!--根据巷道ID删除导线点信息-->
+    <delete id="delByRoadWayId" parameterType="int">
+        delete
+        from t_navigation_point
+        where roadway_id = #{roadwayId}
+    </delete>
+    <delete id="delByRoadWayIds" parameterType="java.util.List">
+        delete from t_navigation_point where roadway_id in
+        <foreach item="roadwayIds" collection="list" open="(" separator="," close=")">
+            #{roadwayIds}
+        </foreach>
+    </delete>
+    <!--根据巷道ID查询导线点ID列表-->
+    <select id="getIdsByRoadWayId" parameterType="string" resultType="java.lang.Integer">
+        select id
+        from t_navigation_point
+        where roadway_id = #{roadwayId}
+    </select>
+
+
+</mapper>

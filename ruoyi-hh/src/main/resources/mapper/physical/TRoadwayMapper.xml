@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TRoadwayMapper">
+
+    <resultMap type="TRoadway" id="TRoadwayResult">
+        <result property="id"    column="id"    />
+        <result property="roadway"    column="roadway"    />
+        <result property="type"    column="type"    />
+        <result property="faultShapId"    column="fault_shap_id"    />
+        <result property="azimuthAngle"    column="azimuth_angle"    />
+        <result property="wide"    column="wide"    />
+        <result property="height"    column="height"    />
+        <result property="elevation"    column="elevation"    />
+        <result property="stripCtrlLeft"    column="strip_ctrl_left"    />
+        <result property="stripCtrlRight"    column="strip_ctrl_right"    />
+        <result property="roadOriginX"    column="road_origin_x"    />
+        <result property="roadOriginY"    column="road_origin_y"    />
+        <result property="roadOriginZ"    column="road_origin_z"    />
+        <result property="length"    column="length"    />
+        <result property="nearFloor"    column="near_floor"    />
+        <result property="workfaceId"    column="workface_id"    />
+        <result property="inOrOut"    column="in_or_out"    />
+        <result property="inoutDistance"    column="inout_distance"    />
+        <result property="distanceCoalRoadway"    column="distance_coal_roadway"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTRoadwayVo">
+        select t.roadway_type,
+               f.shape,
+               r.id,
+               r.roadway,
+               r.type,
+               r.fault_shap_id,
+               r.azimuth_angle,
+               r.wide,
+               r.height,
+               r.elevation,
+               r.strip_ctrl_left,
+               r.strip_ctrl_right,
+               r.road_origin_x,
+               r.road_origin_y,
+               r.road_origin_z,
+               r.length,
+               r.near_floor,
+               r.workface_id,
+               r.in_or_out,
+               r.inout_distance,
+               r.distance_coal_roadway,
+               r.create_by,
+               r.create_time,
+               r.update_by,
+               r.update_time,
+               r.remark
+        from t_roadway r
+                 LEFT JOIN t_roadtype t ON r.type = t.id
+                 LEFT JOIN t_fault_shape f ON r.fault_shap_id = f.id
+    </sql>
+
+    <select id="selectTRoadwayList" parameterType="TRoadway" resultMap="TRoadwayResult">
+        <include refid="selectTRoadwayVo"/>
+        <where>
+            <if test="id!=null and id!=0">and r.id=#{id}</if>
+            <if test="roadway != null  and roadway != ''">and r.roadway = #{roadway}</if>
+            <if test="type != null and type!=0">and r.type = #{type}</if>
+            <if test="faultShapId != null and faultShapId!=0">and r.fault_shap_id = #{faultShapId}</if>
+            <if test="azimuthAngle != null and azimuthAngle!=0">and r.azimuth_angle = #{azimuthAngle}</if>
+            <if test="wide != null ">and r.wide = #{wide}</if>
+            <if test="height != null ">and r.height = #{height}</if>
+            <if test="elevation != null ">and r.elevation = #{elevation}</if>
+            <if test="stripCtrlLeft != null ">and r.strip_ctrl_left = #{stripCtrlLeft}</if>
+            <if test="stripCtrlRight != null ">and r.strip_ctrl_right = #{stripCtrlRight}</if>
+            <if test="roadOriginX != null ">and r.road_origin_x = #{roadOriginX}</if>
+            <if test="roadOriginY != null ">and r.road_origin_y = #{roadOriginY}</if>
+            <if test="roadOriginZ != null ">and r.road_origin_z = #{roadOriginZ}</if>
+            <if test="length != null ">and r.length = #{length}</if>
+            <if test="nearFloor != null ">and r.near_floor = #{nearFloor}</if>
+            <if test="workfaceId != null ">and r.workface_id = #{workfaceId}</if>
+            <if test="inOrOut != null ">and r.in_or_out = #{inOrOut}</if>
+            <if test="inoutDistance != null ">and r.inout_distance = #{inoutDistance}</if>
+            <if test="distanceCoalRoadway != null ">and r.distance_coal_roadway = #{distanceCoalRoadway}</if>
+        </where>
+    </select>
+
+    <select id="selectTRoadwayById" parameterType="int" resultMap="TRoadwayResult">
+        <include refid="selectTRoadwayVo"/>
+        where r.id = #{id}
+    </select>
+
+    <insert id="insertTRoadway" parameterType="TRoadway" useGeneratedKeys="true" keyProperty="id">
+        insert into t_roadway
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roadway != null">roadway,</if>
+            <if test="type != null">type,</if>
+            <if test="faultShapId != null and faultShapId != 0">fault_shap_id,</if>
+            <if test="azimuthAngle != null">azimuth_angle,</if>
+            <if test="wide != null">wide,</if>
+            <if test="height != null">height,</if>
+            <if test="elevation != null">elevation,</if>
+            <if test="stripCtrlLeft != null">strip_ctrl_left,</if>
+            <if test="stripCtrlRight != null">strip_ctrl_right,</if>
+            <if test="roadOriginX != null">road_origin_x,</if>
+            <if test="roadOriginY != null">road_origin_y,</if>
+            <if test="roadOriginZ != null">road_origin_z,</if>
+            <if test="length != null">length,</if>
+            <if test="nearFloor != null">near_floor,</if>
+            <if test="workfaceId != null">workface_id,</if>
+            <if test="inOrOut != null ">in_or_out,</if>
+            <if test="inoutDistance != null ">inout_distance,</if>
+            <if test="distanceCoalRoadway != null ">distance_coal_roadway,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roadway != null">#{roadway},</if>
+            <if test="type != null">#{type},</if>
+            <if test="faultShapId != null and faultShapId != 0">#{faultShapId},</if>
+            <if test="azimuthAngle != null">#{azimuthAngle},</if>
+            <if test="wide != null">#{wide},</if>
+            <if test="height != null">#{height},</if>
+            <if test="elevation != null">#{elevation},</if>
+            <if test="stripCtrlLeft != null">#{stripCtrlLeft},</if>
+            <if test="stripCtrlRight != null">#{stripCtrlRight},</if>
+            <if test="roadOriginX != null ">#{roadOriginX},</if>
+            <if test="roadOriginY != null ">#{roadOriginY},</if>
+            <if test="roadOriginZ != null ">#{roadOriginZ},</if>
+            <if test="length != null ">#{length},</if>
+            <if test="nearFloor != null ">#{nearFloor},</if>
+            <if test="workfaceId != null ">#{workfaceId},</if>
+            <if test="inOrOut != null ">#{inOrOut},</if>
+            <if test="inoutDistance != null ">#{inoutDistance},</if>
+            <if test="distanceCoalRoadway != null ">#{distanceCoalRoadway},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTRoadway" parameterType="TRoadway">
+        update t_roadway
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roadway != null">roadway = #{roadway},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="faultShapId != 0">fault_shap_id = #{faultShapId},</if>
+            <if test="azimuthAngle != null">azimuth_angle = #{azimuthAngle},</if>
+            <if test="wide != null">wide = #{wide},</if>
+            <if test="height != null">height = #{height},</if>
+            <if test="elevation != null">elevation = #{elevation},</if>
+            <if test="stripCtrlLeft != null">strip_ctrl_left = #{stripCtrlLeft},</if>
+            <if test="stripCtrlRight != null">strip_ctrl_right = #{stripCtrlRight},</if>
+            <if test="roadOriginX != null ">road_origin_x = #{roadOriginX},</if>
+            <if test="roadOriginY != null ">road_origin_y = #{roadOriginY},</if>
+            <if test="roadOriginZ != null ">road_origin_z = #{roadOriginZ},</if>
+            <if test="length != null ">length = #{length},</if>
+            <if test="nearFloor != null ">near_floor = #{nearFloor},</if>
+            <if test="workfaceId != null ">workface_id = #{workfaceId},</if>
+            <if test="inOrOut != null ">in_or_out = #{inOrOut},</if>
+            <if test="inoutDistance != null ">inout_distance = #{inoutDistance},</if>
+            <if test="distanceCoalRoadway != null ">distance_coal_roadway = #{distanceCoalRoadway},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where id = #{id}
+    </update>
+    <!--根据巷道名称查询巷道ID-->
+    <select id="getIdByRoadWayName" parameterType="string" resultType="java.lang.Integer">
+        select id from t_roadway where roadway =#{roadway}
+    </select>
+    <delete id="deleteTRoadwayById" parameterType="java.lang.Integer">
+        delete from t_roadway where id = #{id}
+    </delete>
+    <!--根据ids删除信息-->
+    <delete id="deleteTRoadwayByIds" parameterType="java.util.List">
+        delete from t_roadway where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="insertTRoadwayList" parameterType="java.util.List">
+        insert IGNORE into t_roadway(roadway,type,fault_shap_id,azimuth_angle,wide,height,elevation,strip_ctrl_left,strip_ctrl_right,road_origin_x,road_origin_y,road_origin_z,length,near_floor,workface_id,in_or_out,inout_distance,distance_coal_roadway)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.roadway},
+            #{item.type},
+            #{item.faultShapId},
+            #{item.azimuthAngle},
+            #{item.wide},
+            #{item.height},
+            #{item.elevation},
+            #{item.stripCtrlLeft},
+            #{item.stripCtrlRight},
+            #{item.roadOriginX},
+            #{item.roadOriginY},
+            #{item.roadOriginZ},
+            #{item.length},
+            #{item.nearFloor},
+            #{item.workfaceId},
+            #{item.inOrOut},
+            #{item.inoutDistance},
+            #{item.distanceCoalRoadway}
+            )
+        </foreach>
+    </insert>
+    <!--获取所有列表信息-->
+    <select id="getPageList" resultType="com.ruoyi.hh.physical.domain.TRoadway">
+        select r.*,f.shape,t.roadway_type from t_roadway r LEFT JOIN t_fault_shape f ON r.fault_shap_id = f.id INNER JOIN
+        t_roadtype t ON r.Type=t.Id
+    </select>
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.simulate.mapper.GasDevDataMapper">
+    
+    <resultMap type="GasDevData" id="GasDevDataResult">
+        <result property="id"    column="id"    />
+        <result property="code"    column="code"    />
+        <result property="rate"    column="rate"    />
+        <result property="cumulant"    column="cumulant"    />
+    </resultMap>
+
+    <sql id="selectGasDevDataVo">
+        select id, code, rate, cumulant from gas_dev_data
+    </sql>
+
+    <select id="selectGasDevDataList" parameterType="GasDevData" resultMap="GasDevDataResult">
+        <include refid="selectGasDevDataVo"/>
+        <where>  
+            <if test="code != null  and code != ''"> and code = #{code}</if>
+            <if test="rate != null "> and rate = #{rate}</if>
+            <if test="cumulant != null "> and cumulant = #{cumulant}</if>
+        </where>
+    </select>
+    
+    <select id="selectGasDevDataById" parameterType="Integer" resultMap="GasDevDataResult">
+        <include refid="selectGasDevDataVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertGasDevData" parameterType="GasDevData">
+        insert into gas_dev_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="code != null">code,</if>
+            <if test="rate != null">rate,</if>
+            <if test="cumulant != null">cumulant,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="code != null">#{code},</if>
+            <if test="rate != null">#{rate},</if>
+            <if test="cumulant != null">#{cumulant},</if>
+         </trim>
+    </insert>
+
+    <update id="updateGasDevData" parameterType="GasDevData">
+        update gas_dev_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="code != null">code = #{code},</if>
+            <if test="rate != null">rate = #{rate},</if>
+            <if test="cumulant != null">cumulant = #{cumulant},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteGasDevDataById" parameterType="Integer">
+        delete from gas_dev_data where id = #{id}
+    </delete>
+
+    <delete id="deleteGasDevDataByIds" parameterType="String">
+        delete from gas_dev_data where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

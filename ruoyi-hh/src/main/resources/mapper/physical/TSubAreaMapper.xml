@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TSubAreaMapper">
+
+    <resultMap type="TSubArea" id="TSubAreaResult">
+        <result property="id" column="id"/>
+        <result property="subAreaName" column="sub_area_name"/>
+        <result property="workfaceId" column="workface_id"/>
+        <result property="roadwayId" column="roadway_id"/>
+        <result property="startDistance" column="start_distance"/>
+        <result property="endDistance" column="end_distance"/>
+        <result property="leftDistance" column="left_distance"/>
+        <result property="rightDistance" column="right_distance"/>
+        <result property="boundaryPoints" column="boundary_points" jdbcType="VARCHAR" typeHandler="com.ruoyi.hh.util.handler.JsonPointArrayTypeHandler"/>
+    </resultMap>
+
+    <sql id="selectTSubAreaVo">
+        select id,
+               sub_area_name,
+               workface_id,
+               roadway_id,
+               start_distance,
+               end_distance,
+               left_distance,
+               right_distance,
+               boundary_points
+        from t_sub_area
+    </sql>
+
+    <select id="selectTSubAreaList" parameterType="TSubArea" resultMap="TSubAreaResult">
+        <include refid="selectTSubAreaVo"/>
+        <where>
+            <if test="subAreaName != null ">and sub_area_name = #{subAreaName}</if>
+            <if test="workfaceId != null">and workface_id = #{workfaceId}</if>
+            <if test="roadwayId != null ">and roadway_id = #{roadwayId}</if>
+            <if test="startDistance != null ">and start_distance = #{startDistance}</if>
+            <if test="endDistance != null ">and end_distance = #{endDistance}</if>
+            <if test="leftDistance != null ">and left_distance = #{leftDistance}</if>
+            <if test="rightDistance != null ">and right_distance = #{rightDistance}</if>
+            <if test="boundaryPoints != null ">and boundary_points = #{boundaryPoints}</if>
+        </where>
+    </select>
+
+    <select id="selectTSubAreaById" parameterType="Long" resultMap="TSubAreaResult">
+        <include refid="selectTSubAreaVo"/>
+        where id = #{id}
+    </select>
+
+
+    <insert id="insertTSubArea" parameterType="TSubArea" useGeneratedKeys="true" keyProperty="id">
+        insert into t_sub_area
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="subAreaName != null">sub_area_name,</if>
+            <if test="workfaceId != null">workface_id,</if>
+            <if test="roadwayId != null">roadway_id,</if>
+            <if test="startDistance != null">start_distance,</if>
+            <if test="endDistance != null">end_distance,</if>
+            <if test="leftDistance != null">left_distance,</if>
+            <if test="rightDistance != null">right_distance,</if>
+            <if test="boundaryPoints != null">boundary_points,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="subAreaName != null">#{subAreaName},</if>
+            <if test="workfaceId != null">#{workfaceId},</if>
+            <if test="roadwayId != null">#{roadwayId},</if>
+            <if test="startDistance != null">#{startDistance},</if>
+            <if test="endDistance != null">#{endDistance},</if>
+            <if test="leftDistance != null">#{leftDistance},</if>
+            <if test="rightDistance != null">#{rightDistance},</if>
+            <if test="boundaryPoints != null">#{boundaryPoints,jdbcType=VARCHAR,typeHandler=com.ruoyi.hh.util.handler.JsonPointArrayTypeHandler},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTSubArea" parameterType="TSubArea">
+        update t_sub_area
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="subAreaName != null">sub_area_name = #{subAreaName},</if>
+            <if test="workfaceId != null">workface_id = #{workfaceId},</if>
+            <if test="roadwayId != null">roadway_id = #{roadwayId},</if>
+            <if test="startDistance != null">start_distance = #{startDistance},</if>
+            <if test="endDistance != null">end_distance = #{endDistance},</if>
+            <if test="leftDistance != null">left_distance = #{leftDistance},</if>
+            <if test="rightDistance != null">right_distance = #{rightDistance},</if>
+            <if test="boundaryPoints != null">boundary_points=#{boundaryPoints,jdbcType=VARCHAR,typeHandler=com.ruoyi.hh.util.handler.JsonPointArrayTypeHandler},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTSubAreaById" parameterType="Long">
+        delete
+        from t_sub_area
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTSubAreaByIds" parameterType="String">
+        delete from t_sub_area where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

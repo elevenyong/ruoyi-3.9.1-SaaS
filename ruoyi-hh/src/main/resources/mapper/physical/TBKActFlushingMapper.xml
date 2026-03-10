@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TBActFlushingMapper">
+    <resultMap id="TBKActFlushingResult" type="TBKActFlushing">
+        <result property="roadwayId"    column="roadway_id"    />
+        <result property="groupNo"    column="group_no"    />
+        <result property="boreholeNo" column="borehole_no"/>
+        <result property="boreholeCode"    column="borehole_code"    />
+        <result property="timeBeginFlushing"    column="time_begin_flushing"    />
+        <result property="timeEndFlushing"    column="time_end_flushing"    />
+        <result property="totalTimeFlushing"    column="total_time_flushing"    />
+        <result property="waterPressureDuringFlushing"    column="water_pressure_during_flushing"    />
+        <result property="punchingParagraph1"    column="punching_paragraph1"    />
+        <result property="punchingParagraph2"    column="punching_paragraph2"    />
+        <result property="seeRockCoalCase"    column="see_rock_coal_case"    />
+        <result property="actualCoalAmountFlushed"    column="actual_coal_amount_flushed"    />
+        <result property="completionRatioFlushedCoal"    column="completion_ratio_flushed_coal"    />
+        <result property="exceptionPhenomena"    column="exception_phenomena"    />
+        <result property="personConstructionFlushing"    column="person_construction_flushing"    />
+        <result property="otherPerson"    column="other_person"    />
+        <result property="chargehandFlushing"    column="chargehand_flushing"    />
+        <result property="terminalHoleDate"    column="terminal_hole_date"    />
+        <result property="remarkFlushing"    column="remark_flushing"    />
+        <result property="file"    column="file"    />
+    </resultMap>
+    <sql id="selectTBKActFlushingVo">
+        select time_begin_flushing, time_end_flushing, total_time_flushing, water_pressure_during_flushing, punching_paragraph1, punching_paragraph2, see_rock_coal_case,
+               actual_coal_amount_flushed, completion_ratio_flushed_coal, exception_phenomena, person_construction_flushing, other_person, chargehand_flushing,
+               remark_flushing,file from t_bk_act_borehole_info
+    </sql>
+
+    <!--任意信息查询-->
+    <select id="selectTBKActFlushingList" parameterType="TBKActFlushing" resultMap="TBKActFlushingResult">
+        <include refid="selectTBKActFlushingVo"/>
+            <where>
+                <if test="roadwayId != null and roadwayId != 0 "> and roadway_id = #{roadwayId}</if>
+                <if test="groupNo != null  and groupNo != ''"> and group_no = #{groupNo}</if>
+                <if test="boreholeNo != null  and boreholeNo != ''"> and borehole_no = #{boreholeNo}</if>
+                <if test="boreholeCode != null  and boreholeCode != ''"> and borehole_code = #{boreholeCode}</if>
+                <if test="timeBeginFlushing != null "> and time_begin_flushing = #{timeBeginFlushing}</if>
+                <if test="timeEndFlushing != null "> and time_end_flushing = #{timeEndFlushing}</if>
+                <if test="totalTimeFlushing != null "> and total_time_flushing = #{totalTimeFlushing}</if>
+                <if test="waterPressureDuringFlushing != null "> and water_pressure_during_flushing = #{waterPressureDuringFlushing}</if>
+                <if test="punchingParagraph1 != null "> and punching_paragraph1 = #{punchingParagraph1}</if>
+                <if test="punchingParagraph2 != null "> and punching_paragraph2 = #{punchingParagraph2}</if>
+                <if test="seeRockCoalCase != null  and seeRockCoalCase != ''"> and see_rock_coal_case = #{seeRockCoalCase}</if>
+                <if test="actualCoalAmountFlushed != null "> and actual_coal_amount_flushed = #{actualCoalAmountFlushed}</if>
+                <if test="completionRatioFlushedCoal != null "> and completion_ratio_flushed_coal = #{completionRatioFlushedCoal}</if>
+                <if test="exceptionPhenomena != null  and exceptionPhenomena != ''"> and exception_phenomena = #{exceptionPhenomena}</if>
+                <if test="personConstructionFlushing != null  and personConstructionFlushing != ''"> and person_construction_flushing = #{personConstructionFlushing}</if>
+                <if test="otherPerson != null  and otherPerson != ''"> and other_person = #{otherPerson}</if>
+                <if test="chargehandFlushing != null  and chargehandFlushing != ''"> and chargehand_flushing = #{chargehandFlushing}</if>
+                <if test="terminalHoleDate != null"> and terminal_hole_date = #{terminalHoleDate}</if>
+                <if test="remarkFlushing != null  and remarkFlushing != ''"> and remark_flushing = #{remarkFlushing}</if>
+                <if test="file != null  and file != ''"> and file = #{file}</if>
+            </where>
+    </select>
+</mapper>

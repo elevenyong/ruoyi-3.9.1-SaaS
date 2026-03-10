@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.util.mapper.TShiftinfoMapper">
+
+    <resultMap type="TShiftinfo" id="TShiftinfoResult">
+        <result property="id"    column="id"    />
+        <result property="shiftInfo"    column="shift_info"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTShiftinfoVo">
+        select id, shift_info, create_by, create_time, update_by, update_time, remark from t_shiftinfo
+    </sql>
+
+    <select id="selectTShiftinfoList" parameterType="TShiftinfo" resultMap="TShiftinfoResult">
+        <include refid="selectTShiftinfoVo"/>
+        <where>
+            <if test="id!=null and id!=0">and id=#{id}</if>
+            <if test="shiftInfo != null  and shiftInfo != ''"> and shift_info = #{shiftInfo}</if>
+        </where>
+    </select>
+
+    <select id="selectTShiftinfoById" parameterType="Integer" resultMap="TShiftinfoResult">
+        <include refid="selectTShiftinfoVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTShiftinfo" parameterType="TShiftinfo" useGeneratedKeys="true" keyProperty="id">
+        insert into t_shiftinfo
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shiftInfo != null">shift_info,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="shiftInfo != null">#{shiftInfo},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTShiftinfo" parameterType="TShiftinfo">
+        update t_shiftinfo
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="shiftInfo != null">shift_info = #{shiftInfo},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTShiftinfoById" parameterType="java.lang.Integer">
+        delete from t_shiftinfo where id = #{id}
+    </delete>
+
+    <delete id="deleteTShiftinfoByIds" parameterType="java.util.List">
+        delete from t_shiftinfo where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getPageList" resultType="com.ruoyi.hh.util.domain.TShiftinfo">
+        <include refid="selectTShiftinfoVo"/>
+    </select>
+    <!--根据班次名查询班次ID-->
+    <select id="getIdByName" resultType="Integer">
+        select id from t_shiftinfo where shift_info=#{shiftInfo}
+    </select>
+</mapper>

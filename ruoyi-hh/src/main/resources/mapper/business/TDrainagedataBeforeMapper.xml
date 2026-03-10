@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.business.mapper.TDrainagedataBeforeMapper">
+    
+    <resultMap type="TDrainagedataBefore" id="TDrainagedataBeforeResult">
+        <result property="id"    column="id"    />
+        <result property="measurePointLocal"    column="measure_point_local"    />
+        <result property="measurePointCode"    column="measure_point_code"    />
+        <result property="accumulateGasScalar"    column="accumulate_gas_scalar"    />
+        <result property="toDate"    column="to_date"    />
+    </resultMap>
+
+    <sql id="selectTDrainagedataBeforeVo">
+        select id, measure_point_local,measure_point_code, accumulate_gas_scalar,  to_date from t_drainagedata_before
+    </sql>
+
+    <select id="selectTDrainagedataBeforeList" parameterType="TDrainagedataBefore" resultMap="TDrainagedataBeforeResult">
+        <include refid="selectTDrainagedataBeforeVo"/>
+        <where>  
+            <if test="measurePointLocal != null  and measurePointLocal != ''"> and measure_point_local = #{measurePointLocal}</if>
+            <if test="measurePointCode != null  and measurePointCode != ''"> and measure_point_code = #{measurePointCode}</if>
+            <if test="accumulateGasScalar != null and accumulateGasScalar !=0"> and accumulate_gas_scalar = #{accumulateGasScalar}</if>
+            <if test="toDate != null "> and to_date = #{toDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectTDrainagedataBeforeById" parameterType="Integer" resultMap="TDrainagedataBeforeResult">
+        <include refid="selectTDrainagedataBeforeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTDrainagedataBefore" parameterType="TDrainagedataBefore" useGeneratedKeys="true" keyProperty="id">
+        insert into t_drainagedata_before
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="measurePointLocal != null">measure_point_local,</if>
+            <if test="measurePointCode != null">measure_point_code,</if>
+            <if test="accumulateGasScalar != null and accumulateGasScalar !=0">accumulate_gas_scalar,</if>
+            <if test="toDate != null">to_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="measurePointLocal != null">#{measurePointLocal},</if>
+            <if test="measurePointCode != null">#{measurePointCode},</if>
+            <if test="accumulateGasScalar != null and accumulateGasScalar !=0">#{accumulateGasScalar},</if>
+            <if test="toDate != null">#{toDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTDrainagedataBefore" parameterType="TDrainagedataBefore">
+        update t_drainagedata_before
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="measurePointLocal != null">measure_point_local = #{measurePointLocal},</if>
+            <if test="measurePointCode != null">measure_point_code = #{measurePointCode},</if>
+            <if test="accumulateGasScalar != null">accumulate_gas_scalar = #{accumulateGasScalar},</if>
+            <if test="toDate != null">to_date = #{toDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTDrainagedataBeforeById" parameterType="Integer">
+        delete from t_drainagedata_before where id = #{id}
+    </delete>
+
+    <delete id="deleteTDrainagedataBeforeByIds" parameterType="String">
+        delete from t_drainagedata_before where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -77,4 +77,13 @@ public class InvalidExtensionException extends FileUploadException
             super(allowedExtension, extension, filename);
         }
     }
+    public static class InvalidCADExtensionException extends InvalidExtensionException
+    {
+        private static final long serialVersionUID = 1L;
+
+        public InvalidCADExtensionException(String[] allowedExtension, String extension, String filename)
+        {
+            super(allowedExtension, extension, filename);
+        }
+    }
 }

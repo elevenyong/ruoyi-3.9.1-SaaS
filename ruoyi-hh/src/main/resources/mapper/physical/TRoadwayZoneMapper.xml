@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TRoadwayZoneMapper">
+
+    <resultMap type="TRoadwayZone" id="TRoadwayZoneResult">
+        <result property="id"    column="id"    />
+        <result property="roadwayId"    column="roadway_id"    />
+        <result property="zoneName"    column="zone_name"    />
+        <result property="X"    column="X"    />
+        <result property="Y"    column="Y"    />
+        <result property="Z"    column="Z"    />
+        <result property="length"    column="length"    />
+        <result property="zoneFinalElevation"    column="zone_final_elevation"    />
+        <result property="azimuthAngle"    column="azimuth_angle"    />
+        <result property="inclinationAngle"    column="inclination_angle"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTRoadwayZoneVo">
+            select r.roadway,z.id, z.roadway_id, z.zone_name, z.X, z.Y, z.Z, z.length,z.zone_final_elevation, z.azimuth_angle, z.inclination_angle, z.create_by,
+			z.create_time, z.update_by, z.update_time, z.remark
+			from t_roadway_zone z
+			LEFT JOIN t_roadway r ON z. roadway_id = r.id
+    </sql>
+
+    <select id="selectTRoadwayZoneList" parameterType="TRoadwayZone" resultMap="TRoadwayZoneResult">
+        <include refid="selectTRoadwayZoneVo"/>
+        <where>
+            <if test="id!=null and id !=0">and z.id=#{id}</if>
+            <if test="roadwayId != null and roadwayId != 0 "> and z.roadway_id = #{roadwayId}</if>
+            <if test="zoneName != null  and zoneName != ''"> and z.zone_name like concat('%', #{zoneName}, '%')</if>
+            <if test="X != null "> and z.X = #{x}</if>
+            <if test="Y != null "> and z.Y = #{y}</if>
+            <if test="Z != null "> and z.Z = #{z}</if>
+            <if test="length != null "> and z.length = #{length}</if>
+            <if test="zoneFinalElevation != null "> and z.zone_final_elevation = #{zoneFinalElevation}</if>
+            <if test="azimuthAngle != null "> and z.azimuth_angle = #{azimuthAngle}</if>
+            <if test="inclinationAngle != null "> and z.inclination_angle = #{inclinationAngle}</if>
+        </where>
+    </select>
+
+    <select id="selectTRoadwayZoneById" parameterType="int" resultMap="TRoadwayZoneResult">
+        <include refid="selectTRoadwayZoneVo"/>
+        where z.id = #{id}
+    </select>
+
+    <insert id="insertTRoadwayZone" parameterType="TRoadwayZone" useGeneratedKeys="true" keyProperty="id">
+        insert into t_roadway_zone
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">roadway_id,</if>
+            <if test="zoneName != null">zone_name,</if>
+            <if test="X != null">X,</if>
+            <if test="Y != null">Y,</if>
+            <if test="Z != null">Z,</if>
+            <if test="length != null">length,</if>
+            <if test="zoneFinalElevation != null">zone_final_elevation,</if>
+            <if test="azimuthAngle != null">azimuth_angle,</if>
+            <if test="inclinationAngle != null">inclination_angle,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">#{roadwayId},</if>
+            <if test="zoneName != null">#{zoneName},</if>
+            <if test="X != null">#{x},</if>
+            <if test="Y != null">#{y},</if>
+            <if test="Z != null">#{z},</if>
+            <if test="length != null">#{length},</if>
+            <if test="zoneFinalElevation != null">#{zoneFinalElevation},</if>
+            <if test="azimuthAngle != null">#{azimuthAngle},</if>
+            <if test="inclinationAngle != null">#{inclinationAngle},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTRoadwayZone" parameterType="TRoadwayZone">
+        update t_roadway_zone
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">roadway_id = #{roadwayId},</if>
+            <if test="zoneName != null">zone_name = #{zoneName},</if>
+            <if test="X != null">X = #{x},</if>
+            <if test="Y != null">Y = #{y},</if>
+            <if test="Z != null">Z = #{z},</if>
+            <if test="length != null">length = #{length},</if>
+            <if test="zoneFinalElevation != null">zone_final_elevation = #{zoneFinalElevation},</if>
+            <if test="azimuthAngle != null">azimuth_angle = #{azimuthAngle},</if>
+            <if test="inclinationAngle != null">inclination_angle = #{inclinationAngle},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTRoadwayZoneById" parameterType="java.lang.Integer">
+        delete from t_roadway_zone where id = #{id}
+    </delete>
+
+    <delete id="deleteTRoadwayZoneByIds" parameterType="java.util.List">
+        delete from t_roadway_zone where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <insert id="insertTRoadwayList" parameterType="java.util.List">
+        insert IGNORE into t_roadway_zone(roadway_id,zone_name,X,Y,Z,length,zone_final_elevation,azimuth_angle,inclination_angle)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.roadwayId},
+            #{item.zoneName},
+            #{item.X},
+            #{item.Y},
+            #{item.Z},
+            #{item.length},
+            #{item.zoneFinalElevation},
+            #{item.azimuthAngle}
+            #{item.inclinationAngle},
+            )
+        </foreach>
+    </insert>
+
+    <select id="list" resultType="com.ruoyi.hh.physical.domain.TRoadwayZone">
+        select * from t_roadway_zone
+    </select>
+
+    <select id="getByRoadwayId" parameterType="int" resultType="com.ruoyi.hh.physical.domain.TRoadwayZone">
+        select * from t_roadway_zone where roadway_id =#{roadwayId}
+    </select>
+
+    <!---->
+    <select id="gettest" parameterType="int">
+        SELECT * from t_roadway_zone where inclination_angle =#{inclinationAngle} and roadway_id =#{roadwayId}
+    </select>
+
+    <!--根据巷道ID删除区段信息-->
+    <delete id="delByRoadWayId" parameterType="int">
+        delete from t_roadway_zone where roadway_id = #{roadwayId}
+    </delete>
+    <delete id="delByRoadWayIds" parameterType="java.util.List">
+        delete from t_roadway_zone where roadway_id in
+        <foreach item="roadwayIds" collection="list" open="(" separator="," close=")">
+            #{roadwayIds}
+        </foreach>
+    </delete>
+    <!--根据巷道ID查询区段ID列表-->
+    <select id="getIdsByRoadWayId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select id from t_roadway_zone where roadway_id =#{roadwayId}
+    </select>
+    <!--根据区段名称查询区段ID-->
+    <select id="getIdByZoneName" resultType="java.lang.Integer">
+        select id from t_roadway_zone where  zone_name =#{zoneName} and roadway_id =#{roadwayId}
+    </select>
+</mapper>

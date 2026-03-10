@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.hh.demo.mapper.AnalogdataDao">
+    <!-- 根据PointId从数据库中查询最新的数据 -->
+    <select id="getRealTimeDataByPointCode" parameterType="string" resultType="com.ruoyi.hh.demo.domain.Analogdata">
+        select * from analogdata  where PointCode=#{PointCode} ORDER BY EndTime DESC limit 0,1
+    </select>
+    <!-- 从数据库中查询所有的传感器的最新数据 -->
+    <select id="getRealTimeData" resultType="com.ruoyi.hh.demo.domain.Analogdata">
+        select * from analogdata  GROUP BY PointCode ORDER BY EndTime DESC
+    </select>
+    
+    <!-- 查询时间段内某一个PointCode AvgValue的平均值 -->
+    <select id="getAvgEveryHour" resultType="com.ruoyi.hh.demo.domain.AnalogDataAvg" parameterType="string">
+    	select AVG(A.AvgValue) AS DataFloat,A.PointCode,
+    	 DATE_FORMAT(
+			CONCAT
+			(date(A.StartTime),
+			' ',
+			HOUR(A.StartTime)
+			),'%Y-%m-%d %H'
+		) AS TimePoint from  analogdata A where A.PointCode=#{PointCode} GROUP BY TimePoint
+    </select>
+    
+    <resultMap type="com.ruoyi.hh.demo.domain.Analogdata" id="AnalogDataResult">
+    	<id property="id" column="id"/>
+    	<result property="equipid" column="equipid"/>
+    	<result property="pointcode" column="pointcode"/>
+    	<result property="pointid" column="pointid"/>
+    	<result property="starttime" column="starttime"/>
+    	<result property="endtime" column="endtime"/>
+    	<result property="minvalue" column="minvalue"/>
+    	<result property="mintime" column="mintime"/>
+    	<result property="maxv" column="maxv"/>
+    	<result property="maxtime" column="maxtime"/>
+    	<result property="avgvalue" column="avgvalue"/>
+    	<result property="validtime" column="validtime"/>
+    	<result property="alarmcount" column="alarmcount"/>
+    	<result property="feedcount" column="feedcount"/>
+    	<result property="period" column="period"/>
+    	<result property="equipstate" column="equipstate"/>
+    	<result property="status" column="status"/>
+    </resultMap>
+  <!--   <insert id="insertAnalogDataList" parameterType="list" >
+    	insert into analogdata (equipid,pointcode,pointid,starttime,endtime,minvalue,mintime,`maxvalue`,maxtime,avgvalue,validtime,alarmcount,feedcount,period,equipstate,`status`)
+    	values
+    	<foreach collection="list" item="item" index="index" separator=",">
+    		(
+    			#{item.equipid},
+    			#{item.pointcode},
+    			#{item.pointid},
+    			#{item.starttime},
+    			#{item.endtime},
+    			#{item.minvalue},
+    			#{item.mintime},
+    			#{item.maxvalue},  
+    			#{item.maxtime},
+    			#{item.avgvalue},
+    			#{item.validtime},
+    			#{item.alarmcount},
+    			#{item.feedcount},
+    			#{item.period},
+    			#{item.equipstate},
+    			#{item.status}
+    		)
+    	</foreach>
+    </insert> -->
+    
+    <insert id="insertAnalogDataList" parameterType="list" >
+    	insert into analogdata (equipid,pointcode,pointid,starttime,endtime,minvalue,mintime,maxtime,avgvalue,validtime,alarmcount,feedcount,period,equipstate,status,MaxV)
+    	values
+    	<foreach collection="list" item="item" index="index" separator=",">
+	    		(#{item.equipid},
+    			#{item.pointcode},
+    			#{item.pointid},
+    			#{item.starttime},
+    			#{item.endtime},
+    			#{item.minvalue},
+    			#{item.mintime},
+    			#{item.maxtime},
+    			#{item.avgvalue},
+    			#{item.validtime},
+    			#{item.alarmcount},
+    			#{item.feedcount},
+    			#{item.period},
+    			#{item.equipstate},
+    			#{item.status},
+    			#{item.maxv}
+    			)
+    	</foreach>
+    </insert>
+    
+    <select id="getOne"  resultType="com.ruoyi.hh.demo.domain.Analogdata">
+    	select * from analogdata where startTime = #{stratTime} and PointCode = #{PointCode}
+    </select> 
+    
+    
+   <!-- 删除系统保存天数之前的分表 -->
+    <delete id="deleteSubTable" parameterType="string">
+		drop table if exists ${tableName}
+	</delete>
+	
+	<!-- 生成明天的分表 -->
+	<update id="createTodayTable" parameterType="String">
+		CREATE TABLE IF NOT EXISTS ${tableName}  (
+		  `id` int(11) NOT NULL AUTO_INCREMENT,
+		  `EquipId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+		  `PointCode` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+		  `PointId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+		  `StartTime` datetime NULL DEFAULT NULL,
+		  `EndTime` datetime NULL DEFAULT NULL,
+		  `MinValue` double NULL DEFAULT NULL,
+		  `MinTime` datetime NULL DEFAULT NULL,
+		  `MaxV` double NULL DEFAULT NULL,
+		  `MaxTime` datetime NULL DEFAULT NULL,
+		  `AvgValue` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+		  `ValidTime` int(11) NULL DEFAULT NULL,
+		  `AlarmCount` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+		  `FeedCount` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+		  `Period` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+		  `EquipState` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+		  `Status` int(255) NULL DEFAULT NULL,
+		  PRIMARY KEY (`id`) USING BTREE
+		)
+	</update>
+	<!-- 查询时间段内的所有数据 -->
+	<select id="getDataInTime" resultType="com.ruoyi.hh.demo.domain.Analogdata" >
+		select * from analogdata where StartTime between #{stratTime} and #{endTime}
+		<if test="PointCode!=null">and PointCode = #{PointCode}</if> order by StartTime desc
+	</select>
+    
+</mapper>

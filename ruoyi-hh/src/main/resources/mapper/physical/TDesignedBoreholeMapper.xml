@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TDesignedBoreholeMapper">
+
+    <resultMap type="TDesignedBorehole" id="TDesignedBoreholeResult">
+        <result property="id"    column="id"    />
+        <result property="roadwayId"    column="roadway_id"    />
+        <result property="groupNo"    column="group_no"    />
+        <result property="boreholeNo"    column="borehole_no"    />
+        <result property="roadwayZoneId"    column="roadway_zone_id"    />
+        <result property="boreholeSiteId"    column="borehole_site_id"    />
+        <result property="categoryCode"    column="category_code"    />
+        <result property="purposeBoreholeId"    column="purpose_borehole_id"    />
+        <result property="measurePointId"    column="measure_point_id"    />
+        <result property="desParameterId"    column="des_parameter_id"    />
+        <result property="azimuthAngle"    column="azimuth_angle"    />
+        <result property="angle"    column="angle"    />
+        <result property="inclinationAngle"    column="inclination_angle"    />
+        <result property="aperture"    column="aperture"    />
+        <result property="depth1stRockSeamStart"    column="depth_1st_rock_seam_start"    />
+        <result property="depth1stRockSeamEnd"    column="depth_1st_rock_seam_end"    />
+        <result property="depth1stCoalSeamStart"    column="depth_1st_coal_seam_start"    />
+        <result property="depth1stCoalSeamEnd"    column="depth_1st_coal_seam_end"    />
+        <result property="depth2stRockSeamStart"    column="depth_2st_rock_seam_start"    />
+        <result property="depth2stRockSeamEnd"    column="depth_2st_rock_seam_end"    />
+        <result property="depth2stCoalSeamStart"    column="depth_2st_coal_seam_start"    />
+        <result property="depth2stCoalSeamEnd"    column="depth_2st_coal_seam_end"    />
+        <result property="depth3stRockSeamStart"    column="depth_3st_rock_seam_start"    />
+        <result property="depth3stRockSeamEnd"    column="depth_3st_rock_seam_end"    />
+        <result property="depth3stCoalSeamStart"    column="depth_3st_coal_seam_start"    />
+        <result property="depth3stCoalSeamEnd"    column="depth_3st_coal_seam_end"    />
+        <result property="depth4stRockSeamStart"    column="depth_4st_rock_seam_start"    />
+        <result property="depth4stRockSeamEnd"    column="depth_4st_rock_seam_end"    />
+        <result property="boreholeLength"    column="borehole_length"    />
+        <result property="navigationPointId"    column="navigation_point_id"    />
+        <result property="distanceToNavigationPoint"    column="distance_to_navigation_point"    />
+        <result property="directionToNavigation"    column="direction_to_navigation"    />
+        <result property="extractionRadius"    column="extraction_radius"    />
+        <result property="distanceToCentrallineTunnel"    column="distance_to_centralline_tunnel"    />
+        <result property="adjacentBoreholeNo"    column="adjacent_borehole_no"    />
+        <result property="distanceAdjacentBorehole"    column="distance_adjacent_borehole"    />
+        <result property="sign"    column="sign"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="holeAltitude"    column="hole_altitude"    />
+        <result property="lineSpace"    column="line_space"    />
+        <result property="holeSpace"    column="hole_space"    />
+    </resultMap>
+
+    <sql id="selectTDesignedBoreholeVo">
+       select d.*,r.roadway,c.borehole_category,z.zone_name,p.purpose_borehole,n.navigation_point_name,m.measuring_point_name as measurePointName
+        from
+        t_designed_borehole d
+        LEFT JOIN t_roadway r ON d.roadway_id = r.id
+        LEFT JOIN t_borehole_category c ON d.category_code=c.category_code
+        LEFT JOIN t_navigation_point n ON d.navigation_point_id=n.id
+        LEFT JOIN t_purpose_borehole p ON d.purpose_borehole_id = p.Id
+        LEFT JOIN t_measuring_point m ON d.measure_point_id = m.id
+        LEFT JOIN t_roadway_zone z ON z.id = d.roadway_zone_id
+    </sql>
+
+    <select id="selectTDesignedBoreholeList" parameterType="TDesignedBorehole" resultMap="TDesignedBoreholeResult">
+        <include refid="selectTDesignedBoreholeVo"/>
+        <where>
+            <if test="roadwayId != null and roadwayId !=0"> and d.roadway_id = #{roadwayId}</if>
+            <if test="groupNo != null "> and d.group_no = #{groupNo}</if>
+            <if test="boreholeNo != null and boreholeNo !=''"> and d.borehole_no = #{boreholeNo}</if>
+            <if test="roadwayZoneId != null and roadwayZoneId !=0"> and d.roadway_zone_id = #{roadwayZoneId}</if>
+            <if test="boreholeSiteId != null and boreholeSiteId != 0"> and d.borehole_site_id = #{boreholeSiteId}</if>
+            <if test="categoryCode != null and categoryCode !=0"> and d.category_code = #{categoryCode}</if>
+            <if test="purposeBoreholeId != null and purposeBoreholeId !=0"> and d.purpose_borehole_id = #{purposeBoreholeId}</if>
+            <if test="measurePointId != null and measurePointId !=0"> and d.measure_point_id = #{measurePointId}</if>
+            <if test="desParameterId != null and desParameterId !=0"> and d.des_parameter_id = #{desParameterId}</if>
+            <if test="azimuthAngle != null and azimuthAngle !=0"> and d.azimuth_angle = #{azimuthAngle}</if>
+            <if test="angle != null and angle != 0"> and d.angle = #{angle}</if>
+            <if test="inclinationAngle != null and inclinationAngle !=0"> and d.inclination_angle = #{inclinationAngle}</if>
+            <if test="aperture != null "> and d.aperture = #{aperture}</if>
+            <if test="depth1stRockSeamStart != null "> and d.depth_1st_rock_seam_start = #{depth1stRockSeamStart}</if>
+            <if test="depth1stRockSeamEnd != null "> and d.depth_1st_rock_seam_end = #{depth1stRockSeamEnd}</if>
+            <if test="depth1stCoalSeamStart != null "> and d.depth_1st_coal_seam_start = #{depth1stCoalSeamStart}</if>
+            <if test="depth1stCoalSeamEnd != null "> and d.depth_1st_coal_seam_end = #{depth1stCoalSeamEnd}</if>
+            <if test="depth2stRockSeamStart != null "> and d.depth_2st_rock_seam_start = #{depth2stRockSeamStart}</if>
+            <if test="depth2stRockSeamEnd != null "> and d.depth_2st_rock_seam_end = #{depth2stRockSeamEnd}</if>
+            <if test="depth2stCoalSeamStart != null "> and d.depth_2st_coal_seam_start = #{depth2stCoalSeamStart}</if>
+            <if test="depth2stCoalSeamEnd != null "> and d.depth_2st_coal_seam_end = #{depth2stCoalSeamEnd}</if>
+            <if test="depth3stRockSeamStart != null "> and d.depth_3st_rock_seam_start = #{depth3stRockSeamStart}</if>
+            <if test="depth3stRockSeamEnd != null "> and d.depth_3st_rock_seam_end = #{depth3stRockSeamEnd}</if>
+            <if test="depth3stCoalSeamStart != null "> and d.depth_3st_coal_seam_start = #{depth3stCoalSeamStart}</if>
+            <if test="depth3stCoalSeamEnd != null "> and d.depth_3st_coal_seam_end = #{depth3stCoalSeamEnd}</if>
+            <if test="depth4stRockSeamStart != null "> and d.depth_4st_rock_seam_start = #{depth4stRockSeamStart}</if>
+            <if test="depth4stRockSeamEnd != null "> and d.depth_4st_rock_seam_end = #{depth4stRockSeamEnd}</if>
+            <if test="boreholeLength != null and boreholeLength !=0"> and d.borehole_length = #{boreholeLength}</if>
+            <if test="navigationPointId != null and navigationPointId !=0"> and d.navigation_point_id = #{navigationPointId}</if>
+            <if test="distanceToNavigationPoint != null "> and d.distance_to_navigation_point = #{distanceToNavigationPoint}</if>
+            <if test="directionToNavigation != null "> and d.direction_to_navigation = #{directionToNavigation}</if>
+            <if test="extractionRadius != null "> and d.extraction_radius = #{extractionRadius}</if>
+            <if test="distanceToCentrallineTunnel != null "> and d.distance_to_centralline_tunnel = #{distanceToCentrallineTunnel}</if>
+            <if test="adjacentBoreholeNo != null  and adjacentBoreholeNo != ''"> and d.adjacent_borehole_no = #{adjacentBoreholeNo}</if>
+            <if test="distanceAdjacentBorehole != null "> and d.distance_adjacent_borehole = #{distanceAdjacentBorehole}</if>
+            <if test="sign != null"> and d.sign >= #{sign}</if>
+            <if test="holeAltitude != null "> and d.hole_altitude = #{holeAltitude}</if>
+            <if test="lineSpace != null "> and d.line_space = #{lineSpace}</if>
+            <if test="holeSpace != null "> and d.hole_space = #{holeSpace}</if>
+        </where>
+    </select>
+
+    <select id="selectTDesignedBoreholeById" parameterType="java.lang.Integer" resultMap="TDesignedBoreholeResult">
+        <include refid="selectTDesignedBoreholeVo"/>
+        where d.id = #{id}
+    </select>
+
+    <insert id="insertTDesignedBorehole" parameterType="TDesignedBorehole" useGeneratedKeys="true" keyProperty="id">
+        insert into t_designed_borehole
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">roadway_id,</if>
+            <if test="groupNo != null">group_no,</if>
+            <if test="boreholeNo != null and boreholeNo !=''">borehole_no,</if>
+            <if test="roadwayZoneId != null and roadwayZoneId != 0">roadway_zone_id,</if>
+            <if test="boreholeSiteId != null and boreholeSiteId != 0">borehole_site_id,</if>
+            <if test="categoryCode != null">category_code,</if>
+            <if test="purposeBoreholeId != null and purposeBoreholeId != 0">purpose_borehole_id,</if>
+            <if test="measurePointId != null">measure_point_id,</if>
+            <if test="desParameterId != null and desParameterId != 0">des_parameter_id,</if>
+            <if test="azimuthAngle != null">azimuth_angle,</if>
+            <if test="angle != null">angle,</if>
+            <if test="inclinationAngle != null">inclination_angle,</if>
+            <if test="aperture != null">aperture,</if>
+            <if test="depth1stRockSeamStart != null">depth_1st_rock_seam_start,</if>
+            <if test="depth1stRockSeamEnd != null">depth_1st_rock_seam_end,</if>
+            <if test="depth1stCoalSeamStart != null">depth_1st_coal_seam_start,</if>
+            <if test="depth1stCoalSeamEnd != null">depth_1st_coal_seam_end,</if>
+            <if test="depth2stRockSeamStart != null">depth_2st_rock_seam_start,</if>
+            <if test="depth2stRockSeamEnd != null">depth_2st_rock_seam_end,</if>
+            <if test="depth2stCoalSeamStart != null">depth_2st_coal_seam_start,</if>
+            <if test="depth2stCoalSeamEnd != null">depth_2st_coal_seam_end,</if>
+            <if test="depth3stRockSeamStart != null">depth_3st_rock_seam_start,</if>
+            <if test="depth3stRockSeamEnd != null">depth_3st_rock_seam_end,</if>
+            <if test="depth3stCoalSeamStart != null">depth_3st_coal_seam_start,</if>
+            <if test="depth3stCoalSeamEnd != null">depth_3st_coal_seam_end,</if>
+            <if test="depth4stRockSeamStart != null">depth_4st_rock_seam_start,</if>
+            <if test="depth4stRockSeamEnd != null">depth_4st_rock_seam_end,</if>
+            <if test="boreholeLength != null">borehole_length,</if>
+            <if test="navigationPointId != null and navigationPointId != 0">navigation_point_id,</if>
+            <if test="distanceToNavigationPoint != null">distance_to_navigation_point,</if>
+            <if test="directionToNavigation != null">direction_to_navigation,</if>
+            <if test="extractionRadius != null">extraction_radius,</if>
+            <if test="distanceToCentrallineTunnel != null">distance_to_centralline_tunnel,</if>
+            <if test="adjacentBoreholeNo != null and adjacentBoreholeNo != ''">adjacent_borehole_no,</if>
+            <if test="distanceAdjacentBorehole != null">distance_adjacent_borehole,</if>
+            <if test="sign != null">sign,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            <if test="holeAltitude != null">hole_altitude,</if>
+            <if test="lineSpace != null">line_space,</if>
+            <if test="holeSpace != null">hole_space,</if>
+             create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">#{roadwayId},</if>
+            <if test="groupNo != null">#{groupNo},</if>
+            <if test="boreholeNo != null and boreholeNo !=''">#{boreholeNo},</if>
+            <if test="roadwayZoneId != null and roadwayZoneId != 0">#{roadwayZoneId},</if>
+            <if test="boreholeSiteId != null and boreholeSiteId != 0">#{boreholeSiteId},</if>
+            <if test="categoryCode != null">#{categoryCode},</if>
+            <if test="purposeBoreholeId != null and purposeBoreholeId != 0">#{purposeBoreholeId},</if>
+            <if test="measurePointId != null and measurePointId != 0">#{measurePointId},</if>
+            <if test="desParameterId != null and desParameterId != 0">#{desParameterId},</if>
+            <if test="azimuthAngle != null">#{azimuthAngle},</if>
+            <if test="angle != null">#{angle},</if>
+            <if test="inclinationAngle != null">#{inclinationAngle},</if>
+            <if test="aperture != null">#{aperture},</if>
+            <if test="depth1stRockSeamStart != null">#{depth1stRockSeamStart},</if>
+            <if test="depth1stRockSeamEnd != null">#{depth1stRockSeamEnd},</if>
+            <if test="depth1stCoalSeamStart != null">#{depth1stCoalSeamStart},</if>
+            <if test="depth1stCoalSeamEnd != null">#{depth1stCoalSeamEnd},</if>
+            <if test="depth2stRockSeamStart != null">#{depth2stRockSeamStart},</if>
+            <if test="depth2stRockSeamEnd != null">#{depth2stRockSeamEnd},</if>
+            <if test="depth2stCoalSeamStart != null">#{depth2stCoalSeamStart},</if>
+            <if test="depth2stCoalSeamEnd != null">#{depth2stCoalSeamEnd},</if>
+            <if test="depth3stRockSeamStart != null">#{depth3stRockSeamStart},</if>
+            <if test="depth3stRockSeamEnd != null">#{depth3stRockSeamEnd},</if>
+            <if test="depth3stCoalSeamStart != null">#{depth3stCoalSeamStart},</if>
+            <if test="depth3stCoalSeamEnd != null">#{depth3stCoalSeamEnd},</if>
+            <if test="depth4stRockSeamStart != null">#{depth4stRockSeamStart},</if>
+            <if test="depth4stRockSeamEnd != null">#{depth4stRockSeamEnd},</if>
+            <if test="boreholeLength != null">#{boreholeLength},</if>
+            <if test="navigationPointId != null and navigationPointId != 0">#{navigationPointId},</if>
+            <if test="distanceToNavigationPoint != null">#{distanceToNavigationPoint},</if>
+            <if test="directionToNavigation != null">#{directionToNavigation},</if>
+            <if test="extractionRadius != null">#{extractionRadius},</if>
+            <if test="distanceToCentrallineTunnel != null">#{distanceToCentrallineTunnel},</if>
+            <if test="adjacentBoreholeNo != null and adjacentBoreholeNo != ''">#{adjacentBoreholeNo},</if>
+            <if test="distanceAdjacentBorehole != null">#{distanceAdjacentBorehole},</if>
+            <if test="sign != null">#{sign},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="holeAltitude != null">#{holeAltitude},</if>
+            <if test="lineSpace != null">#{lineSpace},</if>
+            <if test="holeSpace != null">#{holeSpace},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTDesignedBorehole" parameterType="TDesignedBorehole">
+        update t_designed_borehole
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">roadway_id = #{roadwayId},</if>
+            <if test="groupNo != null">group_no = #{groupNo},</if>
+            <if test="boreholeNo != null and boreholeNo !=''">borehole_no = #{boreholeNo},</if>
+            <if test="roadwayZoneId != null and roadwayZoneId != 0">roadway_zone_id = #{roadwayZoneId},</if>
+            <if test="boreholeSiteId != null and boreholeSiteId != 0">borehole_site_id = #{boreholeSiteId},</if>
+            <if test="categoryCode != null">category_code = #{categoryCode},</if>
+            <if test="purposeBoreholeId != null and purposeBoreholeId != 0">purpose_borehole_id = #{purposeBoreholeId},</if>
+            <if test="measurePointId != null and measurePointId != 0">measure_point_id = #{measurePointId},</if>
+            <if test="desParameterId != null and desParameterId != 0">des_parameter_id = #{desParameterId},</if>
+            <if test="azimuthAngle != null">azimuth_angle = #{azimuthAngle},</if>
+            <if test="angle != null">angle = #{angle},</if>
+            <if test="inclinationAngle != null">inclination_angle = #{inclinationAngle},</if>
+            <if test="aperture != null">aperture = #{aperture},</if>
+            <if test="depth1stRockSeamStart != null">depth_1st_rock_seam_start = #{depth1stRockSeamStart},</if>
+            <if test="depth1stRockSeamEnd != null">depth_1st_rock_seam_end = #{depth1stRockSeamEnd},</if>
+            <if test="depth1stCoalSeamStart != null">depth_1st_coal_seam_start = #{depth1stCoalSeamStart},</if>
+            <if test="depth1stCoalSeamEnd != null">depth_1st_coal_seam_end = #{depth1stCoalSeamEnd},</if>
+            <if test="depth2stRockSeamStart != null">depth_2st_rock_seam_start = #{depth2stRockSeamStart},</if>
+            <if test="depth2stRockSeamEnd != null">depth_2st_rock_seam_end = #{depth2stRockSeamEnd},</if>
+            <if test="depth2stCoalSeamStart != null">depth_2st_coal_seam_start = #{depth2stCoalSeamStart},</if>
+            <if test="depth2stCoalSeamEnd != null">depth_2st_coal_seam_end = #{depth2stCoalSeamEnd},</if>
+            <if test="depth3stRockSeamStart != null">depth_3st_rock_seam_start = #{depth3stRockSeamStart},</if>
+            <if test="depth3stRockSeamEnd != null">depth_3st_rock_seam_end = #{depth3stRockSeamEnd},</if>
+            <if test="depth3stCoalSeamStart != null">depth_3st_coal_seam_start = #{depth3stCoalSeamStart},</if>
+            <if test="depth3stCoalSeamEnd != null">depth_3st_coal_seam_end = #{depth3stCoalSeamEnd},</if>
+            <if test="depth4stRockSeamStart != null">depth_4st_rock_seam_start = #{depth4stRockSeamStart},</if>
+            <if test="depth4stRockSeamEnd != null">depth_4st_rock_seam_end = #{depth4stRockSeamEnd},</if>
+            <if test="boreholeLength != null">borehole_length = #{boreholeLength},</if>
+            <if test="navigationPointId != null and navigationPointId != 0">navigation_point_id = #{navigationPointId},</if>
+            <if test="distanceToNavigationPoint != null">distance_to_navigation_point = #{distanceToNavigationPoint},</if>
+            <if test="directionToNavigation != null">direction_to_navigation = #{directionToNavigation},</if>
+            <if test="extractionRadius != null">extraction_radius = #{extractionRadius},</if>
+            <if test="distanceToCentrallineTunnel != null">distance_to_centralline_tunnel = #{distanceToCentrallineTunnel},</if>
+            <if test="adjacentBoreholeNo != null and adjacentBoreholeNo != ''">adjacent_borehole_no = #{adjacentBoreholeNo},</if>
+            <if test="distanceAdjacentBorehole != null">distance_adjacent_borehole = #{distanceAdjacentBorehole},</if>
+            <if test="sign != null">sign = #{sign},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="holeAltitude != null">hole_altitude = #{holeAltitude},</if>
+            <if test="lineSpace != null">line_space = #{lineSpace},</if>
+            <if test="holeSpace != null">hole_space = #{holeSpace},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where Id = #{id}
+    </update>
+
+    <delete id="deleteTDesignedBoreholeById" parameterType="java.lang.Integer">
+        delete from t_designed_borehole where Id = #{id}
+    </delete>
+
+    <delete id="deleteTDesignedBoreholeByIds" parameterType="java.util.List">
+        delete from t_designed_borehole where Id in
+        <foreach item="id" collection="List" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+    <!--根据组名查询列表-->
+    <select id="getByGroupId" resultType="com.ruoyi.hh.physical.domain.TDesignedBorehole" parameterType="string">
+        select * from t_designed_borehole where group_no =#{groupNo}
+    </select>
+    <!--根据巷道ID查询钻孔列表-->
+    <select id="getByRoadwayId" resultType="com.ruoyi.hh.physical.domain.TDesignedBorehole" parameterType="int">
+        select * from t_designed_borehole where roadway_id =#{roadwayId}
+    </select>
+    <select id="getPageList" resultType="com.ruoyi.hh.physical.domain.TDesignedBorehole">
+        select d.*,r.roadway,c.borehole_category,p.purpose_borehole,n.navigation_point_name,z.zone_name,m.measuring_point_name
+        from
+        t_designed_borehole d
+        LEFT JOIN t_roadway r ON d.roadway_id = r.id
+        LEFT JOIN t_borehole_category c ON d.category_code=c.category_code
+        LEFT JOIN t_navigation_point n ON d.navigation_point_id=n.id
+        LEFT JOIN t_purpose_borehole p ON d.purpose_borehole_id = p.Id
+        LEFT JOIN t_roadway_zone z ON d.roadway_zone_id=z.Id
+        LEFT JOIN t_measuring_point m ON d.measure_point_id = m.id
+    </select>
+
+    <!--更改设计钻孔为确定-->
+    <update id="makeSureDesProgramme">
+        update t_designed_borehole set sign =#{sign} where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <!--删除所有数据-->
+    <delete id="delAll">
+        delete from t_designed_borehole
+    </delete>
+    <!--通过巷道ID和钻孔用途ID获取列表-->
+    <select id="getByRoadWayIdAndpurposeboreId" resultType="com.ruoyi.hh.physical.domain.TDesignedBorehole">
+        SELECT * from t_designed_borehole where roadway_id =#{roadwayId} and purpose_borehole_id =#{purposeBoreholeId}
+    </select>
+    <!--根据巷道ID删除设计钻孔信息-->
+    <delete id="delByRoadWayId" parameterType="int">
+        delete from t_designed_borehole where roadway_id =#{roadwayId}
+    </delete>
+    <delete id="delByRoadWayIds" parameterType="java.util.List">
+        delete from t_designed_borehole where roadway_id in
+        <foreach item="roadWayIds" collection="list" open="(" separator="," close=")">
+            #{roadWayIds}
+        </foreach>
+    </delete>
+    <!--根据区段ID删除设计钻孔信息-->
+    <delete id="delByRoadwayZoneId" parameterType="int">
+        delete from t_designed_borehole where roadway_zone_id =#{roadwayZoneId}
+    </delete>
+    <delete id="delByRoadwayZoneIds" parameterType="java.util.List">
+        delete from t_designed_borehole where roadway_zone_id in
+        <foreach item="roadwayZoneIds" collection="list" open="(" separator="," close=")">
+            #{roadwayZoneIds}
+        </foreach>
+    </delete>
+    <!--根据导线点ID删除设计钻孔信息-->
+    <delete id="delByNavigationPointId" parameterType="int">
+        delete from t_designed_borehole where navigation_point_id =#{navigationPointId}
+    </delete>
+    <delete id="delNavigationPointIds" parameterType="java.util.List">
+        delete from t_designed_borehole where navigation_point_id in
+        <foreach item="navigationPointIds" collection="list" open="(" separator="," close=")">
+            #{navigationPointIds}
+        </foreach>
+    </delete>
+
+    <!--通过巷道ID获取设计钻孔ID-->
+    <select id="getIdsByRoadWayId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select id from t_designed_borehole where roadway_id =#{roadwayId}
+    </select>
+    <!--根据区段ID查询设计钻孔ID列表-->
+    <select id="getIdsRoadWayZoneId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select id from t_designed_borehole where roadway_zone_id=#{roadwayZoneId}
+    </select>
+    <!--根据区段ID获取设计钻孔列表-->
+    <select id="getByRoadWayZoneId" resultType="com.ruoyi.hh.physical.domain.TDesignedBorehole" parameterType="java.lang.Integer">
+        select * from t_designed_borehole where roadway_zone_id=#{roadwayZoneId}
+    </select>
+    <!--根据导线点ID查询设计钻孔ID列表-->
+    <select id="getIdsNavigationPointId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select id from t_designed_borehole where navigation_point_id=#{navigationPointId}
+    </select>
+
+    <select id="getBoreholeIdByParam" resultType="java.lang.Integer">
+        SELECT id from t_designed_borehole
+         where
+           des_parameter_id = #{desParameterId}
+    </select>
+
+
+
+</mapper>

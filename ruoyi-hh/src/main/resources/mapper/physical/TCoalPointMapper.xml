@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TCoalPointMapper">
+
+    <resultMap type="TCoalPoint" id="TCoalPointResult">
+        <result property="id" column="id"/>
+        <result property="coalinfoId" column="coalinfo_id"/>
+        <result property="workfaceId" column="workface_id"/>
+        <result property="floorCoordinatex" column="floor_coordinate_x"/>
+        <result property="floorCoordinatey" column="floor_coordinate_y"/>
+        <result property="floorCoordinatez" column="floor_coordinate_z"/>
+        <result property="coalThick" column="coal_thick"/>
+        <result property="dataType" column="data_type"/>
+        <result property="isuse" column="isuse"/>
+        <result property="geoFaultId" column="geofault_id"/>
+        <result property="geoFallenId" column="geofallen_id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectTCoalPointVo">
+        select id,
+               coalinfo_id,
+               workface_id,
+               floor_coordinate_x,
+               floor_coordinate_y,
+               floor_coordinate_z,
+               coal_thick,
+               data_type,
+               isuse,
+               geofault_id,
+               geofallen_id,
+               create_by,
+               create_time,
+               update_by,
+               update_time,
+               remark
+        from t_coal_point
+    </sql>
+
+    <select id="selectTCoalPointList" parameterType="TCoalPoint" resultMap="TCoalPointResult">
+        <include refid="selectTCoalPointVo"/>
+        <where>
+            <if test="id != null and id != 0"> and id = #{id}</if>
+            <if test="coalinfoId != null and coalinfoId != 0 ">and coalinfo_id = #{coalinfoId}</if>
+            <if test="workfaceId != null and workfaceId != 0 ">and workface_id = #{workfaceId}</if>
+            <if test="floorCoordinatex != null ">and floor_coordinate_x = #{floorCoordinatex}</if>
+            <if test="floorCoordinatey != null ">and floor_coordinate_y = #{floorCoordinatey}</if>
+            <if test="floorCoordinatez != null ">and floor_coordinate_z = #{floorCoordinatez}</if>
+            <if test="coalThick != null ">and coal_thick = #{coalThick}</if>
+            <if test="dataType != null ">and data_type = #{dataType}</if>
+            <if test="isuse != null ">and isuse = #{isuse}</if>
+            <if test="geoFaultId != null ">and geofault_id = #{geoFaultId}</if>
+            <if test="geoFallenId != null ">and geofallen_id = #{geoFallenId}</if>
+        </where>
+    </select>
+
+    <select id="selectTCoalPointById" parameterType="Integer" resultMap="TCoalPointResult">
+        <include refid="selectTCoalPointVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTCoalPoint" parameterType="TCoalPoint" useGeneratedKeys="true" keyProperty="id">
+        insert into t_coal_point
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="coalinfoId != null and coalinfoId != 0">coalinfo_id,</if>
+            <if test="workfaceId != null and workfaceId != 0">workface_id,</if>
+            <if test="floorCoordinatex != null">floor_coordinate_x,</if>
+            <if test="floorCoordinatey != null">floor_coordinate_y,</if>
+            <if test="floorCoordinatez != null">floor_coordinate_z,</if>
+            <if test="coalThick != null">coal_thick,</if>
+            <if test="dataType != null">data_type,</if>
+            <if test="isuse != null">isuse,</if>
+            <if test="geoFaultId != null">geofault_id,</if>
+            <if test="geoFallenId != null">geofallen_id,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="coalinfoId != null and coalinfoId != 0">#{coalinfoId},</if>
+            <if test="workfaceId != null and workfaceId != 0">#{workfaceId},</if>
+            <if test="floorCoordinatex != null">#{floorCoordinatex},</if>
+            <if test="floorCoordinatey != null">#{floorCoordinatey},</if>
+            <if test="floorCoordinatez != null">#{floorCoordinatez},</if>
+            <if test="coalThick != null">#{coalThick},</if>
+            <if test="dataType != null">#{dataType},</if>
+            <if test="isuse != null">#{isuse},</if>
+            <if test="geoFaultId != null">#{geoFaultId},</if>
+            <if test="geoFallenId != null">#{geoFallenId},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTCoalPoint" parameterType="TCoalPoint">
+        update t_coal_point
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="coalinfoId != null and coalinfoId != 0">coalinfo_id = #{coalinfoId},</if>
+            <if test="workfaceId != null and workfaceId != 0">workface_id = #{workfaceId},</if>
+            <if test="floorCoordinatex != null">floor_coordinate_x = #{floorCoordinatex},</if>
+            <if test="floorCoordinatey != null">floor_coordinate_y = #{floorCoordinatey},</if>
+            <if test="floorCoordinatez != null">floor_coordinate_z = #{floorCoordinatez},</if>
+            <if test="coalThick != null">coal_thick = #{coalThick},</if>
+            <if test="dataType != null">data_type = #{dataType},</if>
+            <if test="isuse != null">isuse = #{isuse},</if>
+            <if test="geoFaultId != null "> geofault_id = #{geoFaultId},</if>
+            <if test="geoFallenId != null "> geofallen_id = #{geoFallenId},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTCoalPointById" parameterType="Integer">
+        delete
+        from t_coal_point
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTCoalPointByCoalInfoId" parameterType="Integer">
+        delete
+        from t_coal_point
+        where data_type = 1 and coalinfo_id = #{coalInfoId}
+    </delete>
+
+    <delete id="deleteTCoalPointByIds" parameterType="String">
+        delete from t_coal_point where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--根据煤层信息ID查询煤层坐标点列表-->
+    <select id="getByCoalInfoId" resultType="com.ruoyi.hh.physical.domain.TCoalPoint">
+        select *
+        from t_coal_point
+        where coalinfo_id = #{coalInfoId}
+    </select>
+
+    <select id="getPointsByFaultId" resultType="com.ruoyi.hh.physical.domain.TCoalPoint">
+        select *
+        from t_coal_point
+        where geofault_id = #{geoFaultId}
+    </select>
+
+    <select id="getPointsByFallenColumnId" resultType="com.ruoyi.hh.physical.domain.TCoalPoint">
+        select *
+        from t_coal_point
+        where geofallen_id = #{geoFallenId}
+    </select>
+</mapper>

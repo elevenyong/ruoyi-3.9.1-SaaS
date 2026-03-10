@@ -1,5 +1,7 @@
 package com.ruoyi.system.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import com.ruoyi.common.core.domain.entity.SysDictData;
 
@@ -57,4 +59,9 @@ public interface ISysDictDataService
      * @return 结果
      */
     public int updateDictData(SysDictData dictData);
+    /**
+     * 查询全部的字典数据并生成Map字典方便查阅
+     * @return 以dict_type为key的map数据集
+     */
+    public HashMap<String, ArrayList<SysDictData>> getAllDictDataMap();
 }

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.prediction.XGBoost.mapper.TCoalPointMapper">
+
+    <resultMap type="TCoalPoint" id="TCoalPointResult">
+        <result property="id" column="id"/>
+        <result property="coalinfoId" column="coalinfo_id"/>
+        <result property="workfaceId" column="workface_id"/>
+        <result property="pointOrder" column="point_order"/>
+        <result property="floorCoordinateX" column="floor_coordinate_x"/>
+        <result property="floorCoordinateY" column="floor_coordinate_y"/>
+        <result property="floorCoordinateZ" column="floor_coordinate_z"/>
+        <result property="coalThick" column="coal_thick"/>
+        <result property="dataType" column="data_type"/>
+        <result property="isuse" column="isuse"/>
+        <result property="geofaultId" column="geofault_id"/>
+        <result property="geofallenId" column="geofallen_id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateBy" column="update_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <sql id="selectCoalPointVo">
+        select id, coalinfo_id, workface_id, point_order, floor_coordinate_x, floor_coordinate_y,
+               floor_coordinate_z, coal_thick, data_type, isuse, geofault_id, geofallen_id,
+               create_by, create_time, update_by, update_time, remark
+        from t_coal_point
+    </sql>
+
+    <select id="selectCoalPointList" parameterType="TCoalPoint" resultMap="TCoalPointResult">
+        <include refid="selectCoalPointVo"/>
+        <where>
+            <if test="workfaceId != null"> and workface_id = #{workfaceId}</if>
+            <if test="geofaultId != null"> and geofault_id = #{geofaultId}</if>
+            <if test="isuse != null"> and isuse = #{isuse}</if>
+        </where>
+        order by point_order
+    </select>
+
+    <select id="selectByWorkfaceId" parameterType="Integer" resultMap="TCoalPointResult">
+        <include refid="selectCoalPointVo"/>
+        where workface_id = #{workfaceId}
+        and isuse = 1
+        order by point_order
+    </select>
+
+    <select id="selectByFaultId" parameterType="Integer" resultMap="TCoalPointResult">
+        <include refid="selectCoalPointVo"/>
+        where geofault_id = #{faultId}
+        and isuse = 1
+        order by point_order
+    </select>
+
+    <select id="selectById" parameterType="Integer" resultMap="TCoalPointResult">
+        <include refid="selectCoalPointVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectByCoordinateRange" resultMap="TCoalPointResult">
+        <include refid="selectCoalPointVo"/>
+        where workface_id = #{workfaceId}
+        and floor_coordinate_x between #{minX} and #{maxX}
+        and floor_coordinate_y between #{minY} and #{maxY}
+        and isuse = 1
+        order by point_order
+    </select>
+
+</mapper>

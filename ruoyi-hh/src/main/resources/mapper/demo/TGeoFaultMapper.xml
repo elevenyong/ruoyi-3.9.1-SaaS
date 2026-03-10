@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.demo.mapper.TGeoFaultMapper">
+
+    <resultMap type="TGeoFault" id="TGeoFaultResult">
+        <result property="id" column="id"/>
+        <result property="workfaceId" column="workface_id"/>
+        <result property="name" column="name"/>
+        <result property="length" column="length"/>
+        <result property="azimuth" column="azimuth"/>
+        <result property="inclination" column="inclination"/>
+        <result property="centerX" column="center_x"/>
+        <result property="centerY" column="center_y"/>
+        <result property="centerZ" column="center_z"/>
+        <result property="faultHeight" column="fault_height"/>
+        <result property="faultType" column="fault_type"/>
+        <result property="influenceScope" column="influence_scope"/>
+        <result property="accordingTo" column="according_to"/>
+    </resultMap>
+
+    <sql id="selectTGeoFaultVo">
+        select id,
+               workface_id,
+               name,
+               length,
+               azimuth,
+               inclination,
+               center_x,
+               center_y,
+               center_z,
+               fault_height,
+               fault_type,
+               influence_scope,
+               according_to
+        from t_geo_fault
+    </sql>
+
+    <select id="selectTGeoFaultList" parameterType="TGeoFault" resultMap="TGeoFaultResult">
+        <include refid="selectTGeoFaultVo"/>
+        <where>
+            <if test="workfaceId != null ">and workface_id = #{workfaceId}</if>
+            <if test="name != null  and name != ''">and name = #{name}</if>
+            <if test="length != null ">and azimuth = #{length}</if>
+            <if test="azimuth != null ">and azimuth = #{azimuth}</if>
+            <if test="inclination != null ">and inclination = #{inclination}</if>
+            <if test="centerX != null ">and center_x = #{centerX}</if>
+            <if test="centerY != null ">and center_y = #{centerY}</if>
+            <if test="centerZ != null ">and center_z = #{centerZ}</if>
+            <if test="faultHeight != null ">and fault_height = #{faultHeight}</if>
+            <if test="faultType != null ">and fault_type = #{faultType}</if>
+            <if test="influenceScope != null ">and influence_scope = #{influenceScope}</if>
+            <if test="accordingTo != null ">and according_to = #{accordingTo}</if>
+        </where>
+    </select>
+
+    <select id="selectTGeoFaultById" parameterType="Integer" resultMap="TGeoFaultResult">
+        <include refid="selectTGeoFaultVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTGeoFault" parameterType="TGeoFault" useGeneratedKeys="true" keyProperty="id">
+        insert into t_geo_fault
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="workfaceId != null">workface_id,</if>
+            <if test="name != null">name,</if>
+            <if test="length != null">length,</if>
+            <if test="azimuth != null">azimuth,</if>
+            <if test="inclination != null">inclination,</if>
+            <if test="centerX != null">center_x,</if>
+            <if test="centerY != null">center_y,</if>
+            <if test="centerZ != null">center_z,</if>
+            <if test="faultHeight != null">fault_height,</if>
+            <if test="faultType != null">fault_type,</if>
+            <if test="influenceScope != null">influence_scope,</if>
+            <if test="accordingTo != null">according_to,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="workfaceId != null">#{workfaceId},</if>
+            <if test="name != null">#{name},</if>
+            <if test="length != null">#{length},</if>
+            <if test="azimuth != null">#{azimuth},</if>
+            <if test="inclination != null">#{inclination},</if>
+            <if test="centerX != null">#{centerX},</if>
+            <if test="centerY != null">#{centerY},</if>
+            <if test="centerZ != null">#{centerZ},</if>
+            <if test="faultHeight != null">#{faultHeight},</if>
+            <if test="faultType != null">#{faultType},</if>
+            <if test="influenceScope != null">#{influenceScope},</if>
+            <if test="accordingTo != null">#{accordingTo},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTGeoFault" parameterType="TGeoFault">
+        update t_geo_fault
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="workfaceId != null">workface_id = #{workfaceId},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="length != null">length = #{length},</if>
+            <if test="azimuth != null">azimuth = #{azimuth},</if>
+            <if test="inclination != null">inclination = #{inclination},</if>
+            <if test="centerX != null">center_x = #{centerX},</if>
+            <if test="centerY != null">center_y = #{centerY},</if>
+            <if test="centerZ != null">center_z = #{centerZ},</if>
+            <if test="faultHeight != null">fault_height = #{faultHeight},</if>
+            <if test="faultType != null">fault_type = #{faultType},</if>
+            <if test="influenceScope != null">influence_scope = #{influenceScope},</if>
+            <if test="accordingTo != null">according_to = #{accordingTo},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTGeoFaultById" parameterType="Integer">
+        delete
+        from t_geo_fault
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTGeoFaultByIds" parameterType="String">
+        delete from t_geo_fault where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -15,11 +15,12 @@
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
         <result property="remark" column="remark"/>
+        <result property="expireTime" column="expire_time"/>
     </resultMap>
 
     <sql id="selectTenantVo">
         select tenant_id, tenant_code, tenant_name, status, del_flag,
-               create_by, create_time, update_by, update_time, remark
+               create_by, create_time, update_by, update_time, remark, expire_time
         from sys_tenant
     </sql>
 
@@ -49,15 +50,15 @@
     <insert id="insertTenant" parameterType="com.ruoyi.system.domain.SysTenant" useGeneratedKeys="true" keyProperty="tenantId">
         insert into sys_tenant(
             tenant_code, tenant_name, status, del_flag,
-            create_by, create_time, update_by, update_time, remark
+            create_by, create_time, update_by, update_time, remark, expire_time
         ) values (
                      #{tenantCode}, #{tenantName}, #{status}, #{delFlag},
-                     #{createBy}, now(), #{updateBy}, now(), #{remark}
+                     #{createBy}, now(), #{updateBy}, now(), #{remark}, #{expireTime}
                  )
     </insert>
 
     <select id="selectTenantById" parameterType="Long" resultMap="SysTenantResult">
-        select tenant_id, tenant_code, tenant_name, status, del_flag, create_by, create_time, update_by, update_time, remark
+        select tenant_id, tenant_code, tenant_name, status, del_flag, create_by, create_time, update_by, update_time, remark, expire_time
         from sys_tenant
         where tenant_id = #{tenantId}
     </select>
@@ -67,5 +68,27 @@
         set status = #{status}
         where tenant_id = #{tenantId}
     </update>
+
+    <update id="updateTenant">
+        UPDATE sys_tenant
+        <set>
+            <if test="tenantName != null">tenant_name = #{tenantName},</if>
+            <if test="tenantCode != null">tenant_code = #{tenantCode},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="expireTime != null">expire_time = #{expireTime},</if>
+            update_by = #{updateBy},
+            update_time = now()
+        </set>
+        WHERE tenant_id = #{tenantId}
+    </update>
+
+
+    <delete id="deleteTenantByIds">
+        DELETE FROM sys_tenant
+        WHERE tenant_id IN
+        <foreach collection="array" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 
 </mapper>

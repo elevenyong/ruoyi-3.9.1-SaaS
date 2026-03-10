@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.business.mapper.TSensorDataExceptionMapper">
+    
+    <resultMap type="TSensorDataException" id="TSensorDataExceptionResult">
+        <result property="id"    column="id"    />
+        <result property="coalMineName"    column="coal_mine_name"    />
+        <result property="sysCode"    column="sys_code"    />
+        <result property="measurePointCode"    column="measure_point_code"    />
+        <result property="sensorTypeName"    column="sensor_type_name"    />
+        <result property="measurePointLocal"    column="measure_point_local"    />
+        <result property="unit"    column="unit"    />
+        <result property="exceptionType"    column="exception_type"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="maxValue"    column="max_value"    />
+        <result property="maxTime"    column="max_time"    />
+        <result property="minValue"    column="min_value"    />
+        <result property="minTime"    column="min_time"    />
+        <result property="avgValue"    column="avg_value"    />
+        <result property="reason"    column="reason"    />
+        <result property="measure"    column="measure"    />
+        <result property="enterTime"    column="enter_time"    />
+        <result property="enterPersion"    column="enter_persion"    />
+        <result property="time"    column="time"    />
+    </resultMap>
+
+    <sql id="selectTSensorDataExceptionVo">
+        select id,coal_mine_name,sys_code, measure_point_code, sensor_type_name, measure_point_local, unit, exception_type, start_time, end_time, max_value, max_time, min_value, min_time, avg_value, reason, measure, enter_time, enter_persion, time from t_sensor_data_exception
+    </sql>
+
+    <select id="selectTSensorDataExceptionList" parameterType="TSensorDataException" resultMap="TSensorDataExceptionResult">
+        <include refid="selectTSensorDataExceptionVo"/>
+        <where>  
+            <if test="coalMineName != null  and coalMineName != ''"> and coal_mine_name = #{coalMineName}</if>
+            <if test="sysCode != null  and sysCode != ''"> and sys_code = #{sysCode}</if>
+            <if test="measurePointCode != null  and measurePointCode != ''"> and measure_point_code = #{measurePointCode}</if>
+            <if test="sensorTypeName != null  and sensorTypeName != ''"> and sensor_type_name like concat('%', #{sensorTypeName}, '%')</if>
+            <if test="measurePointLocal != null  and measurePointLocal != ''"> and measure_point_local = #{measurePointLocal}</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="exceptionType != null  and exceptionType != ''"> and exception_type = #{exceptionType}</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="maxValue != null "> and max_value >= #{maxValue}</if>
+            <if test="maxTime != null "> and max_time = #{maxTime}</if>
+            <if test="minValue != null "> and min_value = #{minValue}</if>
+            <if test="minTime != null "> and min_time = #{minTime}</if>
+            <if test="avgValue != null "> and avg_value = #{avgValue}</if>
+            <if test="reason != null  and reason != ''"> and reason = #{reason}</if>
+            <if test="measure != null  and measure != ''"> and measure = #{measure}</if>
+            <if test="enterTime != null "> and enter_time = #{enterTime}</if>
+            <if test="enterPersion != null  and enterPersion != ''"> and enter_persion = #{enterPersion}</if>
+            <if test="time != null "> and time like CONCAT(DATE (#{time}),'%')</if>
+        </where>
+    </select>
+    
+    <select id="selectTSensorDataExceptionById" parameterType="Integer" resultMap="TSensorDataExceptionResult">
+        <include refid="selectTSensorDataExceptionVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTSensorDataException" parameterType="TSensorDataException" useGeneratedKeys="true" keyProperty="id">
+        insert into t_sensor_data_exception
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="coalMineName != null">coal_mine_name,</if>
+            <if test="sysCode != null">sys_code,</if>
+            <if test="measurePointCode != null">measure_point_code,</if>
+            <if test="sensorTypeName != null">sensor_type_name,</if>
+            <if test="measurePointLocal != null">measure_point_local,</if>
+            <if test="unit != null">unit,</if>
+            <if test="exceptionType != null">exception_type,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="maxValue != null">max_value,</if>
+            <if test="maxTime != null">max_time,</if>
+            <if test="minValue != null">min_value,</if>
+            <if test="minTime != null">min_time,</if>
+            <if test="avgValue != null">avg_value,</if>
+            <if test="reason != null">reason,</if>
+            <if test="measure != null">measure,</if>
+            <if test="enterTime != null">enter_time,</if>
+            <if test="enterPersion != null">enter_persion,</if>
+            <if test="time != null">time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="coalMineName != null">#{coalMineName},</if>
+            <if test="sysCode != null">#{sysCode},</if>
+            <if test="measurePointCode != null">#{measurePointCode},</if>
+            <if test="sensorTypeName != null">#{sensorTypeName},</if>
+            <if test="measurePointLocal != null">#{measurePointLocal},</if>
+            <if test="unit != null">#{unit},</if>
+            <if test="exceptionType != null">#{exceptionType},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="maxValue != null">#{maxValue},</if>
+            <if test="maxTime != null">#{maxTime},</if>
+            <if test="minValue != null">#{minValue},</if>
+            <if test="minTime != null">#{minTime},</if>
+            <if test="avgValue != null">#{avgValue},</if>
+            <if test="reason != null">#{reason},</if>
+            <if test="measure != null">#{measure},</if>
+            <if test="enterTime != null">#{enterTime},</if>
+            <if test="enterPersion != null">#{enterPersion},</if>
+            <if test="time != null">#{time},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTSensorDataException" parameterType="TSensorDataException">
+        update t_sensor_data_exception
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="coalMineName != null">coal_mine_name = #{coalMineName},</if>
+            <if test="sysCode != null">sys_code = #{sysCode},</if>
+            <if test="measurePointCode != null">measure_point_code = #{measurePointCode},</if>
+            <if test="sensorTypeName != null">sensor_type_name = #{sensorTypeName},</if>
+            <if test="measurePointLocal != null">measure_point_local = #{measurePointLocal},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="exceptionType != null">exception_type = #{exceptionType},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="maxValue != null">max_value = #{maxValue},</if>
+            <if test="maxTime != null">max_time = #{maxTime},</if>
+            <if test="minValue != null">min_value = #{minValue},</if>
+            <if test="minTime != null">min_time = #{minTime},</if>
+            <if test="avgValue != null">avg_value = #{avgValue},</if>
+            <if test="reason != null">reason = #{reason},</if>
+            <if test="measure != null">measure = #{measure},</if>
+            <if test="enterTime != null">enter_time = #{enterTime},</if>
+            <if test="enterPersion != null">enter_persion = #{enterPersion},</if>
+            <if test="time != null">time = #{time},</if>
+        </trim>
+        where id = #{id}
+    </update>
+    <!--查询日报警记录-->
+    <select id="getWarnDayRecord" resultMap="TSensorDataExceptionResult">
+        select s.*,TIMESTAMPDIFF(SECOND, start_time, end_time) AS duration from t_sensor_data_exception s
+        where time like concat("${time}",' %')
+        <if test="second!=null">
+            and TIMESTAMPDIFF(SECOND, start_time, end_time) >=#{second}
+        </if>
+        <if test="measurePointLocal!=null">
+            and measure_point_local=#{measurePointLocal}
+        </if>
+        <if test="sensorTypeName!=null">
+            and sensor_type_name =#{sensorTypeName}
+        </if>
+        <if test="exceptionType!=null">
+            and exception_type =#{exceptionType}
+        </if>
+        <if test="warnValue!=null">
+            and max_value >=#{warnValue}
+        </if>
+    </select>
+
+    <select id="getWarnDayRecordGroup" resultMap="TSensorDataExceptionResult">
+        select s.*,TIMESTAMPDIFF(SECOND, start_time, end_time) AS duration from t_sensor_data_exception s
+        where time like concat('${time}%')
+        <if test="second!=null">
+            and TIMESTAMPDIFF(SECOND, start_time, end_time) >=#{second}
+        </if>
+        <if test="measurePointLocal!=null">
+            and measure_point_local=#{measurePointLocal}
+        </if>
+        <if test="sensorTypeName!=null">
+            and sensor_type_name =#{sensorTypeName}
+        </if>
+        <if test="exceptionType!=null">
+            and exception_type =#{exceptionType}
+        </if>
+        <if test="warnValue!=null">
+            and max_value >=#{warnValue}
+        </if>
+        GROUP BY sensor_type_name, measure_point_local
+    </select>
+
+
+
+    <!--查询月报警记录-->
+    <select id="getWarnMonthRecord" resultMap="TSensorDataExceptionResult">
+        select s.*,TIMESTAMPDIFF(SECOND,start_time,end_time) AS duration from t_sensor_data_exception s
+        where time like concat('${time}%')
+        <if test="second!=null">
+            and TIMESTAMPDIFF(SECOND, start_time, end_time) >=#{second}
+        </if>
+        <if test="measurePointLocal!=null">
+            and measure_point_local=#{measurePointLocal}
+        </if>
+        <if test="sensorTypeName!=null">
+            and sensor_type_name =#{sensorTypeName}
+        </if>
+        <if test="exceptionType!=null">
+            and exception_type =#{exceptionType}
+        </if>
+        <if test="warnValue!=null">
+            and max_value >=#{warnValue}
+        </if>
+    </select>
+    <select id="getWarnMonthRecordGroup" resultMap="TSensorDataExceptionResult">
+        select s.*,TIMESTAMPDIFF(SECOND, start_time, end_time) AS duration from t_sensor_data_exception s
+        where time like concat('${time}%')
+        <if test="second!=null">
+            and TIMESTAMPDIFF(SECOND, start_time, end_time) >=#{second}
+        </if>
+        <if test="measurePointLocal!=null">
+            and measure_point_local=#{measurePointLocal}
+        </if>
+        <if test="sensorTypeName!=null">
+            and sensor_type_name =#{sensorTypeName}
+        </if>
+        <if test="exceptionType!=null">
+            and exception_type =#{exceptionType}
+        </if>
+        <if test="warnValue!=null">
+            and max_value >=#{warnValue}
+        </if>
+        GROUP BY sensor_type_name, measure_point_local
+    </select>
+
+    <delete id="deleteTSensorDataExceptionById" parameterType="Integer">
+        delete from t_sensor_data_exception where id = #{id}
+    </delete>
+
+    <!--查询-->
+    <delete id="deleteTSensorDataExceptionByIds" parameterType="String">
+        delete from t_sensor_data_exception where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

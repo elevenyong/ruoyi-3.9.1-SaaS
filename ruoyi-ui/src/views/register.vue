@@ -1,7 +1,8 @@
 <template>
   <div class="register">
+    <div class="title-image"></div>
     <el-form ref="registerForm" :model="registerForm" :rules="registerRules" class="register-form">
-      <h3 class="title">{{title}}</h3>
+      <h3 class="title">矿井瓦斯多元信息数据中心 </h3>
       <el-form-item prop="username">
         <el-input v-model="registerForm.username" type="text" auto-complete="off" placeholder="账号">
           <svg-icon slot="prefix" icon-class="user" class="el-input__icon input-icon" />
@@ -29,7 +30,7 @@
           <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
-      <el-form-item prop="code" v-if="captchaEnabled">
+      <el-form-item prop="code" v-if="captchaOnOff">
         <el-input
           v-model="registerForm.code"
           auto-complete="off"
@@ -61,28 +62,25 @@
     </el-form>
     <!--  底部  -->
     <div class="el-register-footer">
-      <span>{{ footerContent }}</span>
+      <span>Copyright © 郑州慧矿智能科技有限公司 All Rights Reserved.</span>
     </div>
   </div>
 </template>
 
 <script>
-import { getCodeImg, register } from "@/api/login"
-import defaultSettings from '@/settings'
+import { getCodeImg, register } from "@/api/login";
 
 export default {
   name: "Register",
   data() {
     const equalToPassword = (rule, value, callback) => {
       if (this.registerForm.password !== value) {
-        callback(new Error("两次输入的密码不一致"))
+        callback(new Error("两次输入的密码不一致"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     return {
-      title: process.env.VUE_APP_TITLE,
-      footerContent: defaultSettings.footerContent,
       codeUrl: "",
       registerForm: {
         username: "",
@@ -98,8 +96,7 @@ export default {
         ],
         password: [
           { required: true, trigger: "blur", message: "请输入您的密码" },
-          { min: 5, max: 20, message: "用户密码长度必须介于 5 和 20 之间", trigger: "blur" },
-          { pattern: /^[^<>"'|\\]+$/, message: "不能包含非法字符：< > \" ' \\\ |", trigger: "blur" }
+          { min: 5, max: 20, message: '用户密码长度必须介于 5 和 20 之间', trigger: 'blur' }
         ],
         confirmPassword: [
           { required: true, trigger: "blur", message: "请再次输入您的密码" },
@@ -108,54 +105,54 @@ export default {
         code: [{ required: true, trigger: "change", message: "请输入验证码" }]
       },
       loading: false,
-      captchaEnabled: true
-    }
+      captchaOnOff: true
+    };
   },
   created() {
-    this.getCode()
+    this.getCode();
   },
   methods: {
     getCode() {
       getCodeImg().then(res => {
-        this.captchaEnabled = res.captchaEnabled === undefined ? true : res.captchaEnabled
-        if (this.captchaEnabled) {
-          this.codeUrl = "data:image/gif;base64," + res.img
-          this.registerForm.uuid = res.uuid
+        this.captchaOnOff = res.captchaOnOff === undefined ? true : res.captchaOnOff;
+        if (this.captchaOnOff) {
+          this.codeUrl = "data:image/gif;base64," + res.img;
+          this.registerForm.uuid = res.uuid;
         }
-      })
+      });
     },
     handleRegister() {
       this.$refs.registerForm.validate(valid => {
         if (valid) {
-          this.loading = true
-          register(this.registerForm).then(() => {
-            const username = this.registerForm.username
+          this.loading = true;
+          register(this.registerForm).then(res => {
+            const username = this.registerForm.username;
             this.$alert("<font color='red'>恭喜你，您的账号 " + username + " 注册成功！</font>", '系统提示', {
               dangerouslyUseHTMLString: true,
               type: 'success'
             }).then(() => {
-              this.$router.push("/login")
-            }).catch(() => {})
+              this.$router.push("/login");
+            }).catch(() => {});
           }).catch(() => {
-            this.loading = false
-            if (this.captchaEnabled) {
-              this.getCode()
+            this.loading = false;
+            if (this.captchaOnOff) {
+              this.getCode();
             }
           })
         }
-      })
+      });
     }
   }
-}
+};
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss">
 .register {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-image: url("../assets/images/login-background.jpg");
+  background-image: url("../assets/images/login-background-1.jpg");
   background-size: cover;
 }
 .title {
@@ -163,7 +160,12 @@ export default {
   text-align: center;
   color: #707070;
 }
-
+.title-image{
+  position: fixed;
+  top: 20%;
+  right: 20%;
+  background-image: url("../assets/images/title-img.png");;
+}
 .register-form {
   border-radius: 6px;
   background: #ffffff;

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.prediction.XGBoost.mapper.TGeoFaultMapper">
+
+    <resultMap type="TGeoFault" id="TGeoFaultResult">
+        <result property="id" column="id"/>
+        <result property="workfaceId" column="workface_id"/>
+        <result property="name" column="name"/>
+        <result property="length" column="length"/>
+        <result property="azimuth" column="azimuth"/>
+        <result property="inclination" column="inclination"/>
+        <result property="centerX" column="center_x"/>
+        <result property="centerY" column="center_y"/>
+        <result property="centerZ" column="center_z"/>
+        <result property="faultHeight" column="fault_height"/>
+        <result property="faultType" column="fault_type"/>
+        <result property="influenceScope" column="influence_scope"/>
+        <result property="accordingTo" column="according_to"/>
+    </resultMap>
+
+    <sql id="selectGeoFaultVo">
+        select id, workface_id, name, length, azimuth, inclination, center_x, center_y,
+               center_z, fault_height, fault_type, influence_scope, according_to
+        from t_geo_fault
+    </sql>
+
+    <select id="selectGeoFaultList" parameterType="TGeoFault" resultMap="TGeoFaultResult">
+        <include refid="selectGeoFaultVo"/>
+        <where>
+            <if test="workfaceId != null"> and workface_id = #{workfaceId}</if>
+            <if test="name != null and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="faultType != null"> and fault_type = #{faultType}</if>
+        </where>
+    </select>
+
+    <select id="selectByWorkfaceId" parameterType="Integer" resultMap="TGeoFaultResult">
+        <include refid="selectGeoFaultVo"/>
+        where workface_id = #{workfaceId}
+    </select>
+
+    <select id="selectById" parameterType="Integer" resultMap="TGeoFaultResult">
+        <include refid="selectGeoFaultVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectByInfluenceScope" resultMap="TGeoFaultResult">
+        <include refid="selectGeoFaultVo"/>
+        where workface_id = #{workfaceId}
+        and SQRT(POWER(center_x - #{coordinateX}, 2) + POWER(center_y - #{coordinateY}, 2))
+        &lt;= influence_scope
+    </select>
+
+</mapper>

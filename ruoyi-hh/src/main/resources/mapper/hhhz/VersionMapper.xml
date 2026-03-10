@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.hhhz.mapper.VersionMapper">
+
+    <resultMap type="Version" id="VersionResult">
+        <result property="id"    column="id"    />
+        <result property="versionName"    column="version_name"    />
+        <result property="forceUpdateGame"    column="force_update_game"    />
+        <result property="currentVersion"    column="current_version"    />
+        <result property="internalGameVersion"    column="internal_game_version"    />
+        <result property="internalResourceVersion"    column="internal_resource_version"    />
+        <result property="versionListLength"    column="version_list_length"    />
+        <result property="versionListHashCode"    column="version_list_hash_code"    />
+        <result property="versionListZipLength"    column="version_list_zip_length"    />
+        <result property="versionListZipHashCode"    column="version_list_zip_hash_code"    />
+        <result property="updatePrefixUri"    column="update_prefix_uri"    />
+        <result property="latestGameVersion"    column="latest_game_version"    />
+    </resultMap>
+
+    <sql id="selectVersionVo">
+        select id, version_name, force_update_game,current_version, internal_game_version, internal_resource_version, version_list_length, version_list_hash_code, version_list_zip_length, version_list_zip_hash_code, update_prefix_uri, latest_game_version from version
+    </sql>
+
+    <select id="selectVersionList" parameterType="Version" resultMap="VersionResult">
+        <include refid="selectVersionVo"/>
+        <where>
+            <if test="versionName != null  and versionName != ''"> and version_name like concat('%', #{versionName}, '%')</if>
+            <if test="forceUpdateGame != null "> and force_update_game = #{forceUpdateGame}</if>
+            <if test="currentVersion != null "> and current_version = #{currentVersion}</if>
+            <if test="internalGameVersion != null "> and internal_game_version = #{internalGameVersion}</if>
+            <if test="internalResourceVersion != null "> and internal_resource_version = #{internalResourceVersion}</if>
+            <if test="versionListLength != null "> and version_list_length = #{versionListLength}</if>
+            <if test="versionListHashCode != null "> and version_list_hash_code = #{versionListHashCode}</if>
+            <if test="versionListZipLength != null "> and version_list_zip_length = #{versionListZipLength}</if>
+            <if test="versionListZipHashCode != null "> and version_list_zip_hash_code = #{versionListZipHashCode}</if>
+            <if test="updatePrefixUri != null  and updatePrefixUri != ''"> and update_prefix_uri = #{updatePrefixUri}</if>
+            <if test="latestGameVersion != null  and latestGameVersion != ''"> and latest_game_version = #{latestGameVersion}</if>
+        </where>
+    </select>
+
+    <select id="selectVersionById" parameterType="Long" resultMap="VersionResult">
+        <include refid="selectVersionVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertVersion" parameterType="Version" useGeneratedKeys="true" keyProperty="id">
+        insert into version
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="versionName != null">version_name,</if>
+            <if test="forceUpdateGame != null">force_update_game,</if>
+            <if test="currentVersion != null ">current_version</if>
+            <if test="internalGameVersion != null">internal_game_version,</if>
+            <if test="internalResourceVersion != null">internal_resource_version,</if>
+            <if test="versionListLength != null">version_list_length,</if>
+            <if test="versionListHashCode != null">version_list_hash_code,</if>
+            <if test="versionListZipLength != null">version_list_zip_length,</if>
+            <if test="versionListZipHashCode != null">version_list_zip_hash_code,</if>
+            <if test="updatePrefixUri != null">update_prefix_uri,</if>
+            <if test="latestGameVersion != null">latest_game_version,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="versionName != null">#{versionName},</if>
+            <if test="forceUpdateGame != null">#{forceUpdateGame},</if>
+            <if test="currentVersion != null">#{currentVersion}</if>
+            <if test="internalGameVersion != null">#{internalGameVersion},</if>
+            <if test="internalResourceVersion != null">#{internalResourceVersion},</if>
+            <if test="versionListLength != null">#{versionListLength},</if>
+            <if test="versionListHashCode != null">#{versionListHashCode},</if>
+            <if test="versionListZipLength != null">#{versionListZipLength},</if>
+            <if test="versionListZipHashCode != null">#{versionListZipHashCode},</if>
+            <if test="updatePrefixUri != null">#{updatePrefixUri},</if>
+            <if test="latestGameVersion != null">#{latestGameVersion},</if>
+        </trim>
+    </insert>
+
+    <update id="updateVersion" parameterType="Version">
+        update version
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="versionName != null">version_name = #{versionName},</if>
+            <if test="forceUpdateGame != null">force_update_game = #{forceUpdateGame},</if>
+            <if test="currentVersion != null ">current_version = #{currentVersion}</if>
+            <if test="internalGameVersion != null">internal_game_version = #{internalGameVersion},</if>
+            <if test="internalResourceVersion != null">internal_resource_version = #{internalResourceVersion},</if>
+            <if test="versionListLength != null">version_list_length = #{versionListLength},</if>
+            <if test="versionListHashCode != null">version_list_hash_code = #{versionListHashCode},</if>
+            <if test="versionListZipLength != null">version_list_zip_length = #{versionListZipLength},</if>
+            <if test="versionListZipHashCode != null">version_list_zip_hash_code = #{versionListZipHashCode},</if>
+            <if test="updatePrefixUri != null">update_prefix_uri = #{updatePrefixUri},</if>
+            <if test="latestGameVersion != null">latest_game_version = #{latestGameVersion},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="resetCurrentVersion" parameterType="Version">
+        update version set current_version = 0 where current_version = 1
+    </update>
+
+    <update id="putCurrentVersion" parameterType="Version">
+        update version set current_version = 1 where id = #{id}
+    </update>
+
+    <delete id="deleteVersionById" parameterType="Long">
+        delete from version where id = #{id}
+    </delete>
+
+    <delete id="deleteVersionByIds" parameterType="String">
+        delete from version where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

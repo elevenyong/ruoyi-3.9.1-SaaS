@@ -2,6 +2,9 @@ package com.ruoyi.web.controller.monitor;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.tenant.TenantContextHolder;
+import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,6 +42,21 @@ public class SysLogininforController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysLogininfor logininfor)
     {
+        // === 多租户隔离：租户侧只能看本租户登录日志；平台租户可看全部 ===
+        Long tenantId = null;
+        try
+        {
+            if (SecurityUtils.getLoginUser() != null && SecurityUtils.getLoginUser().getUser() != null)
+            {
+                tenantId = SecurityUtils.getLoginUser().getUser().getTenantId();
+            }
+        }
+        catch (Exception ignore) {}
+        if (tenantId == null)
+        {
+            tenantId = TenantContextHolder.getTenantId();
+        }
+        if (tenantId != null && tenantId != 1L) { logininfor.setTenantId(tenantId); }
         startPage();
         List<SysLogininfor> list = logininforService.selectLogininforList(logininfor);
         return getDataTable(list);
@@ -49,6 +67,21 @@ public class SysLogininforController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysLogininfor logininfor)
     {
+        // === 导出也必须按租户隔离，避免租户侧导出全量登录日志 ===
+        Long tenantId = null;
+        try
+        {
+            if (SecurityUtils.getLoginUser() != null && SecurityUtils.getLoginUser().getUser() != null)
+            {
+                tenantId = SecurityUtils.getLoginUser().getUser().getTenantId();
+            }
+        }
+        catch (Exception ignore) {}
+        if (tenantId == null)
+        {
+            tenantId = TenantContextHolder.getTenantId();
+        }
+        if (tenantId != null && tenantId != 1L) { logininfor.setTenantId(tenantId); }
         List<SysLogininfor> list = logininforService.selectLogininforList(logininfor);
         ExcelUtil<SysLogininfor> util = new ExcelUtil<SysLogininfor>(SysLogininfor.class);
         util.exportExcel(response, list, "登录日志");

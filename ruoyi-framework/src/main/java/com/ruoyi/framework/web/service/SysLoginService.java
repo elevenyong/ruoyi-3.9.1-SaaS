@@ -74,7 +74,7 @@ public class SysLoginService
 //        // 验证码校验
 //        validateCaptcha(username, code, uuid);
 //        // 登录前置校验
-//        loginPreCheck(username, password);
+        loginPreCheck(username, password);
 //        // 用户验证
 //        Authentication authentication = null;
 //        try
@@ -102,9 +102,9 @@ public class SysLoginService
         {
 //            if (e instanceof BadCredentialsException)
             // 验证码校验
-            validateCaptcha(username, code, uuid);
+//            validateCaptcha(username, code, uuid);
             // 登录前置校验
-            loginPreCheck(username, password);
+//            loginPreCheck(username, password);
 
             // 用户验证
             Authentication authentication = null;

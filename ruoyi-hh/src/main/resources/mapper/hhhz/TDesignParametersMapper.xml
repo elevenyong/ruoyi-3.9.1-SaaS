@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.hhhz.mapper.TDesignParameterMapper">
+    <resultMap id="TDesignParametersResult" type="DesignParameters">
+        <result property="id" column="id"/>
+        <result property="uid" column="Uid"/>
+        <result property="workfaceId" column="workface_id"/>
+        <result property="roadwayId" column="roadway_id"/>
+        <result property="parameterType" column="parameter_type"/>
+        <result property="detailedContent" column="detailed_content"/>
+        <result property="sign" column="sign"/>
+        <result property="schemeId" column="scheme_id"/>
+    </resultMap>
+
+    <sql id="selectTDesignParametersVo">
+        select id,Uid,workface_id,roadway_id,parameter_type,detailed_content,sign,scheme_id from t_design_parameters
+    </sql>
+    <select id="selectTDesignParametersList" parameterType="DesignParameters" resultMap="TDesignParametersResult">
+        <include refid="selectTDesignParametersVo"/>
+        <where>
+            <if test="id != null and id != 0">and id = #{id}</if>
+            <if test="uid != null ">and Uid = #{uid}</if>
+            <if test="workfaceId != null and workfaceId!= 0 ">and workface_id = #{workfaceId}</if>
+            <if test="roadwayId != null and roadwayId != 0">and roadway_id = #{roadwayId}</if>
+            <if test="parameterType != null ">and parameter_type = #{parameterType}</if>
+            <if test="detailedContent != null ">and detailed_content = #{detailedContent}</if>
+            <if test="sign != null ">and sign = #{sign}</if>
+            <if test="schemeId != null">and scheme_id = #{schemeId}</if>
+        </where>
+
+    </select>
+
+    <select id="selectDesignParametersById" parameterType="Integer" resultMap="TDesignParametersResult">
+        <include refid="selectTDesignParametersVo"/>
+        where id=#{id}
+    </select>
+
+    <insert id="insertDesignParameters" parameterType="DesignParameters">
+        insert into t_design_parameters
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uid != null">uid,</if>
+            <if test="workfaceId != null and workfaceId != 0">workface_id,</if>
+            <if test="roadwayId != null and roadwayId != 0">roadway_id,</if>
+            <if test="parameterType != null">parameter_type,</if>
+            <if test="detailedContent != null">detailed_content,</if>
+            <if test="sign != null">sign,</if>
+            <if test="schemeId != null">scheme_id,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uid != null">#{uid},</if>
+            <if test="workfaceId != null and workfaceId != 0">#{workfaceId},</if>
+            <if test="roadwayId != null and roadwayId != 0">#{roadwayId},</if>
+            <if test="parameterType != null">#{parameterType},</if>
+            <if test="detailedContent != null">#{detailedContent},</if>
+            <if test="sign != null">#{sign},</if>
+            <if test="schemeId != null">#{schemeId},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateDesignParameters" parameterType="DesignParameters">
+        update t_design_parameters
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uid != null">uid = #{uid},</if>
+            <if test="workfaceId != null and workfaceId != 0">workface_id = #{workfaceId},</if>
+            <if test="roadwayId != null and roadwayId != 0">roadway_id = #{roadwayId},</if>
+            <if test="parameterType != null">parameter_type = #{parameterType},</if>
+            <if test="detailedContent != null">detailed_content = #{detailedContent},</if>
+            <if test="sign != null">sign = #{sign},</if>
+            <if test="schemeId != null">scheme_id = #{schemeId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDesignParametersById" parameterType="Integer">
+        delete
+        from t_design_parameters
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteDesignParametersByIds" parameterType="String">
+        delete from t_design_parameters where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <!--取最新一条数据-->
+    <select id="getLastOne" resultMap="TDesignParametersResult">
+        select * from t_design_parameters order by id desc limit 0,1
+    </select>
+
+    <!--确定方案：将数据库中的标识由0改成1-->
+    <update id="updateSign" >
+        update t_design_parameters set sign =#{sign} where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+
+</mapper>

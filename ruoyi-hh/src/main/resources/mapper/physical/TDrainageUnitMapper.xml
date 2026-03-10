@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TDrainageUnitMapper">
+
+    <resultMap type="TDrainageUnit" id="TDrainageUnitResult">
+        <result property="id"    column="id"    />
+        <result property="unitName"    column="unit_name"    />
+        <result property="evaluationUnitId"    column="evaluation_unit_id"    />
+        <result property="drainageUnitTypeId"    column="drainage_unit_type_id"    />
+        <result property="roadwayId"    column="roadway_id"    />
+        <result property="workfaceId"    column="workface_id"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="length"    column="length"    />
+        <result property="wide"    column="wide"    />
+        <result property="coalReserves"    column="coal_reserves"    />
+        <result property="gasContentOriginal"    column="gas_content_original"    />
+        <result property="gasTotalReserves"    column="gas_total_reserves"    />
+        <result property="boreholeLengthTotal"    column="borehole_length_total"    />
+        <result property="boreDiameter"    column="bore_diameter"    />
+        <result property="boreDiameterCollect"    column="bore_diameter_collect"    />
+        <result property="X1"    column="X1"    />
+        <result property="Y1"    column="Y1"    />
+        <result property="Z1"    column="Z1"    />
+        <result property="X2"    column="X2"    />
+        <result property="Y2"    column="Y2"    />
+        <result property="Z2"    column="Z2"    />
+        <result property="X3"    column="X3"    />
+        <result property="Y3"    column="Y3"    />
+        <result property="Z3"    column="Z3"    />
+        <result property="X4"    column="X4"    />
+        <result property="Y4"    column="Y4"    />
+        <result property="Z4"    column="Z4"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTDrainageUnitVo">
+       select d.id, d.unit_name, d.evaluation_unit_id,e.evaluate_unit_name,d.drainage_unit_type_id,d.roadway_id,r.roadway as roadwayName,du.type_name as drainageUnitTypeName, d.workface_id,w.workface_name, d.start_date,
+       d.length, d.wide, d.coal_reserves, d.gas_content_original, d.gas_total_reserves, d.borehole_length_total,
+       d.bore_diameter, d.bore_diameter_collect, d.X1, d.Y1, d.Z1, d.X2, d.Y2, d.Z2, d.X3, d.Y3, d.Z3, d.X4, d.Y4, d.Z4, d.create_by, d.create_time, d.update_by, d.update_time,
+       d.remark from t_drainage_unit d
+       left join t_drainageunit_type du on d.drainage_unit_type_id=du.id
+       left join t_working_face w on d.workface_id=w.id
+       left join t_evaluate_unit e on d.evaluation_unit_id=e.id
+       left join t_roadway r on d.roadway_id = r.id
+    </sql>
+
+    <select id="selectTDrainageUnitList" parameterType="TDrainageUnit" resultMap="TDrainageUnitResult">
+        <include refid="selectTDrainageUnitVo"/>
+        <where>
+            <if test="id!=null and id!=0">and d.id=#{id}</if>
+            <if test="unitName != null  and unitName != ''"> and d.unit_name like concat('%', #{unitName}, '%')</if>
+            <if test="evaluationUnitId != null "> and d.evaluation_unit_id = #{evaluationUnitId}</if>
+            <if test="drainageUnitTypeId != null "> and d.drainage_unit_type_id = #{drainageUnitTypeId}</if>
+            <if test="workfaceId != null "> and d.workface_id = #{workfaceId}</if>
+            <if test="startDate != null "> and d.start_date = #{startDate}</if>
+            <if test="length != null "> and d.length = #{length}</if>
+            <if test="wide != null "> and d.wide = #{wide}</if>
+            <if test="coalReserves != null "> and d.coal_reserves = #{coalReserves}</if>
+            <if test="gasContentOriginal != null "> and d.gas_content_original = #{gasContentOriginal}</if>
+            <if test="gasTotalReserves != null "> and d.gas_total_reserves = #{gasTotalReserves}</if>
+            <if test="boreholeLengthTotal != null "> and d.borehole_length_total = #{boreholeLengthTotal}</if>
+            <if test="boreDiameter != null "> and d.bore_diameter = #{boreDiameter}</if>
+            <if test="boreDiameterCollect != null "> and d.bore_diameter_collect = #{boreDiameterCollect}</if>
+            <if test="X1 != null "> and d.X1 = #{X1}</if>
+            <if test="Y1 != null "> and d.Y1 = #{Y1}</if>
+            <if test="Z1 != null "> and d.Z1 = #{Z1}</if>
+            <if test="X2 != null "> and d.X2 = #{X2}</if>
+            <if test="Y2 != null "> and d.Y2 = #{Y2}</if>
+            <if test="Z2 != null "> and d.Z2 = #{Z2}</if>
+            <if test="X3 != null "> and d.X3 = #{X3}</if>
+            <if test="Y3 != null "> and d.Y3 = #{Y3}</if>
+            <if test="Z3 != null "> and d.Z3 = #{Z3}</if>
+            <if test="X4 != null "> and d.X4 = #{X4}</if>
+            <if test="Y4 != null "> and d.Y4 = #{Y4}</if>
+            <if test="Z4 != null "> and d.Z4 = #{Z4}</if>
+        </where>
+    </select>
+
+    <select id="selectTDrainageUnitById" parameterType="java.lang.Integer" resultMap="TDrainageUnitResult">
+        <include refid="selectTDrainageUnitVo"/>
+        where d.Id = #{id}
+    </select>
+
+    <insert id="insertTDrainageUnit" parameterType="TDrainageUnit" useGeneratedKeys="true" keyProperty="id">
+        insert into t_drainage_unit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="unitName != null">unit_name,</if>
+            <if test="evaluationUnitId != null">evaluation_unit_id,</if>
+            <if test="drainageUnitTypeId != null">drainage_unit_type_id,</if>
+            <if test="workfaceId != null">workface_id,</if>
+            <if test="startDate != null">start_date,</if>
+            <if test="length != null">length,</if>
+            <if test="wide != null">wide,</if>
+            <if test="coalReserves != null">coal_reserves,</if>
+            <if test="gasContentOriginal != null">gas_content_original,</if>
+            <if test="gasTotalReserves != null">gas_total_reserves,</if>
+            <if test="boreholeLengthTotal != null">borehole_length_total,</if>
+            <if test="boreDiameter != null">bore_diameter,</if>
+            <if test="boreDiameterCollect != null">bore_diameter_collect,</if>
+            <if test="X1 != null">X1,</if>
+            <if test="Y1 != null">Y1,</if>
+            <if test="Z1 != null">Z1,</if>
+            <if test="X2 != null">X2,</if>
+            <if test="Y2 != null">Y2,</if>
+            <if test="Z2 != null">Z2,</if>
+            <if test="X3 != null">X3,</if>
+            <if test="Y3 != null">Y3,</if>
+            <if test="Z3 != null">Z3,</if>
+            <if test="X4 != null">X4,</if>
+            <if test="Y4 != null">Y4,</if>
+            <if test="Z4 != null">Z4,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="unitName != null">#{unitName},</if>
+            <if test="evaluationUnitId != null">#{evaluationUnitId},</if>
+            <if test="drainageUnitTypeId != null">#{drainageUnitTypeId},</if>
+            <if test="workfaceId != null">#{workfaceId},</if>
+            <if test="startDate != null">#{startDate},</if>
+            <if test="length != null">#{length},</if>
+            <if test="wide != null">#{wide},</if>
+            <if test="coalReserves != null">#{coalReserves},</if>
+            <if test="gasContentOriginal != null">#{gasContentOriginal},</if>
+            <if test="gasTotalReserves != null">#{gasTotalReserves},</if>
+            <if test="boreholeLengthTotal != null">#{boreholeLengthTotal},</if>
+            <if test="boreDiameter != null">#{boreDiameter},</if>
+            <if test="boreDiameterCollect != null">#{boreDiameterCollect},</if>
+            <if test="X1 != null">#{X1},</if>
+            <if test="Y1 != null">#{Y1},</if>
+            <if test="Z1 != null">#{Z1},</if>
+            <if test="X2 != null">#{X2},</if>
+            <if test="Y2 != null">#{Y2},</if>
+            <if test="Z2 != null">#{Z2},</if>
+            <if test="X3 != null">#{X3},</if>
+            <if test="Y3 != null">#{Y3},</if>
+            <if test="Z3 != null">#{Z3},</if>
+            <if test="X4 != null">#{X4},</if>
+            <if test="Y4 != null">#{Y4},</if>
+            <if test="Z4 != null">#{Z4},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTDrainageUnit" parameterType="TDrainageUnit">
+        update t_drainage_unit
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="unitName != null">unit_name = #{unitName},</if>
+            <if test="evaluationUnitId != null">evaluation_unit_id = #{evaluationUnitId},</if>
+            <if test="drainageUnitTypeId != null">drainage_unit_type_id = #{drainageUnitTypeId},</if>
+            <if test="workfaceId != null">workface_id = #{workfaceId},</if>
+            <if test="startDate != null">start_date = #{startDate},</if>
+            <if test="length != null">length = #{length},</if>
+            <if test="wide != null">wide = #{wide},</if>
+            <if test="coalReserves != null">coal_reserves = #{coalReserves},</if>
+            <if test="gasContentOriginal != null">gas_content_original = #{gasContentOriginal},</if>
+            <if test="gasTotalReserves != null">gas_total_reserves = #{gasTotalReserves},</if>
+            <if test="boreholeLengthTotal != null">borehole_length_total = #{boreholeLengthTotal},</if>
+            <if test="boreDiameter != null">bore_diameter = #{boreDiameter},</if>
+            <if test="boreDiameterCollect != null">bore_diameter_collect = #{boreDiameterCollect},</if>
+            <if test="X1 != null">X1 = #{X1},</if>
+            <if test="Y1 != null">Y1 = #{Y1},</if>
+            <if test="Z1 != null">Z1 = #{Z1},</if>
+            <if test="X2 != null">X2 = #{X2},</if>
+            <if test="Y2 != null">Y2 = #{Y2},</if>
+            <if test="Z2 != null">Z2 = #{Z2},</if>
+            <if test="X3 != null">X3 = #{X3},</if>
+            <if test="Y3 != null">Y3 = #{Y3},</if>
+            <if test="Z3 != null">Z3 = #{Z3},</if>
+            <if test="X4 != null">X4 = #{X4},</if>
+            <if test="Y4 != null">Y4 = #{Y4},</if>
+            <if test="Z4 != null">Z4 = #{Z4},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTDrainageUnitById" parameterType="java.lang.Integer">
+        delete from t_drainage_unit where id = #{id}
+    </delete>
+
+    <delete id="deleteTDrainageUnitByIds" parameterType="java.util.List">
+        delete from t_drainage_unit where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--查询抽采单元累计流量-->
+    <select id="getDrainageUnitTotal" resultType="com.ruoyi.hh.simulate.domain.DrainageUnitTool">
+        SELECT w.workface_name,w.workface_serial,d.unit_name,dt.type_name,m.measuring_point_name,i.sensor_name,
+        t.id AS sensortype,t.kind,ROUND(SUM(sd.avg_value)/COUNT(sd.avg_value),2) AS avgvalue,ROUND(SUM(sd.sum_value),2) AS sumvalue
+        from t_sensor_data sd
+        LEFT JOIN t_sensor_info i ON i.id=sd.sensorInfo_id
+        LEFT JOIN t_sensor_type t ON i.sensor_type_id=t.id
+        LEFT JOIN t_measuring_point m ON i.measure_point_id=m.id
+        LEFT JOIN t_drainage_unit d ON m.drainage_unit_id=d.id
+        LEFT JOIN t_working_face w ON d.workface_id=w.id
+        LEFT JOIN t_drainageunit_type dt ON d.drainage_unit_type_id=dt.id
+        WHERE t.id IN (1,2) and w.id= #{workfaceId}
+        GROUP BY d.unit_name,t.kind
+    </select>
+    <!--分页查询列表-->
+    <select id="getPageList" resultType="com.ruoyi.hh.physical.domain.TDrainageUnit">
+        select * from t_drainage_unit
+    </select>
+
+    <!--根据工作面ID查询抽采单元列表-->
+    <select id="getByWorkfaceId" parameterType="java.lang.Integer" resultType="com.ruoyi.hh.physical.domain.TDrainageUnit">
+        select * from t_drainage_unit where workface_id=#{workfaceId}
+    </select>
+
+    <select id="getByEvaluateUnitId" resultType="com.ruoyi.hh.physical.domain.TDrainageUnit">
+        select * from t_drainage_unit where evaluation_unit_id =#{evaluationUnitId}
+    </select>
+
+</mapper>

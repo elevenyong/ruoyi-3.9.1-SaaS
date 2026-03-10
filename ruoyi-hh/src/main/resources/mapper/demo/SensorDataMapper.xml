@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.hh.demo.mapper.SensordataDao">
+	<select id="getSensorData" resultType="com.ruoyi.hh.demo.domain.Sensordata">
+		SELECT d.id, p.PointName,t.Kind,d.`Data`,t.Unit,d.Date from pipelineinfo p RIGHT JOIN sensortype t ON p.id=t.id INNER JOIN sensordata d ON d.SensorId = p.id
+	</select>
+	
+	<!-- 根据点位信息获取传感器数据 -->
+	<select id="getSensorDataByPointName" parameterType="string" resultType="com.ruoyi.hh.demo.domain.Sensordata">
+		SELECT d.id, p.PointName,t.Kind,d.`Data`,t.Unit,d.Date from pipelineinfo p RIGHT 
+			JOIN sensortype t ON p.id=t.id INNER JOIN sensordata d ON d.SensorId = p.id WHERE p.PointName =#{PointName}
+	</select>
+	
+	<!-- 根据传感器类型查询传感器数据 -->
+	<select id="getSensorDataBySensorType" parameterType="string" resultType="com.ruoyi.hh.demo.domain.Sensordata">
+		SELECT d.id, p.PointName,t.Kind,d.`Data`,t.Unit,d.Date from pipelineinfo p RIGHT 
+			JOIN sensortype t ON p.id=t.id INNER JOIN sensordata d ON d.SensorId = p.id WHERE t.Kind =#{Kind}
+	</select>
+	
+	
+</mapper>
+
+

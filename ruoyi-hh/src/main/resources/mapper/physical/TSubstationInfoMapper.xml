@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TSubstationInfoMapper">
+    
+    <resultMap type="TSubstationInfo" id="TSubstationInfoResult">
+        <result property="id"    column="id"    />
+        <result property="substationCode"    column="substation_code"    />
+        <result property="substationLocal"    column="substation_local"    />
+        <result property="workStatus"    column="work_status"    />
+        <result property="electricityStatus"    column="electricity_status"    />
+        <result property="X"    column="X"    />
+        <result property="Y"    column="Y"    />
+        <result property="Z"    column="Z"    />
+        <result property="time"    column="time"    />
+    </resultMap>
+
+    <sql id="selectTSubstationInfoVo">
+        select id, substation_code, substation_local, work_status, electricity_status, X, Y, Z, time from t_substation_info
+    </sql>
+
+    <select id="selectTSubstationInfoList" parameterType="TSubstationInfo" resultMap="TSubstationInfoResult">
+        <include refid="selectTSubstationInfoVo"/>
+        <where>  
+            <if test="substationCode != null  and substationCode != ''"> and substation_code = #{substationCode}</if>
+            <if test="substationLocal != null  and substationLocal != ''"> and substation_local = #{substationLocal}</if>
+            <if test="workStatus != null "> and work_status = #{workStatus}</if>
+            <if test="electricityStatus != null "> and electricity_status = #{electricityStatus}</if>
+            <if test="X != null "> and X = #{x}</if>
+            <if test="Y != null "> and Y = #{y}</if>
+            <if test="Z != null "> and Z = #{z}</if>
+            <if test="time != null "> and time = #{time}</if>
+        </where>
+    </select>
+    
+    <select id="selectTSubstationInfoById" parameterType="Integer" resultMap="TSubstationInfoResult">
+        <include refid="selectTSubstationInfoVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTSubstationInfo" parameterType="TSubstationInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into t_substation_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="substationCode != null">substation_code,</if>
+            <if test="substationLocal != null">substation_local,</if>
+            <if test="workStatus != null">work_status,</if>
+            <if test="electricityStatus != null">electricity_status,</if>
+            <if test="X != null">X,</if>
+            <if test="Y != null">Y,</if>
+            <if test="Z != null">Z,</if>
+            <if test="time != null">time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="substationCode != null">#{substationCode},</if>
+            <if test="substationLocal != null">#{substationLocal},</if>
+            <if test="workStatus != null">#{workStatus},</if>
+            <if test="electricityStatus != null">#{electricityStatus},</if>
+            <if test="X != null">#{x},</if>
+            <if test="Y != null">#{y},</if>
+            <if test="Z != null">#{z},</if>
+            <if test="time != null">#{time},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTSubstationInfo" parameterType="TSubstationInfo">
+        update t_substation_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="substationCode != null">substation_code = #{substationCode},</if>
+            <if test="substationLocal != null">substation_local = #{substationLocal},</if>
+            <if test="workStatus != null">work_status = #{workStatus},</if>
+            <if test="electricityStatus != null">electricity_status = #{electricityStatus},</if>
+            <if test="X != null">X = #{x},</if>
+            <if test="Y != null">Y = #{y},</if>
+            <if test="Z != null">Z = #{z},</if>
+            <if test="time != null">time = #{time},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTSubstationInfoById" parameterType="Integer">
+        delete from t_substation_info where id = #{id}
+    </delete>
+
+    <delete id="deleteTSubstationInfoByIds" parameterType="String">
+        delete from t_substation_info where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+<!--根据分站编码修改分站信息-->
+    <update id="updateBySubstationCode" parameterType="TSubstationInfo">
+        update t_substation_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="substationLocal != null">substation_local = #{substationLocal},</if>
+            <if test="workStatus != null">work_status = #{workStatus},</if>
+            <if test="electricityStatus != null">electricity_status = #{electricityStatus},</if>
+            <if test="X != null">X = #{x},</if>
+            <if test="Y != null">Y = #{y},</if>
+            <if test="Z != null">Z = #{z},</if>
+            <if test="time != null">time = #{time},</if>
+        </trim>
+        where substation_code = #{substationCode}
+    </update>
+</mapper>

@@ -81,7 +81,7 @@
         <el-button icon="el-icon-download" type="text" @click="download">
           导出vue文件
         </el-button>
-        <el-button class="copy-btn-main" icon="el-icon-document-copy" type="text" @click="copy">
+        <el-button class="copy-btn-main.java.main" icon="el-icon-document-copy" type="text" @click="copy">
           复制代码
         </el-button>
         <el-button class="delete-btn" icon="el-icon-delete" type="text" @click="empty">
@@ -146,14 +146,13 @@ import { beautifierConf, titleCase } from '@/utils/index'
 import { makeUpHtml, vueTemplate, vueScript, cssStyle } from '@/utils/generator/html'
 import { makeUpJs } from '@/utils/generator/js'
 import { makeUpCss } from '@/utils/generator/css'
-import { drawingDefaultValue, initDrawingDefaultValue, cleanDrawingDefaultValue } from '@/utils/generator/drawingDefault'
+import drawingDefault from '@/utils/generator/drawingDefault'
 import logo from '@/assets/logo/logo.png'
 import CodeTypeDialog from './CodeTypeDialog'
 import DraggableItem from './DraggableItem'
 
 let oldActiveId
 let tempActiveData
-let clipboard = null
 
 export default {
   components: {
@@ -172,19 +171,16 @@ export default {
       selectComponents,
       layoutComponents,
       labelWidth: 100,
-      drawingList: drawingDefaultValue,
+      drawingList: drawingDefault,
       drawingData: {},
-      activeId: drawingDefaultValue[0].formId,
+      activeId: drawingDefault[0].formId,
       drawerVisible: false,
       formData: {},
       dialogVisible: false,
       generateConf: null,
       showFileName: false,
-      activeData: drawingDefaultValue[0]
+      activeData: drawingDefault[0]
     }
-  },
-  beforeCreate() {
-    initDrawingDefaultValue()
   },
   created() {
     // 防止 firefox 下 拖拽 会新打卡一个选项卡
@@ -194,6 +190,7 @@ export default {
     }
   },
   watch: {
+    // eslint-disable-next-line func-names
     'activeData.label': function (val, oldVal) {
       if (
         this.activeData.placeholder === undefined
@@ -212,7 +209,7 @@ export default {
     }
   },
   mounted() {
-    clipboard = new ClipboardJS('#copyNode', {
+    const clipboard = new ClipboardJS('#copyNode', {
       text: trigger => {
         const codeStr = this.generateCode()
         this.$notify({
@@ -226,9 +223,6 @@ export default {
     clipboard.on('error', e => {
       this.$message.error('代码复制失败')
     })
-  },
-  beforeDestroy() {
-    clipboard.destroy()
   },
   methods: {
     activeFormItem(element) {
@@ -291,7 +285,6 @@ export default {
       this.$confirm('确定要清空所有组件吗？', '提示', { type: 'warning' }).then(
         () => {
           this.drawingList = []
-          cleanDrawingDefaultValue()
         }
       )
     },
@@ -378,6 +371,20 @@ export default {
 </script>
 
 <style lang='scss'>
+body, html{
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+}
+
+input, textarea{
+  font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji;
+}
+
 .editor-tabs{
   background: #121315;
   .el-tabs__header{
@@ -772,4 +779,5 @@ $lighterBlue: #409EFF;
     }
   }
 }
+
 </style>

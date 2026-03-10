@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TAttributeValueMapper">
+
+    <resultMap type="TAttributeValue" id="TAttributeValueResult">
+        <result property="id" column="id"/>
+        <result property="attributeTypeId" column="attribute_type_id"/>
+        <result property="workfaceId" column="workface_id"/>
+        <result property="rockCoalId" column="rock_coal_id"/>
+        <result property="boreholeId" column="borehole_id"/>
+        <result property="attributeValue1" column="attribute_value_1"/>
+        <result property="attributeValue2" column="attribute_value_2"/>
+        <result property="attributeValue3" column="attribute_value_3"/>
+        <result property="attributeValue4" column="attribute_value_4"/>
+        <result property="attributeValue4" column="attribute_value_4"/>
+        <result property="holeMeasureDepth" column="hole_measure_depth"/>
+        <result property="dataPosition" column="data_position" jdbcType="VARCHAR" typeHandler="com.ruoyi.hh.util.handler.JsonPointTypeHandler"/>
+        <result property="dataTime" column="data_time"/>
+    </resultMap>
+
+    <sql id="selectTAttributeValueVo">
+        select id,
+               attribute_type_id,
+               workface_id,
+               rock_coal_id,
+               borehole_id,
+               attribute_value_1,
+               attribute_value_2,
+               attribute_value_3,
+               attribute_value_4,
+               hole_measure_depth,
+               data_position,
+               data_time
+        from t_attribute_value
+    </sql>
+
+    <select id="selectTAttributeValueList" parameterType="TAttributeValue" resultMap="TAttributeValueResult">
+        <include refid="selectTAttributeValueVo"/>
+        <where>
+            <if test="attributeTypeId != null ">and attribute_type_id = #{attributeTypeId}</if>
+            <if test="workfaceId != null">and workface_id = #{workfaceId}</if>
+            <if test="rockCoalId != null">and rock_coal_id = #{rockCoalId}</if>
+            <if test="boreholeId != null">and borehole_id = #{boreholeId}</if>
+            <if test="attributeValue1 != null ">and attribute_value_1 = #{attributeValue1}</if>
+            <if test="attributeValue2 != null ">and attribute_value_2 = #{attributeValue2}</if>
+            <if test="attributeValue3 != null ">and attribute_value_3 = #{attributeValue3}</if>
+            <if test="attributeValue4 != null ">and attribute_value_4 = #{attributeValue4}</if>
+            <if test="holeMeasureDepth != null ">and hole_measure_depth = #{holeMeasureDepth}</if>
+            <if test="dataPosition != null ">and data_position = #{dataPosition}</if>
+            <if test="dataTime != null ">and data_time = #{dataTime}</if>
+        </where>
+    </select>
+
+    <select id="selectTAttributeValueById" parameterType="Long" resultMap="TAttributeValueResult">
+        <include refid="selectTAttributeValueVo"/>
+        where id = #{id}
+    </select>
+
+
+    <insert id="insertTAttributeValue" parameterType="TAttributeValue" useGeneratedKeys="true" keyProperty="id">
+        insert into t_attribute_value
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="attributeTypeId != null">attribute_type_id,</if>
+            <if test="workfaceId != null">workface_id,</if>
+            <if test="rockCoalId != null">rock_coal_id,</if>
+            <if test="boreholeId != null">borehole_id,</if>
+            <if test="attributeValue1 != null">attribute_value_1,</if>
+            <if test="attributeValue2 != null">attribute_value_2,</if>
+            <if test="attributeValue3 != null">attribute_value_3,</if>
+            <if test="attributeValue4 != null">attribute_value_4,</if>
+            <if test="holeMeasureDepth != null">hole_measure_depth,</if>
+            <if test="dataPosition != null">data_position,</if>
+            <if test="dataTime != null">data_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="attributeTypeId != null">#{attributeTypeId},</if>
+            <if test="workfaceId != null">#{workfaceId},</if>
+            <if test="rockCoalId != null">#{rockCoalId},</if>
+            <if test="boreholeId != null">#{boreholeId},</if>
+            <if test="attributeValue1 != null">#{attributeValue1},</if>
+            <if test="attributeValue2 != null">#{attributeValue2},</if>
+            <if test="attributeValue3 != null">#{attributeValue3},</if>
+            <if test="attributeValue4 != null">#{attributeValue4},</if>
+            <if test="holeMeasureDepth != null">#{holeMeasureDepth},</if>
+            <if test="dataPosition != null">#{dataPosition,jdbcType=VARCHAR,typeHandler=com.ruoyi.hh.util.handler.JsonPointTypeHandler},</if>
+            <if test="dataTime != null">#{dataTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTAttributeValue" parameterType="TAttributeValue">
+        update t_attribute_value
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="attributeTypeId != null">attribute_type_id = #{attributeTypeId},</if>
+            <if test="workfaceId != null">workface_id = #{workfaceId},</if>
+            <if test="rockCoalId != null">rock_coal_id = #{rockCoalId},</if>
+            <if test="boreholeId != null">borehole_id = #{boreholeId},</if>
+            <if test="attributeValue1 != null">attribute_value_1 = #{attributeValue1},</if>
+            <if test="attributeValue2 != null">attribute_value_2 = #{attributeValue2},</if>
+            <if test="attributeValue3 != null">attribute_value_3 = #{attributeValue3},</if>
+            <if test="attributeValue4 != null">attribute_value_4 = #{attributeValue4},</if>
+            <if test="holeMeasureDepth != null">hole_measure_depth = #{holeMeasureDepth},</if>
+            <if test="dataPosition != null">data_position=#{dataPosition,jdbcType=VARCHAR,typeHandler=com.ruoyi.hh.util.handler.JsonPointTypeHandler},</if>
+            <if test="dataTime != null">data_time=#{dataTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTAttributeValueById" parameterType="Long">
+        delete
+        from t_attribute_value
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTAttributeValueByIds" parameterType="String">
+        delete from t_attribute_value where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteTAttributeValueByBoreholeIds" parameterType="String">
+        delete from t_attribute_value where borehole_id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

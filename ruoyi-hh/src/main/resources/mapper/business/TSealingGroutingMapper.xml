@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.business.mapper.TSealingGroutingMapper">
+
+    <resultMap type="TSealingGrouting" id="TSealingGroutingResult">
+        <result property="id"    column="id"    />
+        <result property="boreholeId"    column="borehole_id"    />
+        <result property="shiftId"    column="shift_id"    />
+        <result property="groutingDate"    column="grouting_date"    />
+<!--        <result property="lengthpipeinsertion"    column="length_pipeinsertion"    />-->
+<!--        <result property="datepipeinsertion"    column="date_pipeinsertion"    />-->
+<!--        <result property="checkerpipeinsertion"    column="checker_pipeinsertion"    />-->
+        <result property="holesealTypeId"    column="holeseal_type_id"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="desAmountBagGrouting"    column="des_amount_bag_grouting"    />
+        <result property="actualAmountBagGrouting"    column="actual_amount_bag_grouting"    />
+        <result property="actualBagPressure"    column="actual_bag_pressure"    />
+        <result property="designedAmountGapGrouting"    column="designed_amount_gap_grouting"    />
+        <result property="actualAmountGapGrouting"    column="actual_amount_gap_grouting"    />
+        <result property="interludeGroutingPressure"    column="interlude_grouting_pressure"    />
+        <result property="groutingPerson"    column="grouting_person"    />
+<!--        <result property="startdrainagegasconcentration"    column="start_drainage_gas_concentration"    />-->
+<!--        <result property="startdrainagedate"    column="start_drainage_date"    />-->
+<!--        <result property="startdrainageperson"    column="start_drainage_person"    />-->
+        <result property="exceptionLabel"    column="exception_label"    />
+        <result property="recorder"    column="recorder"    />
+        <result property="chargehand"    column="chargehand"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTSealingGroutingVo">
+        select r.roadway,a.group_no,a.borehole_no,a.tube_length,h.hole_seal_type,sh.shift_info,s.*
+        from t_sealing_grouting s
+        LEFT JOIN t_actual_borehole a ON a.id=s.borehole_id
+        LEFT JOIN t_roadway r ON a.roadway_id =r.id
+        LEFT JOIN t_holeseal_type h ON h.id=s.holeseal_type_id
+        LEFT JOIN t_shiftinfo sh ON sh.id=s.shift_id
+
+    </sql>
+
+    <select id="selectTSealingGroutingList" parameterType="TSealingGrouting" resultMap="TSealingGroutingResult">
+        <include refid="selectTSealingGroutingVo"/>
+        <where>
+            <if test="id!=null and id!=0">and s.id=#{id}</if>
+            <if test="boreholeId != null and boreholeId != 0 "> and s.borehole_id = #{boreholeId}</if>
+            <if test="shiftId != null and shiftId != 0 "> and s.shift_id = #{shiftId}</if>
+            <if test="groutingDate != null "> and s.grouting_date = #{groutingDate}</if>
+           <!-- <if test="lengthpipeinsertion != null "> and s.length_pipeinsertion = #{lengthpipeinsertion}</if>-->
+            <!--<if test="datepipeinsertion != null "> and s.date_pipeinsertion = #{datepipeinsertion}</if>-->
+            <!--<if test="checkerpipeinsertion != null "> and s.checker_pipeinsertion = #{checkerpipeinsertion}</if>-->
+            <if test="holesealTypeId != null and holesealTypeId != 0 "> and s.holeseal_type_id = #{holesealTypeid}</if>
+            <if test="startTime != null "> and s.start_time = #{startTime}</if>
+            <if test="endTime != null "> and s.end_time = #{endTime}</if>
+            <if test="desAmountBagGrouting != null "> and s.des_amount_bag_grouting = #{desAmountBagGrouting}</if>
+            <if test="actualAmountBagGrouting != null "> and s.actual_amount_bag_grouting = #{actualAmountBagGrouting}</if>
+            <if test="actualBagPressure != null "> and s.actual_bag_pressure = #{actualBagPressure}</if>
+            <if test="designedAmountGapGrouting != null "> and s.designed_amount_gap_grouting = #{designedAmountGapGrouting}</if>
+            <if test="actualAmountGapGrouting != null "> and s.actual_amount_gap_grouting = #{actualAmountGapGrouting}</if>
+            <if test="interludeGroutingPressure != null "> and s.interlude_grouting_pressure = #{interludeGroutingPressure}</if>
+            <if test="groutingPerson != null  and groutingPerson != ''"> and s.grouting_person = #{groutingPerson}</if>
+<!--            <if test="startdrainagegasconcentration != null "> and s.start_drainage_gas_concentration = #{startdrainagegasconcentration}</if>-->
+<!--            <if test="startdrainagedate != null "> and s.start_drainage_date = #{startdrainagedate}</if>-->
+<!--            <if test="startdrainageperson != null  and startdrainageperson != ''"> and s.start_drainage_person = #{startdrainageperson}</if>-->
+            <if test="exceptionLabel != null  and exceptionLabel != ''"> and s.exception_label = #{exceptionLabel}</if>
+            <if test="recorder != null  and recorder != ''"> and s.recorder = #{recorder}</if>
+            <if test="chargehand != null  and chargehand != ''"> and s.chargehand = #{chargehand}</if>
+        </where>
+    </select>
+
+    <select id="selectTSealingGroutingById" parameterType="Integer" resultMap="TSealingGroutingResult">
+        <include refid="selectTSealingGroutingVo"/>
+        where s.Id = #{id}
+    </select>
+
+    <insert id="insertTSealingGrouting" parameterType="TSealingGrouting" useGeneratedKeys="true" keyProperty="id">
+        insert into t_sealing_grouting
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="boreholeId != null and boreholeId != 0">borehole_id,</if>
+            <if test="shiftId != null and shiftId != 0">shift_id,</if>
+            <if test="groutingDate != null">grouting_date,</if>
+            <!--<if test="lengthpipeinsertion != null">length_pipeinsertion,</if>-->
+            <!--<if test="datepipeinsertion != null">date_pipeinsertion,</if>-->
+            <!--<if test="checkerpipeinsertion != null">checker_pipeinsertion,</if>-->
+            <if test="holesealTypeId != null and holesealTypeId != 0">holeseal_type_id,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="desAmountBagGrouting != null">des_amount_bag_grouting,</if>
+            <if test="actualAmountBagGrouting != null">actual_amount_bag_grouting,</if>
+            <if test="actualBagPressure != null">actual_bag_pressure,</if>
+            <if test="designedAmountGapGrouting != null">designed_amount_gap_grouting,</if>
+            <if test="actualAmountGapGrouting != null">actual_amount_gap_grouting,</if>
+            <if test="interludeGroutingPressure != null">interlude_grouting_pressure,</if>
+            <if test="groutingPerson != null">grouting_person,</if>
+<!--            <if test="startdrainagegasconcentration != null">start_drainage_gas_concentration,</if>-->
+<!--            <if test="startdrainagedate != null">start_drainage_date,</if>-->
+<!--            <if test="startdrainageperson != null">start_drainage_person,</if>-->
+            <if test="exceptionLabel != null">exception_label,</if>
+            <if test="recorder != null">recorder,</if>
+            <if test="chargehand != null">chargehand,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="boreholeId != null and boreholeId != 0">#{boreholeId},</if>
+            <if test="shiftId != null and shiftId != 0">#{shiftId},</if>
+            <if test="groutingDate != null">#{groutingDate},</if>
+            <!--<if test="lengthpipeinsertion != null">#{lengthpipeinsertion},</if>-->
+            <!--<if test="datepipeinsertion != null">#{datepipeinsertion},</if>-->
+            <!--<if test="checkerpipeinsertion != null">#{checkerpipeinsertion},</if>-->
+            <if test="holesealTypeId != null and holesealTypeId != 0">#{holesealTypeId},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="desAmountBagGrouting != null">#{desAmountBagGrouting},</if>
+            <if test="actualAmountBagGrouting != null">#{actualAmountBagGrouting},</if>
+            <if test="actualBagPressure != null">#{actualBagPressure},</if>
+            <if test="designedAmountGapGrouting != null">#{designedAmountGapGrouting},</if>
+            <if test="actualAmountGapGrouting != null">#{actualAmountGapGrouting},</if>
+            <if test="interludeGroutingPressure != null">#{interludeGroutingPressure},</if>
+            <if test="groutingPerson != null">#{groutingPerson},</if>
+<!--            <if test="startdrainagegasconcentration != null">#{startdrainagegasconcentration},</if>-->
+<!--            <if test="startdrainagedate != null">#{startdrainagedate},</if>-->
+<!--            <if test="startdrainageperson != null">#{startdrainageperson},</if>-->
+            <if test="exceptionLabel != null">#{exceptionLabel},</if>
+            <if test="recorder != null">#{recorder},</if>
+            <if test="chargehand != null">#{chargehand},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTSealingGrouting" parameterType="TSealingGrouting">
+        update t_sealing_grouting
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="boreholeId != null and boreholeId != 0">borehole_id = #{boreholeId},</if>
+            <if test="shiftId != null and shiftId != 0">shift_id = #{shiftId},</if>
+            <if test="groutingDate != null">grouting_date = #{groutingDate},</if>
+            <!--<if test="lengthpipeinsertion != null">length_pipeinsertion = #{lengthpipeinsertion},</if>-->
+            <!--<if test="datepipeinsertion != null">date_pipeinsertion = #{datepipeinsertion},</if>-->
+            <!--<if test="checkerpipeinsertion != null">checker_pipeinsertion = #{checkerpipeinsertion},</if>-->
+            <if test="holesealTypeId != null and holesealTypeId != 0">holeseal_type_id = #{holesealTypeId},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="desAmountBagGrouting != null">des_amount_bag_grouting = #{desAmountBagGrouting},</if>
+            <if test="actualAmountBagGrouting != null">actual_amount_bag_grouting = #{actualAmountBagGrouting},</if>
+            <if test="actualBagPressure != null">actual_bag_pressure = #{actualBagPressure},</if>
+            <if test="designedAmountGapGrouting != null">designed_amount_gap_grouting = #{designedAmountGapGrouting},</if>
+            <if test="actualAmountGapGrouting != null">actual_amount_gap_grouting = #{actualAmountGapGrouting},</if>
+            <if test="interludeGroutingPressure != null">interlude_grouting_pressure = #{interludeGroutingPressure},</if>
+            <if test="groutingPerson != null">grouting_person = #{groutingPerson},</if>
+<!--            <if test="startdrainagegasconcentration != null">start_drainage_gas_concentration = #{startdrainagegasconcentration},</if>-->
+<!--            <if test="startdrainagedate != null">start_drainage_date = #{startdrainagedate},</if>-->
+<!--            <if test="startdrainageperson != null">start_drainage_person = #{startdrainageperson},</if>-->
+            <if test="exceptionLabel != null">exception_label = #{exceptionLabel},</if>
+            <if test="recorder != null">recorder = #{recorder},</if>
+            <if test="chargehand != null">chargehand = #{chargehand},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where Id = #{id}
+    </update>
+
+    <delete id="deleteTSealingGroutingById" parameterType="Integer">
+        delete from t_sealing_grouting where id = #{id}
+    </delete>
+
+    <delete id="deleteTSealingGroutingByIds" parameterType="java.util.List">
+        delete from t_sealing_grouting where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--查询所有信息-->
+    <select id="getPageList" resultType="com.ruoyi.hh.business.domain.TSealingGrouting">
+        <include refid="selectTSealingGroutingVo"/>
+    </select>
+
+    <select id="getSealingGroutingRecord" resultType="com.ruoyi.hh.business.domain.TSealingGrouting">
+        select r.roadway,a.group_no,a.borehole_no,s.grouting_date,a.tube_length,
+        s.*
+        from t_sealing_grouting s
+        LEFT JOIN t_actual_borehole a ON s.borehole_id=a.Id
+        LEFT JOIN t_roadway r ON a.roadway_id=r.Id
+        LEFT JOIN t_shiftinfo sh ON sh.id=s.shift_id
+        where 1=1
+        <if test="groutingDate!=null">
+            and s.grouting_date = #{groutingDate}
+        </if>
+        <if test="roadwayId!=null">AND r.id IN
+            <foreach collection="roadwayId" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="groupNo!=null">AND a.group_no IN
+            <foreach collection="groupNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="boreholeNo!=null">AND a.borehole_no IN
+            <foreach collection="boreholeNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="groutingPerson!=null">AND s.grouting_person IN
+            <foreach collection="groutingPerson" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+          <if test="shiftId!=null">
+              AND s.shift_id =#{shiftId}
+          </if>
+    </select>
+
+    <!--根据钻孔Id删除注浆信息-->
+    <delete id="delByBoreholeId" parameterType="java.lang.Integer">
+        delete  from t_sealing_grouting where borehole_id=#{bordholeId}
+    </delete>
+    <delete id="delByBoreholeIds" parameterType="java.util.List">
+        delete from t_sealing_grouting where borehole_id in
+        <foreach item="boreholeIds" collection="list" open="(" separator="," close=")">
+            #{boreholeIds}
+        </foreach>
+    </delete>
+
+    <!--钻孔施工台帐-->
+    <select id="getRoadWorkStandingBook" >
+        SELECT r.Roadway,a.group_no,a.borehole_no,a.drilling_date,sh.shift_info,
+        d.azimuth_angle AS desAzimuthangle,a.azimuth_angle AS actAzimuthangle,ROUND(d.inclination_angle,2) AS desInclinationangle,ROUND(a.inclination_angle,2) AS actInclinationangle,ROUND((a.inclination_angle-d.inclination_angle),2) AS inclinationangleErr,
+        a.bore_diameter,ROUND(d.borehole_length,2) AS desboreholelength,ROUND(a.borehole_length,2) AS actboreholelength,ROUND(d.depth_1st_coal_seam_start,2),a.depth_1st_coal_seam_start,ROUND((a.depth_1st_coal_seam_start-d.depth_1st_coal_seam_start),2)AS seamcoalErr,
+        ROUND((a.depth_1st_coal_seam_start-d.depth_1st_coal_seam_start)/a.depth_1st_coal_seam_start,2) AS seamcoalErrratio,d.depth_1st_coal_seam_end AS descoalseamend, a.depth_1st_coal_seam_end AS actcoalseamend,ROUND((a.depth_1st_coal_seam_end-d.depth_1st_coal_seam_end)/a.depth_1st_coal_seam_end,2)
+         AS Errratio,n.navigation_point_name,a.distance_to_navigation_point,a.distance_to_navigation_point,p.purpose_borehole,ht.hole_seal_type,a.pulled_gas_concentration,a.chargehand AS drillingchargehand,a.gaschecker,a.pull_drill_date,sg.checker_pipeinsertion,sg.length_pipeInsertion,sg.date_pipeinsertion,sg.chargehand AS sgchargehand,sg.grouting_date,sg.actual_amount_bag_grouting,sg.exception_label,af.date_flushing,CONCAT(af.punching_paragraph1,'-',af.punching_paragraph2) AS punching_paragraph,ROUND((af.punching_paragraph2-af.punching_paragraph1),2)AS punchinglength,
+        af.total_time_flushing,af.water_pressure_during_flushing,af.chargehand AS afchargehand,af.actual_coal_amount_flushed,af.reception_time FROM
+        t_sealing_grouting s
+        LEFT JOIN t_actual_borehole a ON a.id=s.borehole_id
+        LEFT JOIN t_designed_borehole d ON CONCAT(a.roadway_id,a.group_no,a.borehole_no)=CONCAT(d.roadway_id,d.group_no,d.borehole_no)
+        LEFT JOIN t_designed_flushing df ON df.borehole_id=d.id
+        LEFT JOIN t_actual_flushing af ON af.borehole_id=a.id
+        LEFT JOIN t_roadway r ON r.id = a.roadway_id
+        LEFT JOIN t_shiftinfo sh ON sh.id=s.ShiftId
+        LEFT JOIN t_navigation_point n ON a.navigation_pointId=n.id
+        LEFT JOIN t_purpose_borehole p ON a.purpose_boreholeId=p.id
+        LEFT JOIN t_sealing_grouting sg ON sg.borehole_id=a.id
+        LEFT JOIN t_holeseal_type ht ON ht.id=sg.holeseal_type_id
+        WHERE 1=1
+        <if test="rid!=null">
+            and r.id=#{rid}
+        </if>
+        <if test="pid!=null">and p.id IN
+            <foreach collection="pid" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="groupNo!=null">and a.group_no IN
+            <foreach collection="groupNo" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="startdate!=null and enddate!=null">AND af.reception_time BETWEEN
+            #{startdate} AND #{enddate}
+        </if>
+
+
+    </select>
+
+
+</mapper>

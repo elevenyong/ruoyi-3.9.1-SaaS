@@ -1,5 +1,7 @@
 package com.ruoyi.system.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -107,5 +109,27 @@ public class SysDictDataServiceImpl implements ISysDictDataService
             DictUtils.setDictCache(data.getDictType(), dictDatas);
         }
         return row;
+    }
+    /**
+     * 查询全部的字典数据并生成Map字典方便查阅
+     * @return 以dict_type为key的map数据集
+     */
+    @Override
+    public HashMap<String, ArrayList<SysDictData>> getAllDictDataMap() {
+        List<SysDictData> sysDictDataList = dictDataMapper.selectAllDictData();
+        HashMap<String, ArrayList<SysDictData>> resultMap = new HashMap<String, ArrayList<SysDictData>>();
+
+        for (SysDictData d:sysDictDataList) {
+            ArrayList<SysDictData> list;
+            if(resultMap.get(d.getDictType())!=null){
+                list=resultMap.get(d.getDictType());
+            }else{
+                list = new ArrayList<SysDictData>();
+            }
+            list.add(d);
+            resultMap.put(d.getDictType(),list);
+        }
+
+        return resultMap;
     }
 }

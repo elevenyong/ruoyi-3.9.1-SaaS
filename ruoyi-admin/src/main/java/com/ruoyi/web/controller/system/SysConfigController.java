@@ -2,6 +2,9 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.constant.UserConstants;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -78,17 +81,33 @@ public class SysConfigController extends BaseController
     /**
      * 新增参数配置
      */
-    @PreAuthorize("@ss.hasPermi('system:config:add')")
+    //@PreAuthorize("@ss.hasPermi('system:config:add')")
     @Log(title = "参数管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody SysConfig config)
-    {
-        if (!configService.checkConfigKeyUnique(config))
-        {
-            return error("新增参数'" + config.getConfigName() + "'失败，参数键名已存在");
+    public AjaxResult add(@Validated @RequestBody SysConfig config) {
+        if (UserConstants.NOT_UNIQUE.equals(configService.checkConfigKeyUnique(config))) {
+            return AjaxResult.error("新增参数'" + config.getConfigName() + "'失败，参数键名已存在");
         }
         config.setCreateBy(getUsername());
         return toAjax(configService.insertConfig(config));
+    }
+
+    /**
+     * 修改参数配置
+     */
+    @ApiOperation("修改参数配置")
+    //@PreAuthorize("@ss.hasPermi('system:config:edit')")
+    @Log(title = "参数管理", businessType = BusinessType.UPDATE)
+    @PutMapping("/editValue")
+    public AjaxResult editValue(@RequestBody SysConfig config) {
+        SysConfig sysConfig = configService.selectConfigByConfigKey(config.getConfigKey());
+        if (sysConfig != null) {
+            sysConfig.setConfigValue(config.getConfigValue());
+            sysConfig.setUpdateBy(getUsername());
+            return toAjax(configService.updateConfig(sysConfig));
+        } else {
+            return AjaxResult.error("修改失败，修改数据为null");
+        }
     }
 
     /**
@@ -99,7 +118,7 @@ public class SysConfigController extends BaseController
     @PutMapping
     public AjaxResult edit(@Validated @RequestBody SysConfig config)
     {
-        if (!configService.checkConfigKeyUnique(config))
+        if (!configService.checkConfigKeyUnique(config).equals("0"))
         {
             return error("修改参数'" + config.getConfigName() + "'失败，参数键名已存在");
         }

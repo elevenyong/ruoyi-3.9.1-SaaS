@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.business.mapper.TSensorDataMapper">
+
+<!--    <resultMap type="TSensorData" id="TSensorDataResult">-->
+<!--        <result property="id"    column="id"    />-->
+<!--        <result property="sensorinfoid"    column="sensorInfoid"    />-->
+<!--        <result property="sensorcode"    column="sensor_code"    />-->
+<!--        <result property="pointname"    column="point_name"    />-->
+<!--        <result property="substationid"    column="sub_stationid"    />-->
+<!--        <result property="portno"    column="port_no"    />-->
+<!--        <result property="monitoringvalue"    column="monitoring_value"    />-->
+<!--        <result property="state"    column="state"    />-->
+<!--        <result property="maxvalue"    column="max_value"    />-->
+<!--        <result property="maxtime"    column="max_time"    />-->
+<!--        <result property="minvalue"    column="min_value"    />-->
+<!--        <result property="mintime"    column="min_time"    />-->
+<!--        <result property="sumvalue"    column="sum_value"    />-->
+<!--        <result property="sumcount"    column="sum_count"    />-->
+<!--        <result property="avgvalue"    column="avg_value"    />-->
+<!--        <result property="validtime"    column="valid_time"    />-->
+<!--        <result property="starttime"    column="start_time"    />-->
+<!--        <result property="endtime"    column="end_time"    />-->
+<!--        <result property="period"    column="period"    />-->
+<!--        <result property="createBy"    column="create_by"    />-->
+<!--        <result property="createTime"    column="create_time"    />-->
+<!--        <result property="updateBy"    column="update_by"    />-->
+<!--        <result property="updateTime"    column="update_time"    />-->
+<!--        <result property="remark"    column="remark"    />-->
+<!--    </resultMap>-->
+
+<!--    <sql id="selectTSensorDataVo">-->
+<!--        select id, sensorInfoid, sensor_code, point_name, sub_stationid, port_no, monitoring_value, state, max_value,-->
+<!--        max_time, min_value, min_time, sum_value, sum_count, avg_value, valid_time, start_time, end_time, period,-->
+<!--        create_by, create_time, update_by, update_time, remark from t_sensor_data-->
+<!--    </sql>-->
+
+<!--    <select id="selectTSensorDataList" parameterType="TSensorData" resultMap="TSensorDataResult">-->
+<!--        <include refid="selectTSensorDataVo"/>-->
+<!--        <where>-->
+<!--            <if test="id!=null and id!=0">and id=#{id}</if>-->
+<!--            <if test="sensorinfoid != null "> and sensorInfoid = #{sensorinfoid}</if>-->
+<!--            <if test="sensorcode != null  and sensorcode != ''"> and sensor_code = #{sensorcode}</if>-->
+<!--            <if test="pointname != null  and pointname != ''"> and point_name like concat('%', #{pointname}, '%')</if>-->
+<!--            <if test="substationid != null "> and sub_stationid = #{substationid}</if>-->
+<!--            <if test="portno != null "> and port_no = #{portno}</if>-->
+<!--            <if test="monitoringvalue != null "> and monitoring_value = #{monitoringvalue}</if>-->
+<!--            <if test="state != null "> and state = #{state}</if>-->
+<!--            <if test="maxvalue != null "> and max_value = #{maxvalue}</if>-->
+<!--            <if test="maxtime != null "> and max_time = #{maxtime}</if>-->
+<!--            <if test="minvalue != null "> and min_value = #{minvalue}</if>-->
+<!--            <if test="mintime != null "> and min_time = #{mintime}</if>-->
+<!--            <if test="sumvalue != null "> and sum_value = #{sumvalue}</if>-->
+<!--            <if test="sumcount != null "> and sum_count = #{sumcount}</if>-->
+<!--            <if test="avgvalue != null "> and avg_value = #{avgvalue}</if>-->
+<!--            <if test="validtime != null "> and valid_time = #{validtime}</if>-->
+<!--            <if test="starttime != null "> and start_time = #{starttime}</if>-->
+<!--            <if test="endtime != null "> and end_time = #{endtime}</if>-->
+<!--            <if test="period != null "> and period = #{period}</if>-->
+<!--        </where>-->
+<!--    </select>-->
+
+<!--    <select id="selectTSensorDataById" parameterType="Integer" resultMap="TSensorDataResult">-->
+<!--        <include refid="selectTSensorDataVo"/>-->
+<!--        where Id = #{id}-->
+<!--    </select>-->
+
+<!--    <insert id="insertTSensorData" parameterType="TSensorData" useGeneratedKeys="true" keyProperty="id">-->
+<!--        insert into t_sensor_data-->
+<!--        <trim prefix="(" suffix=")" suffixOverrides=",">-->
+<!--            <if test="sensorinfoid != null">sensorInfoid,</if>-->
+<!--            <if test="sensorcode != null">sensor_code,</if>-->
+<!--            <if test="pointname != null">point_name,</if>-->
+<!--            <if test="substationid != null">sub_stationid,</if>-->
+<!--            <if test="portno != null">port_no,</if>-->
+<!--            <if test="monitoringvalue != null">monitoring_value,</if>-->
+<!--            <if test="state != null">state,</if>-->
+<!--            <if test="maxvalue != null">max_value,</if>-->
+<!--            <if test="maxtime != null">max_time,</if>-->
+<!--            <if test="minvalue != null">min_value,</if>-->
+<!--            <if test="mintime != null">min_time,</if>-->
+<!--            <if test="sumvalue != null">sum_value,</if>-->
+<!--            <if test="sumcount != null">sum_count,</if>-->
+<!--            <if test="avgvalue != null">avg_value,</if>-->
+<!--            <if test="validtime != null">valid_time,</if>-->
+<!--            <if test="starttime != null">start_time,</if>-->
+<!--            <if test="endtime != null">end_time,</if>-->
+<!--            <if test="period != null">period,</if>-->
+<!--            <if test="createBy != null">create_by,</if>-->
+<!--            <if test="updateBy != null">update_by,</if>-->
+<!--            <if test="updateTime != null">update_time,</if>-->
+<!--            <if test="remark != null">remark,</if>-->
+<!--            create_time-->
+<!--        </trim>-->
+<!--        <trim prefix="values (" suffix=")" suffixOverrides=",">-->
+<!--            <if test="sensorinfoid != null">#{sensorinfoid},</if>-->
+<!--            <if test="sensorcode != null">#{sensorcode},</if>-->
+<!--            <if test="pointname != null">#{pointname},</if>-->
+<!--            <if test="substationid != null">#{substationid},</if>-->
+<!--            <if test="portno != null">#{portno},</if>-->
+<!--            <if test="monitoringvalue != null">#{monitoringvalue},</if>-->
+<!--            <if test="state != null">#{state},</if>-->
+<!--            <if test="maxvalue != null">#{maxvalue},</if>-->
+<!--            <if test="maxtime != null">#{maxtime},</if>-->
+<!--            <if test="minvalue != null">#{minvalue},</if>-->
+<!--            <if test="mintime != null">#{mintime},</if>-->
+<!--            <if test="sumvalue != null">#{sumvalue},</if>-->
+<!--            <if test="sumcount != null">#{sumcount},</if>-->
+<!--            <if test="avgvalue != null">#{avgvalue},</if>-->
+<!--            <if test="validtime != null">#{validtime},</if>-->
+<!--            <if test="starttime != null">#{starttime},</if>-->
+<!--            <if test="endtime != null">#{endtime},</if>-->
+<!--            <if test="period != null">#{period},</if>-->
+<!--            <if test="createBy != null">#{createBy},</if>-->
+<!--            <if test="updateBy != null">#{updateBy},</if>-->
+<!--            <if test="updateTime != null">#{updateTime},</if>-->
+<!--            <if test="remark != null">#{remark},</if>-->
+<!--            sysdate()-->
+<!--        </trim>-->
+<!--    </insert>-->
+
+<!--    <update id="updateTSensorData" parameterType="TSensorData">-->
+<!--        update t_sensor_data-->
+<!--        <trim prefix="SET" suffixOverrides=",">-->
+<!--            <if test="sensorinfoid != null">sensorInfoid = #{sensorinfoid},</if>-->
+<!--            <if test="sensorcode != null">sensor_code = #{sensorcode},</if>-->
+<!--            <if test="pointname != null">point_name = #{pointname},</if>-->
+<!--            <if test="substationid != null">sub_stationid = #{substationid},</if>-->
+<!--            <if test="portno != null">port_no = #{portno},</if>-->
+<!--            <if test="monitoringvalue != null">monitoring_value = #{monitoringvalue},</if>-->
+<!--            <if test="state != null">state = #{state},</if>-->
+<!--            <if test="maxvalue != null">max_value = #{maxvalue},</if>-->
+<!--            <if test="maxtime != null">max_time = #{maxtime},</if>-->
+<!--            <if test="minvalue != null">min_value = #{minvalue},</if>-->
+<!--            <if test="mintime != null">min_time = #{mintime},</if>-->
+<!--            <if test="sumvalue != null">sum_value = #{sumvalue},</if>-->
+<!--            <if test="sumcount != null">sum_count = #{sumcount},</if>-->
+<!--            <if test="avgvalue != null">avg_value = #{avgvalue},</if>-->
+<!--            <if test="validtime != null">valid_time = #{validtime},</if>-->
+<!--            <if test="starttime != null">start_time = #{starttime},</if>-->
+<!--            <if test="endtime != null">end_time = #{endtime},</if>-->
+<!--            <if test="period != null">period = #{period},</if>-->
+<!--            <if test="createBy != null">create_by = #{createBy},</if>-->
+<!--            <if test="createTime != null">create_time = #{createTime},</if>-->
+<!--            <if test="updateBy != null">update_by = #{updateBy},</if>-->
+<!--            <if test="remark != null">remark = #{remark},</if>-->
+<!--            update_time = sysdate()-->
+<!--        </trim>-->
+<!--        where Id = #{id}-->
+<!--    </update>-->
+
+<!--    <delete id="deleteTSensorDataById" parameterType="Integer">-->
+<!--        delete from t_sensor_data where id = #{id}-->
+<!--    </delete>-->
+
+<!--    <delete id="deleteTSensorDataByIds" parameterType="String">-->
+<!--        delete from t_sensor_data where id in-->
+<!--        <foreach item="id" collection="array" open="(" separator="," close=")">-->
+<!--            #{id}-->
+<!--        </foreach>-->
+<!--    </delete>-->
+<!--    &lt;!&ndash;分页查询传感器数据&ndash;&gt;-->
+<!--    <select id="getPageList" resultType="com.ruoyi.quartz.business.domain.TSensorData">-->
+<!--        <include refid="selectTSensorDataVo"/>-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash;根据传感器信息ID删除传感器数据&ndash;&gt;-->
+<!--&lt;!&ndash;    <delete id="delBySensorInfoId" parameterType="java.lang.Integer">&ndash;&gt;-->
+<!--&lt;!&ndash;        delete  from t_sensor_data where SensorInfoId=#{sensorInfoId}&ndash;&gt;-->
+<!--&lt;!&ndash;    </delete>&ndash;&gt;-->
+<!--    <delete id="delBySensorInfoIds" parameterType="java.util.List">-->
+<!--        delete from t_sensor_data where sensorInfoid in-->
+<!--        <foreach item="sensorInfoIds" collection="list" open="(" separator="," close=")">-->
+<!--            #{sensorInfoIds}-->
+<!--        </foreach>-->
+<!--    </delete>-->
+<!--    &lt;!&ndash;根据测点ID查询瓦斯抽采日报表&ndash;&gt;-->
+<!--    <select id="getDailySheetByMeasurePointId" resultType="com.ruoyi.quartz.business.domain.TSensorData" >-->
+<!--        SELECT w.working_face_name,r.roadway,u.unit_name,m.measuring_point_name,-->
+<!--        t.kind,i.sensor_typeid,-->
+<!--        d.* from-->
+<!--        t_sensor_data d-->
+<!--        LEFT JOIN t_sensor_info i ON d.sensorInfoid=i.id-->
+<!--        LEFT JOIN t_sensor_type t ON i.sensor_typeid=t.id-->
+<!--        LEFT JOIN t_measuring_point m ON i.measure_pointid=m.id-->
+<!--        LEFT JOIN t_roadway r ON m.roadwayid=r.id-->
+<!--        LEFT JOIN t_drainage_unit u ON m.drainage_unitid=u.id-->
+<!--        LEFT JOIN t_working_face w ON r.workfaceid=w.id-->
+<!--        WHERE DATE_FORMAT(start_time,'%Y-%m-%d') = DATE_FORMAT(#{date},'%Y-%m-%d')-->
+<!--        AND m.id =#{measurePointId}-->
+<!--    </select>-->
+<!--    &lt;!&ndash;根据测点ID查询指定时间内的瓦斯抽采报表&ndash;&gt;-->
+<!--    <select id="getGasSheetDays" resultType="com.ruoyi.quartz.business.domain.TSensorData">-->
+<!--        SELECT w.working_face_name,r.roadway,u.unit_name,m.measuring_point_name,-->
+<!--        t.kind,i.sensor_typeid,-->
+<!--        d.* from-->
+<!--        t_sensor_data d-->
+<!--        LEFT JOIN t_sensor_info i ON d.sensorInfoid=i.id-->
+<!--        LEFT JOIN t_sensor_type t ON i.sensor_typeid=t.id-->
+<!--        LEFT JOIN t_measuring_point m ON i.measure_pointid=m.id-->
+<!--        LEFT JOIN t_roadway r ON m.roadwayid=r.id-->
+<!--        LEFT JOIN t_drainage_unit u ON m.drainage_unitid=u.id-->
+<!--        LEFT JOIN t_working_face w ON r.workfaceid=w.id-->
+<!--        WHERE DATE_FORMAT(start_time,'%Y-%m-%d') between DATE_FORMAT(#{startDate},'%Y-%m-%d') and DATE_FORMAT(#{endDate},'%Y-%m-%d')-->
+<!--       AND m.id =#{measurePointId}-->
+<!--        GROUP BY  t.unit_name,m.id-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash;根据测点ID查询瓦斯抽采月报表&ndash;&gt;-->
+<!--    <select id="getGasSheetMonth" resultType="com.ruoyi.quartz.business.domain.TSensorData">-->
+<!--        SELECT w.working_face_name,r.roadway,u.unit_name,m.measuring_point_name,-->
+<!--        t.kind,i.sensor_typeid,-->
+<!--        d.* from-->
+<!--        t_sensor_data d-->
+<!--        LEFT JOIN t_sensor_info i ON d.sensorInfoid=i.id-->
+<!--        LEFT JOIN t_sensor_type t ON i.sensor_typeid=t.id-->
+<!--        LEFT JOIN t_measuring_point m ON i.measure_pointid=m.id-->
+<!--        LEFT JOIN t_roadway r ON m.roadwayid=r.id-->
+<!--        LEFT JOIN t_drainage_unit u ON m.drainage_unitid=u.id-->
+<!--        LEFT JOIN t_working_face w ON r.workfaceid=w.id-->
+<!--        WHERE DATE_FORMAT(start_time,'%Y-%m') = DATE_FORMAT(#{month},'%Y-%m')-->
+<!--        AND m.id =#{measurePointId}-->
+<!--        GROUP BY  t.unit_name,m.id-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash;根据测点ID查询瓦斯抽采年度报表&ndash;&gt;-->
+<!--    <select id="getGasSheetYear" resultType="com.ruoyi.quartz.business.domain.TSensorData">-->
+<!--        SELECT w.working_face_name,r.roadway,u.unit_name,m.measuring_point_name,-->
+<!--        t.kind,i.sensor_typeid,-->
+<!--        d.* from-->
+<!--        t_sensor_data d-->
+<!--        LEFT JOIN t_sensor_info i ON d.sensorInfoid=i.id-->
+<!--        LEFT JOIN t_sensor_type t ON i.sensor_typeid=t.id-->
+<!--        LEFT JOIN t_measuring_point m ON i.measure_pointid=m.id-->
+<!--        LEFT JOIN t_roadway r ON m.roadwayid=r.id-->
+<!--        LEFT JOIN t_drainage_unit u ON m.drainage_unitid=u.id-->
+<!--        LEFT JOIN t_working_face w ON r.workfaceid=w.id-->
+<!--        WHERE DATE_FORMAT(start_time,'%Y') = DATE_FORMAT(#{year},'%Y')-->
+<!--        AND m.id =#{measurePointId}-->
+<!--        GROUP BY  t.unit_name,m.id-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash;根据测点ID和类型ID查询传感器数据&ndash;&gt;-->
+<!--    <select id="getDataByMeasurePointAndSensorType" resultType="com.ruoyi.quartz.business.domain.TSensorData" >-->
+<!--        SELECT i.sensor_typeid,d. * from t_sensor_data d-->
+<!--        LEFT JOIN t_sensor_info i ON d.sensorInfoid =i.id-->
+<!--        LEFT JOIN t_sensor_type t ON i.sensor_typeid=t.id-->
+<!--        LEFT JOIN t_measuring_point m ON i.measure_pointid=m.id-->
+<!--        where m.id IN-->
+<!--        <foreach collection="measurepointids" index="index" item="item" open="(" separator="," close=")">-->
+<!--            #{item}-->
+<!--        </foreach>-->
+<!--        AND t.id IN-->
+<!--        <foreach collection="sensortypeids" index="index" item="item" open="(" separator="," close=")">-->
+<!--            #{item}-->
+<!--        </foreach>-->
+<!--        <if test="enddate!=null">-->
+<!--            and d.start_time BETWEEN #{startdate} and #{enddate}-->
+<!--        </if>-->
+<!--    </select>-->
+<!--    &lt;!&ndash; 根据测点统计级别和工作面ID来统计流量等信息（级别为1.工作面的：统计该类的测点，视为工作面的总流量）&ndash;&gt;-->
+<!--    <select id="getTotalFlowByMeasureLevel" resultType="com.ruoyi.quartz.business.domain.TSensorData" >-->
+<!--        SELECT w.working_face_name,r.roadway,i.sensor_typeid,d. * from t_sensor_data d-->
+<!--        LEFT JOIN t_sensor_info i ON d.sensorInfoid =i.id-->
+<!--        LEFT JOIN t_sensor_type t ON i.sensor_typeid=t.id-->
+<!--        LEFT JOIN t_measuring_point m ON i.measure_pointid=m.id-->
+<!--        LEFT JOIN t_roadway r ON m.roadwayid=r.id-->
+<!--        LEFT JOIN t_working_face w ON r.workfaceid=w.id-->
+<!--        where m.measuring_point_level_id = #{measurePointLevelId}-->
+<!--        and w.id=#{workingFaceId}-->
+<!--        AND t.id IN-->
+<!--        <foreach collection="sensortypeids" index="index" item="item" open="(" separator="," close=")">-->
+<!--            #{item}-->
+<!--        </foreach>-->
+<!--        <if test="startdate!=null and enddate!=null">-->
+<!--            and d.start_time BETWEEN #{startdate} and #{enddate}-->
+<!--        </if>-->
+<!--    </select>-->
+<!--    &lt;!&ndash;根据工作面ID和抽采单元ID查询时间段内的流量信息&ndash;&gt;-->
+<!--    <select id="getFlowByWorkFaceIdDUnitId" resultType="com.ruoyi.quartz.business.domain.TSensorData">-->
+<!--        SELECT w.working_face_name,r.roadway,i.sensor_typeid,d.* from t_sensor_data d-->
+<!--        LEFT JOIN t_sensor_info i ON d.sensorInfoid =i.id-->
+<!--        LEFT JOIN t_sensor_type t ON i.sensor_typeid=t.id-->
+<!--        LEFT JOIN t_measuring_point m ON i.measure_pointid=m.id-->
+<!--        LEFT JOIN t_roadway r ON m.roadwayid=r.id-->
+<!--        LEFT JOIN t_working_face w ON r.workfaceid=w.id-->
+<!--        LEFT JOIN t_drainage_unit u ON m.drainage_unitid=u.id-->
+<!--        where-->
+<!--        w.id= #{workFaceId}-->
+<!--        and-->
+<!--        u.id= #{drainageUnitId}-->
+<!--        AND t.id IN-->
+<!--        <foreach collection="sensortypeids" index="index" item="item" open="(" separator="," close=")">-->
+<!--            #{item}-->
+<!--        </foreach>-->
+<!--        <if test="startdate!=null and enddate!=null">-->
+<!--            and d.start_time BETWEEN #{startdate} and #{enddate}-->
+<!--        </if>-->
+<!--    </select>-->
+<!--    &lt;!&ndash;根据测点ID查询该测点的抽采量&ndash;&gt;-->
+<!--    <select id="getExtractionDataByMeasurePoint"  resultType="com.ruoyi.quartz.business.domain.TSensorData">-->
+<!--        select i.sensor_typeid,s.* FROM-->
+<!--        t_sensor_data s-->
+<!--        LEFT JOIN t_sensor_info i ON s.sensor_code=i.sensor_code-->
+<!--        LEFT JOIN t_measuring_point m ON i.measure_pointid=m.id-->
+<!--        where-->
+<!--        m.id=#{measurPointId}-->
+<!--        AND i.sensor_typeid IN-->
+<!--        <foreach collection="sensortypeids" index="index" item="item" open="(" separator="," close=")">-->
+<!--            #{item}-->
+<!--        </foreach>-->
+<!--        <if test="startdate!=null and enddate!=null">-->
+<!--            and s.start_time BETWEEN #{startdate} and #{enddate}-->
+<!--        </if>-->
+<!--    </select>-->
+
+<!--    <select id="getByInTime" resultType="com.ruoyi.quartz.business.domain.TSensorData">-->
+<!--        select * from t_sensor_data where start_time between #{startTime} and #{endTime}-->
+<!--    </select>-->
+    <resultMap type="TSensorData" id="TSensorDataResult">
+        <result property="id"    column="id"    />
+        <result property="sensorCode"    column="sensor_code"    />
+        <result property="sensorTypeName"    column="sensor_type_name"    />
+        <result property="measurePointLocal"    column="measure_point_local"    />
+        <result property="unitName"    column="unit_name"    />
+        <result property="startTime"    column="start_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="maxValue"    column="max_value"    />
+        <result property="maxTime"    column="max_time"    />
+        <result property="minValue"    column="min_value"    />
+        <result property="minTime"    column="min_time"    />
+        <result property="avgValue"    column="avg_value"    />
+        <result property="time"    column="time"    />
+        <result property="period"    column="period"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTSensorDataVo">
+        select id, sensor_code, sensor_type_name, measure_point_local, unit_name, start_time, end_time, max_value, max_time, min_value, min_time, avg_value, time, period, create_by, create_time, update_by, update_time, remark from t_sensor_data
+    </sql>
+
+    <select id="selectTSensorDataList" parameterType="TSensorData" resultMap="TSensorDataResult">
+        <include refid="selectTSensorDataVo"/>
+        <where>
+            <if test="sensorCode != null  and sensorCode != ''"> and sensor_code = #{sensorCode}</if>
+            <if test="sensorTypeName != null  and sensorTypeName != ''"> and sensor_type_name like concat('%', #{sensorTypeName}, '%')</if>
+            <if test="measurePointLocal != null "> and measure_point_local = #{measurePointLocal}</if>
+            <if test="unitName != null  and unitName != ''"> and unit_name like concat('%', #{unitName}, '%')</if>
+            <if test="startTime != null "> and start_time = #{startTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="maxValue != null "> and max_value = #{maxValue}</if>
+            <if test="maxTime != null "> and max_time = #{maxTime}</if>
+            <if test="minValue != null "> and min_value = #{minValue}</if>
+            <if test="minTime != null "> and min_time = #{minTime}</if>
+            <if test="avgValue != null "> and avg_value = #{avgValue}</if>
+            <if test="time != null "> and time = #{time}</if>
+            <if test="period != null "> and period = #{period}</if>
+        </where>
+    </select>
+
+    <select id="selectTSensorDataById" parameterType="Integer" resultMap="TSensorDataResult">
+        <include refid="selectTSensorDataVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTSensorData" parameterType="TSensorData" useGeneratedKeys="true" keyProperty="id">
+        insert into t_sensor_data
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sensorCode != null">sensor_code,</if>
+            <if test="sensorTypeName != null">sensor_type_name,</if>
+            <if test="measurePointLocal != null">measure_point_local,</if>
+            <if test="unitName != null">unit_name,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="maxValue != null">max_value,</if>
+            <if test="maxTime != null">max_time,</if>
+            <if test="minValue != null">min_value,</if>
+            <if test="minTime != null">min_time,</if>
+            <if test="avgValue != null">avg_value,</if>
+            <if test="time != null">time,</if>
+            <if test="period != null">period,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sensorCode != null">#{sensorCode},</if>
+            <if test="sensorTypeName != null">#{sensorTypeName},</if>
+            <if test="measurePointLocal != null">#{measurePointLocal},</if>
+            <if test="unitName != null">#{unitName},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="maxValue != null">#{maxValue},</if>
+            <if test="maxTime != null">#{maxTime},</if>
+            <if test="minValue != null">#{minValue},</if>
+            <if test="minTime != null">#{minTime},</if>
+            <if test="avgValue != null">#{avgValue},</if>
+            <if test="time != null">#{time},</if>
+            <if test="period != null">#{period},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTSensorData" parameterType="TSensorData">
+        update t_sensor_data
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sensorCode != null">sensor_code = #{sensorCode},</if>
+            <if test="sensorTypeName != null">sensor_type_name = #{sensorTypeName},</if>
+            <if test="measurePointLocal != null">measure_point_local = #{measurePointLocal},</if>
+            <if test="unitName != null">unit_name = #{unitName},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="maxValue != null">max_value = #{maxValue},</if>
+            <if test="maxTime != null">max_time = #{maxTime},</if>
+            <if test="minValue != null">min_value = #{minValue},</if>
+            <if test="minTime != null">min_time = #{minTime},</if>
+            <if test="avgValue != null">avg_value = #{avgValue},</if>
+            <if test="time != null">time = #{time},</if>
+            <if test="period != null">period = #{period},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTSensorDataById" parameterType="Integer">
+        delete from t_sensor_data where id = #{id}
+    </delete>
+
+    <delete id="deleteTSensorDataByIds" parameterType="String">
+        delete from t_sensor_data where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

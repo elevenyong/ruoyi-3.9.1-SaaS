@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TWarningActionsMapper">
+
+    <resultMap type="TWarningActions" id="TWarningActionsResult">
+        <result property="id" column="id"/>
+        <result property="type" column="type"/>
+        <result property="action" column="action"/>
+    </resultMap>
+
+    <sql id="selectTWarningActionsVo">
+        select id, type, action
+        from t_warning_actions
+    </sql>
+
+    <select id="selectTWarningActionsList" parameterType="TWarningActions" resultMap="TWarningActionsResult">
+        <include refid="selectTWarningActionsVo"/>
+        <where>
+            <if test="type != null ">and type = #{type}</if>
+            <if test="action != null  and action != ''">and action = #{action}</if>
+        </where>
+    </select>
+
+    <select id="selectTWarningActionsById" parameterType="Integer" resultMap="TWarningActionsResult">
+        <include refid="selectTWarningActionsVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTWarningActions" parameterType="TWarningActions" useGeneratedKeys="true" keyProperty="id">
+        insert into t_warning_actions
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="type != null">type,</if>
+            <if test="action != null">action,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="type != null">#{type},</if>
+            <if test="action != null">#{action},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTWarningActions" parameterType="TWarningActions">
+        update t_warning_actions
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">type = #{type},</if>
+            <if test="action != null">action = #{action},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTWarningActionsById" parameterType="Integer">
+        delete
+        from t_warning_actions
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTWarningActionsByIds" parameterType="String">
+        delete from t_warning_actions where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

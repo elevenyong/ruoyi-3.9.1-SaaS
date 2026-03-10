@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TDirectedholeTrackMapper">
+    
+    <resultMap type="TDirectedholeTrack" id="TDirectedholeTrackResult">
+        <result property="id"    column="id"    />
+        <result property="directedHoleId"    column="directed_hole_id"    />
+        <result property="holeDepth"    column="hole_depth"    />
+        <result property="azimuthAngle"    column="azimuth_angle"    />
+        <result property="inclinationAngle"    column="inclination_angle"    />
+        <result property="deviation"    column="deviation"    />
+        <result property="projectionDepth"    column="projection_depth"    />
+        <result property="leftRightDeviation"    column="left_right_deviation"    />
+        <result property="upDownDeviation"    column="up_down_deviation"    />
+        <result property="eastDeviation"    column="east_deviation"    />
+        <result property="westDeviation"    column="west_deviation"    />
+        <result property="elevation"    column="elevation"    />
+    </resultMap>
+
+    <sql id="selectTDirectedholeTrackVo">
+        select id, directed_hole_id, hole_depth, azimuth_angle, inclination_angle, deviation, projection_depth, left_right_deviation, up_down_deviation, east_deviation, west_deviation, elevation from t_directedhole_track
+    </sql>
+
+    <select id="selectTDirectedholeTrackList" parameterType="TDirectedholeTrack" resultMap="TDirectedholeTrackResult">
+        <include refid="selectTDirectedholeTrackVo"/>
+        <where>
+            <if test="id != null and id != 0"> and id = #{id}</if>
+            <if test="directedHoleId != null and directedHoleId != 0 "> and directed_hole_id = #{directedHoleId}</if>
+            <if test="holeDepth != null "> and hole_depth = #{holeDepth}</if>
+            <if test="azimuthAngle != null "> and azimuth_angle = #{azimuthAngle}</if>
+            <if test="inclinationAngle != null "> and inclination_angle = #{inclinationAngle}</if>
+            <if test="deviation != null "> and deviation = #{deviation}</if>
+            <if test="projectionDepth != null "> and projection_depth = #{projectionDepth}</if>
+            <if test="leftRightDeviation != null "> and left_right_deviation = #{leftRightDeviation}</if>
+            <if test="upDownDeviation != null "> and up_down_deviation = #{upDownDeviation}</if>
+            <if test="eastDeviation != null "> and east_deviation = #{eastDeviation}</if>
+            <if test="westDeviation != null "> and west_deviation = #{westDeviation}</if>
+            <if test="elevation != null "> and elevation = #{elevation}</if>
+        </where>
+    </select>
+    
+    <select id="selectTDirectedholeTrackById" parameterType="Integer" resultMap="TDirectedholeTrackResult">
+        <include refid="selectTDirectedholeTrackVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTDirectedholeTrack" parameterType="TDirectedholeTrack" useGeneratedKeys="true" keyProperty="id">
+        insert into t_directedhole_track
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="directedHoleId != null and directedHoleId != 0">directed_hole_id,</if>
+            <if test="holeDepth != null">hole_depth,</if>
+            <if test="azimuthAngle != null">azimuth_angle,</if>
+            <if test="inclinationAngle != null">inclination_angle,</if>
+            <if test="deviation != null">deviation,</if>
+            <if test="projectionDepth != null">projection_depth,</if>
+            <if test="leftRightDeviation != null">left_right_deviation,</if>
+            <if test="upDownDeviation != null">up_down_deviation,</if>
+            <if test="eastDeviation != null">east_deviation,</if>
+            <if test="westDeviation != null">west_deviation,</if>
+            <if test="elevation != null">elevation,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="directedHoleId != null and directedHoleId != 0">#{directedHoleId},</if>
+            <if test="holeDepth != null">#{holeDepth},</if>
+            <if test="azimuthAngle != null">#{azimuthAngle},</if>
+            <if test="inclinationAngle != null">#{inclinationAngle},</if>
+            <if test="deviation != null">#{deviation},</if>
+            <if test="projectionDepth != null">#{projectionDepth},</if>
+            <if test="leftRightDeviation != null">#{leftRightDeviation},</if>
+            <if test="upDownDeviation != null">#{upDownDeviation},</if>
+            <if test="eastDeviation != null">#{eastDeviation},</if>
+            <if test="westDeviation != null">#{westDeviation},</if>
+            <if test="elevation != null">#{elevation},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTDirectedholeTrack" parameterType="TDirectedholeTrack">
+        update t_directedhole_track
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="directedHoleId != null and directedHoleId != 0">directed_hole_id = #{directedHoleId},</if>
+            <if test="holeDepth != null">hole_depth = #{holeDepth},</if>
+            <if test="azimuthAngle != null">azimuth_angle = #{azimuthAngle},</if>
+            <if test="inclinationAngle != null">inclination_angle = #{inclinationAngle},</if>
+            <if test="deviation != null">deviation = #{deviation},</if>
+            <if test="projectionDepth != null">projection_depth = #{projectionDepth},</if>
+            <if test="leftRightDeviation != null">left_right_deviation = #{leftRightDeviation},</if>
+            <if test="upDownDeviation != null">up_down_deviation = #{upDownDeviation},</if>
+            <if test="eastDeviation != null">east_deviation = #{eastDeviation},</if>
+            <if test="westDeviation != null">west_deviation = #{westDeviation},</if>
+            <if test="elevation != null">elevation = #{elevation},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTDirectedholeTrackById" parameterType="Integer">
+        delete from t_directedhole_track where id = #{id}
+    </delete>
+
+    <delete id="deleteTDirectedholeTrackByIds" parameterType="String">
+        delete from t_directedhole_track where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

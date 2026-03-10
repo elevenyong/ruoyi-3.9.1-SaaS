@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TRocktypeMapper">
+
+    <resultMap type="TRocktype" id="TRocktypeResult">
+        <result property="id" column="id"/>
+        <result property="rockType" column="rock_type"/>
+        <result property="rockDesc" column="rock_desc"/>
+        <result property="color" column="color"/>
+    </resultMap>
+
+    <sql id="selectTRocktypeVo">
+        select id, rock_type, rock_desc, color
+        from t_geo_rocktype
+    </sql>
+
+    <select id="selectTRocktypeList" parameterType="TRocktype" resultMap="TRocktypeResult">
+        <include refid="selectTRocktypeVo"/>
+        <where>
+            <if test="rockType != null  and rockType != ''">and rock_type = #{rockType}</if>
+            <if test="rockDesc != null  and rockDesc != ''">and rock_desc = #{rockDesc}</if>
+            <if test="color != null  and color != ''">and color = #{color}</if>
+        </where>
+    </select>
+
+    <select id="selectTRocktypeById" parameterType="Integer" resultMap="TRocktypeResult">
+        <include refid="selectTRocktypeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTRocktype" parameterType="TRocktype" useGeneratedKeys="true" keyProperty="id">
+        insert into t_geo_rocktype
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="rockType != null">rock_type,</if>
+            <if test="rockDesc != null">rock_desc,</if>
+            <if test="color != null">color,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="rockType != null">#{rockType},</if>
+            <if test="rockDesc != null">#{rockDesc},</if>
+            <if test="color != null">#{color},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTRocktype" parameterType="TRocktype">
+        update t_geo_rocktype
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="rockType != null">rock_type = #{rockType},</if>
+            <if test="rockDesc != null">rock_desc = #{rockDesc},</if>
+            <if test="color != null">color = #{color},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTRocktypeById" parameterType="Integer">
+        delete
+        from t_geo_rocktype
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTRocktypeByIds" parameterType="String">
+        delete from t_geo_rocktype where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

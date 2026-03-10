@@ -12,15 +12,6 @@
         </el-form-item>
       </el-col>
       <el-col :span="12">
-        <el-form-item prop="tplWebType">
-          <span slot="label">前端类型</span>
-          <el-select v-model="info.tplWebType">
-            <el-option label="Vue2 Element UI 模版" value="element-ui" />
-            <el-option label="Vue3 Element Plus 模版" value="element-plus" />
-          </el-select>
-        </el-form-item>
-      </el-col>
-      <el-col :span="12">
         <el-form-item prop="packageName">
           <span slot="label">
             生成包路径
@@ -69,19 +60,6 @@
       </el-col>
 
       <el-col :span="12">
-        <el-form-item prop="genType">
-          <span slot="label">
-            生成代码方式
-            <el-tooltip content="默认为zip压缩包下载，也可以自定义生成路径" placement="top">
-              <i class="el-icon-question"></i>
-            </el-tooltip>
-          </span>
-          <el-radio v-model="info.genType" label="0">zip压缩包</el-radio>
-          <el-radio v-model="info.genType" label="1">自定义路径</el-radio>
-        </el-form-item>
-      </el-col>
-
-      <el-col :span="12">
         <el-form-item>
           <span slot="label">
             上级菜单
@@ -97,6 +75,19 @@
             :show-count="true"
             placeholder="请选择系统菜单"
           />
+        </el-form-item>
+      </el-col>
+
+      <el-col :span="12">
+        <el-form-item prop="genType">
+          <span slot="label">
+            生成代码方式
+            <el-tooltip content="默认为zip压缩包下载，也可以自定义生成路径" placement="top">
+              <i class="el-icon-question"></i>
+            </el-tooltip>
+          </span>
+          <el-radio v-model="info.genType" label="0">zip压缩包</el-radio>
+          <el-radio v-model="info.genType" label="1">自定义路径</el-radio>
         </el-form-item>
       </el-col>
 
@@ -223,8 +214,8 @@
 </template>
 
 <script>
-import Treeselect from "@riophae/vue-treeselect"
-import "@riophae/vue-treeselect/dist/vue-treeselect.css"
+import Treeselect from "@riophae/vue-treeselect";
+import "@riophae/vue-treeselect/dist/vue-treeselect.css";
 
 export default {
   components: { Treeselect },
@@ -240,7 +231,7 @@ export default {
     menus: {
       type: Array,
       default: []
-    }
+    },
   },
   data() {
     return {
@@ -260,53 +251,49 @@ export default {
         ],
         functionName: [
           { required: true, message: "请输入生成功能名", trigger: "blur" }
-        ]
+        ],
       }
-    }
+    };
   },
+  created() {},
   watch: {
     'info.subTableName': function(val) {
-      this.setSubTableColumns(val)
-    },
-    'info.tplWebType': function(val) {
-      if (val === '') {
-        this.info.tplWebType = "element-ui"
-      }
+      this.setSubTableColumns(val);
     }
   },
   methods: {
     /** 转换菜单数据结构 */
     normalizer(node) {
       if (node.children && !node.children.length) {
-        delete node.children
+        delete node.children;
       }
       return {
         id: node.menuId,
         label: node.menuName,
         children: node.children
-      }
+      };
     },
     /** 选择子表名触发 */
     subSelectChange(value) {
-      this.info.subTableFkName = ''
+      this.info.subTableFkName = '';
     },
     /** 选择生成模板触发 */
     tplSelectChange(value) {
       if(value !== 'sub') {
-        this.info.subTableName = ''
-        this.info.subTableFkName = ''
+        this.info.subTableName = '';
+        this.info.subTableFkName = '';
       }
     },
     /** 设置关联外键 */
     setSubTableColumns(value) {
       for (var item in this.tables) {
-        const name = this.tables[item].tableName
+        const name = this.tables[item].tableName;
         if (value === name) {
-          this.subColumns = this.tables[item].columns
-          break
+          this.subColumns = this.tables[item].columns;
+          break;
         }
       }
     }
   }
-}
+};
 </script>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.business.mapper.TStripedesignparameterMapper">
+
+    <resultMap type="TStripedesignparameter" id="TStripedesignparameterResult">
+        <result property="id"    column="id"    />
+        <result property="roadwayZoneId"    column="roadway_zone_id"    />
+        <result property="coalThick"    column="coal_thick"    />
+        <result property="dipAngle"    column="dip_angle"    />
+        <result property="diskerveRoadway"    column="diskerve_roadway"    />
+        <result property="wide"    column="wide"    />
+        <result property="high"    column="high"    />
+        <result property="extractionRadius"    column="extraction_radius"    />
+        <result property="disToProjection"    column="dis_to_projection"    />
+        <result property="extractionControlDis1"    column="extraction_control_dis1"    />
+        <result property="extractionControlDis2"    column="extraction_control_dis2"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTStripedesignparameterVo">
+               select id, roadway_zone_id, coal_thick, dip_angle, diskerve_roadway, wide, high, extraction_radius,
+               dis_to_projection, extraction_control_dis1, extraction_control_dis2, create_by, create_time,
+               update_by, update_time, remark from t_stripe_design_parameter
+
+    </sql>
+
+    <select id="selectTStripedesignparameterList" parameterType="TStripedesignparameter"
+            resultMap="TStripedesignparameterResult">
+        <include refid="selectTStripedesignparameterVo"/>
+        <where>
+            <if test="id!=null and id!=0">and id=#{id}</if>
+            <if test="roadwayZoneId != null and roadwayZoneId != 0 "> and roadway_zone_id = #{roadwayZoneId}</if>
+            <if test="coalThick != null "> and coal_thick = #{coalThick}</if>
+            <if test="dipAngle != null "> and dip_angle = #{dipAngle}</if>
+            <if test="diskerveRoadway != null "> and diskerve_roadway = #{diskerveRoadway}</if>
+            <if test="wide != null "> and wide = #{wide}</if>
+            <if test="high != null "> and high = #{high}</if>
+            <if test="extractionRadius != null "> and extraction_radius = #{extractionRadius}</if>
+            <if test="disToProjection != null "> and dis_to_projection = #{disToProjection}</if>
+            <if test="extractionControlDis1 != null "> and extraction_control_dis1 = #{extractionControlDis1}</if>
+            <if test="extractionControlDis2 != null "> and extraction_control_dis2 = #{extractionControlDis2}</if>
+        </where>
+    </select>
+
+    <select id="selectTStripedesignparameterById" parameterType="Long" resultMap="TStripedesignparameterResult">
+        <include refid="selectTStripedesignparameterVo"/>
+        where Id = #{id}
+    </select>
+
+    <insert id="insertTStripedesignparameter" parameterType="TStripedesignparameter" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into t_stripe_design_parameter
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roadwayZoneId != null and roadwayZoneId != 0">roadway_zone_id,</if>
+            <if test="coalThick != null">coal_thick,</if>
+            <if test="dipAngle != null">dip_angle,</if>
+            <if test="diskerveRoadway != null">diskerve_roadway,</if>
+            <if test="wide != null">wide,</if>
+            <if test="high != null">high,</if>
+            <if test="extractionRadius != null">extraction_radius,</if>
+            <if test="disToProjection != null">dis_to_projection,</if>
+            <if test="extractionControlDis1 != null">extraction_control_dis1,</if>
+            <if test="extractionControlDis2 != null">extraction_control_dis2,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roadwayZoneId != null and roadwayZoneId != 0">#{roadwayZoneId},</if>
+            <if test="coalThick != null">#{coalThick},</if>
+            <if test="dipAngle != null">#{dipAngle},</if>
+            <if test="diskerveRoadway != null">#{diskerveRoadway},</if>
+            <if test="wide != null">#{wide},</if>
+            <if test="high != null">#{high},</if>
+            <if test="extractionRadius != null">#{extractionRadius},</if>
+            <if test="disToProjection != null">#{disToProjection},</if>
+            <if test="extractionControlDis1 != null">#{extractionControlDis1},</if>
+            <if test="extractionControlDis2 != null">#{extractionControlDis2},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTStripedesignparameter" parameterType="TStripedesignparameter">
+        update t_stripe_design_parameter
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roadwayZoneId != null and roadwayZoneId != 0">roadway_zone_id = #{roadwayZoneId},</if>
+            <if test="coalThick != null">coal_thick = #{coalThick},</if>
+            <if test="dipAngle != null">dip_angle = #{dipAngle},</if>
+            <if test="diskerveRoadway != null">diskerve_roadway = #{diskerveRoadway},</if>
+            <if test="wide != null">wide = #{wide},</if>
+            <if test="high != null">high = #{high},</if>
+            <if test="extractionRadius != null">extraction_radius = #{extractionRadius},</if>
+            <if test="disToProjection != null">dis_to_projection = #{disToProjection},</if>
+            <if test="extractionControlDis1 != null">extraction_control_dis1 = #{extractionControlDis1},</if>
+            <if test="extractionControlDis2 != null">extraction_control_dis2 = #{extractionControlDis2},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where Id = #{id}
+    </update>
+
+    <delete id="deleteTStripedesignparameterById" parameterType="java.lang.Integer">
+        delete from t_stripe_design_parameter where id = #{id}
+    </delete>
+
+    <delete id="deleteTStripedesignparameterByIds" parameterType="java.util.List">
+        delete from t_stripe_design_parameter where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--分页查询列表-->
+    <select id="getPageList" resultType="com.ruoyi.hh.business.domain.TStripedesignparameter">
+        SELECT s.*,z.id AS zoneid,z.roadway_id from t_stripe_design_parameter s LEFT JOIN t_roadway_zone z on
+        s.roadway_zone_id=z.Id
+    </select>
+
+    <!--根据区段ID删除条带直接设计信息-->
+    <delete id="delByRoadWayZoneIds" parameterType="java.util.List">
+        delete from t_stripe_design_parameter where roadway_zone_id in
+        <foreach item="roadWayZoneIds" collection="list" open="(" separator="," close=")">
+            #{roadWayZoneIds}
+        </foreach>
+    </delete>
+    <delete id="delByRoadWayZoneId" parameterType="java.lang.Integer">
+        delete from t_stripe_design_parameter where roadway_zone_id =#{roadWayZoneId}
+    </delete>
+</mapper>

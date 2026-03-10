@@ -8,7 +8,7 @@
           </div>
           <div>
             <div class="text-center">
-              <userAvatar />
+              <userAvatar :user="user" />
             </div>
             <ul class="list-group list-group-striped">
               <li class="list-group-item">
@@ -44,12 +44,12 @@
           <div slot="header" class="clearfix">
             <span>基本资料</span>
           </div>
-          <el-tabs v-model="selectedTab">
+          <el-tabs v-model="activeTab">
             <el-tab-pane label="基本资料" name="userinfo">
               <userInfo :user="user" />
             </el-tab-pane>
             <el-tab-pane label="修改密码" name="resetPwd">
-              <resetPwd />
+              <resetPwd :user="user" />
             </el-tab-pane>
           </el-tabs>
         </el-card>
@@ -59,10 +59,10 @@
 </template>
 
 <script>
-import userAvatar from "./userAvatar"
-import userInfo from "./userInfo"
-import resetPwd from "./resetPwd"
-import { getUserProfile } from "@/api/system/user"
+import userAvatar from "./userAvatar";
+import userInfo from "./userInfo";
+import resetPwd from "./resetPwd";
+import { getUserProfile } from "@/api/system/user";
 
 export default {
   name: "Profile",
@@ -72,24 +72,20 @@ export default {
       user: {},
       roleGroup: {},
       postGroup: {},
-      selectedTab: "userinfo"
-    }
+      activeTab: "userinfo"
+    };
   },
   created() {
-    const activeTab = this.$route.params && this.$route.params.activeTab
-    if (activeTab) {
-      this.selectedTab = activeTab
-    }
-    this.getUser()
+    this.getUser();
   },
   methods: {
     getUser() {
       getUserProfile().then(response => {
-        this.user = response.data
-        this.roleGroup = response.roleGroup
-        this.postGroup = response.postGroup
-      })
+        this.user = response.data;
+        this.roleGroup = response.roleGroup;
+        this.postGroup = response.postGroup;
+      });
     }
   }
-}
+};
 </script>

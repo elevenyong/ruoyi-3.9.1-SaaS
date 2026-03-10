@@ -84,12 +84,20 @@ public interface ISysDeptService
     public boolean checkDeptExistUser(Long deptId);
 
     /**
+     * 查询部门是否存在岗位
+     *
+     * @param deptId
+     * @return
+     */
+    public boolean checkDeptExistPost(Long deptId);
+
+    /**
      * 校验部门名称是否唯一
      * 
      * @param dept 部门信息
      * @return 结果
      */
-    public boolean checkDeptNameUnique(SysDept dept);
+    public String checkDeptNameUnique(SysDept dept);
 
     /**
      * 校验部门是否有数据权限

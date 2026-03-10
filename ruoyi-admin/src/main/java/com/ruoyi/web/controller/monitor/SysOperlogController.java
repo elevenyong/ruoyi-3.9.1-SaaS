@@ -1,7 +1,11 @@
 package com.ruoyi.web.controller.monitor;
 
+import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.tenant.TenantContextHolder;
+import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,9 +39,30 @@ public class SysOperlogController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysOperLog operLog)
     {
+        // === 多租户隔离：租户侧只能看本租户日志；平台可看全部 ===
+        Long tenantId = null;
+        try {
+            if (SecurityUtils.getLoginUser() != null && SecurityUtils.getLoginUser().getUser() != null) {
+                tenantId = SecurityUtils.getLoginUser().getUser().getTenantId();
+            }
+        } catch (Exception ignore) {}
+        if (tenantId == null) {
+            tenantId = TenantContextHolder.getTenantId();
+        }
+        // platformTenantId 的判定：你一般是 default=1（按你系统实际修改）
+        boolean isPlatform = (tenantId != null && tenantId == 1L);
+        if (!isPlatform) {
+            operLog.setTenantId(tenantId);
+        }
         startPage();
         List<SysOperLog> list = operLogService.selectOperLogList(operLog);
         return getDataTable(list);
+    }
+
+    @GetMapping("/countInfo")
+    public AjaxResult getCountInfo() {
+        List<HashMap<String, String>> hashMaps = operLogService.selectOperLogCount();
+        return AjaxResult.success(hashMaps);
     }
 
     @Log(title = "操作日志", businessType = BusinessType.EXPORT)

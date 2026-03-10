@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TActDirectionalBoreholeMapper">
+
+    <resultMap type="TActDirectionalBorehole" id="TActDirectionalBoreholeResult">
+        <result property="id"    column="id"    />
+        <result property="roadwayId"    column="roadway_id"    />
+        <result property="groupNo"    column="group_no"    />
+        <result property="boreholeNo"    column="borehole_no"    />
+        <result property="boreholeCode"    column="borehole_code"    />
+        <result property="isUsedCreateCoal"    column="is_used_create_coal"    />
+        <result property="categoryCode"    column="category_code"    />
+        <result property="navigationPointId"    column="navigation_point_id"    />
+        <result property="holeAltitude"    column="hole_altitude"    />
+        <result property="distanceToNavigationPoint"    column="distance_to_navigation_point"    />
+        <result property="directionToNavigation"    column="direction_to_navigation"    />
+        <result property="distanceToCentrallineTunnel"    column="distance_to_centralline_tunnel"    />
+        <result property="topOrBottom"    column="top_or_bottom"    />
+        <result property="aperture"    column="aperture"    />
+        <result property="drillPipeLength"    column="drill_pipe_length"    />
+        <result property="endAzimuth"    column="end_azimuth"    />
+        <result property="endTilt"    column="end_tilt"    />
+        <result property="actualCoalAmountFlushed"    column="actual_coal_amount_flushed"    />
+        <result property="exceptionConstruction"    column="exception_construction"    />
+        <result property="terminalHoleDate"    column="terminal_hole_date"    />
+    </resultMap>
+
+    <sql id="selectTActDirectionalBoreholeVo">
+        select id, roadway_id, group_no, borehole_no, borehole_code,is_used_create_coal,category_code, navigation_point_id,hole_altitude, distance_to_navigation_point, direction_to_navigation, distance_to_centralline_tunnel, top_or_bottom, aperture, drill_pipe_length, end_azimuth, end_tilt,actual_coal_amount_flushed,exception_construction,terminal_hole_date from t_act_directional_borehole
+    </sql>
+
+    <select id="selectTActDirectionalBoreholeList" parameterType="TActDirectionalBorehole" resultMap="TActDirectionalBoreholeResult">
+        <include refid="selectTActDirectionalBoreholeVo"/>
+        <where>
+            <if test="id != null and id !=0"> and id = #{id}</if>
+            <if test="roadwayId != null and roadwayId!=0"> and roadway_id = #{roadwayId}</if>
+            <if test="groupNo != null  and groupNo != ''"> and group_no = #{groupNo}</if>
+            <if test="boreholeNo != null and boreholeNo != ''"> and borehole_no = #{boreholeNo}</if>
+            <if test="boreholeCode != null  and boreholeCode != ''"> and borehole_code = #{boreholeCode}</if>
+            <if test="isUsedCreateCoal != null "> and is_used_create_coal = #{isUsedCreateCoal}</if>
+            <if test="categoryCode != null"> and category_code = #{categoryCode}</if>
+            <if test="navigationPointId != null and navigationPointId!=0"> and navigation_point_id = #{navigationPointId}</if>
+            <if test="holeAltitude != null and holeAltitude!=0"> and hole_altitude = #{holeAltitude}</if>
+            <if test="distanceToNavigationPoint != null and distanceToNavigationPoint!=0"> and distance_to_navigation_point = #{distanceToNavigationPoint}</if>
+            <if test="directionToNavigation != null  and directionToNavigation != ''"> and direction_to_navigation = #{directionToNavigation}</if>
+            <if test="distanceToCentrallineTunnel != null "> and distance_to_centralline_tunnel = #{distanceToCentrallineTunnel}</if>
+            <if test="topOrBottom != null "> and top_or_bottom = #{topOrBottom}</if>
+            <if test="aperture != null "> and aperture = #{aperture}</if>
+            <if test="drillPipeLength != null and drillPipeLength!=0"> and drill_pipe_length = #{drillPipeLength}</if>
+            <if test="endAzimuth != null "> and end_azimuth = #{endAzimuth}</if>
+            <if test="endTilt != null "> and end_tilt = #{endTilt}</if>
+            <if test="actualCoalAmountFlushed != null "> and actual_coal_amount_flushed = #{actualCoalAmountFlushed}</if>
+            <if test="exceptionConstruction != null "> and exception_construction = #{exceptionConstruction}</if>
+            <if test="terminalHoleDate != null "> and terminal_hole_date = #{terminalHoleDate}</if>
+        </where>
+    </select>
+
+    <select id="selectTActDirectionalBoreholeById" parameterType="Integer" resultMap="TActDirectionalBoreholeResult">
+        <include refid="selectTActDirectionalBoreholeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTActDirectionalBorehole" parameterType="TActDirectionalBorehole" useGeneratedKeys="true" keyProperty="id">
+        insert into t_act_directional_borehole
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">roadway_id,</if>
+            <if test="groupNo != null">group_no,</if>
+            <if test="boreholeNo != null">borehole_no,</if>
+            <if test="boreholeCode != null">borehole_code,</if>
+            <if test="isUsedCreateCoal != null">is_used_create_coal,</if>
+            <if test="categoryCode != null">category_code,</if>
+            <if test="navigationPointId != null and navigationPointId != 0">navigation_point_id,</if>
+            <if test="holeAltitude != null">hole_altitude,</if>
+            <if test="distanceToNavigationPoint != null">distance_to_navigation_point,</if>
+            <if test="directionToNavigation != null">direction_to_navigation,</if>
+            <if test="distanceToCentrallineTunnel != null">distance_to_centralline_tunnel,</if>
+            <if test="topOrBottom != null">top_or_bottom,</if>
+            <if test="aperture != null">aperture,</if>
+            <if test="drillPipeLength != null">drill_pipe_length,</if>
+            <if test="endAzimuth != null">end_azimuth,</if>
+            <if test="endTilt != null">end_tilt,</if>
+            <if test="actualCoalAmountFlushed != null">actual_coal_amount_flushed,</if>
+            <if test="exceptionConstruction != null">exception_construction,</if>
+            <if test="terminalHoleDate != null">terminal_hole_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">#{roadwayId},</if>
+            <if test="groupNo != null">#{groupNo},</if>
+            <if test="boreholeNo != null">#{boreholeNo},</if>
+            <if test="boreholeCode != null">#{boreholeCode},</if>
+            <if test="isUsedCreateCoal != null">#{isUsedCreateCoal},</if>
+            <if test="categoryCode != null">#{categoryCode},</if>
+            <if test="navigationPointId != null and navigationPointId != 0">#{navigationPointId},</if>
+            <if test="holeAltitude != null">#{holeAltitude},</if>
+            <if test="distanceToNavigationPoint != null">#{distanceToNavigationPoint},</if>
+            <if test="directionToNavigation != null">#{directionToNavigation},</if>
+            <if test="distanceToCentrallineTunnel != null">#{distanceToCentrallineTunnel},</if>
+            <if test="topOrBottom != null">#{topOrBottom},</if>
+            <if test="aperture != null">#{aperture},</if>
+            <if test="drillPipeLength != null">#{drillPipeLength},</if>
+            <if test="endAzimuth != null">#{endAzimuth},</if>
+            <if test="endTilt != null">#{endTilt},</if>
+            <if test="actualCoalAmountFlushed != null">#{actualCoalAmountFlushed},</if>
+            <if test="exceptionConstruction != null">#{exceptionConstruction},</if>
+            <if test="terminalHoleDate != null">#{terminalHoleDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTActDirectionalBorehole" parameterType="TActDirectionalBorehole">
+        update t_act_directional_borehole
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">roadway_id = #{roadwayId},</if>
+            <if test="groupNo != null">group_no = #{groupNo},</if>
+            <if test="boreholeNo != null">borehole_no = #{boreholeNo},</if>
+            <if test="boreholeCode != null">borehole_code = #{boreholeCode},</if>
+            <if test="isUsedCreateCoal != null">is_used_create_coal = #{isUsedCreateCoal},</if>
+            <if test="categoryCode != null">category_code = #{categoryCode},</if>
+            <if test="navigationPointId != null and navigationPointId != 0">navigation_point_id = #{navigationPointId},</if>
+            <if test="holeAltitude != null">hole_altitude = #{holeAltitude},</if>
+            <if test="distanceToNavigationPoint != null">distance_to_navigation_point = #{distanceToNavigationPoint},</if>
+            <if test="directionToNavigation != null">direction_to_navigation = #{directionToNavigation},</if>
+            <if test="distanceToCentrallineTunnel != null">distance_to_centralline_tunnel = #{distanceToCentrallineTunnel},</if>
+            <if test="topOrBottom != null">top_or_bottom = #{topOrBottom},</if>
+            <if test="aperture != null">aperture = #{aperture},</if>
+            <if test="drillPipeLength != null">drill_pipe_length = #{drillPipeLength},</if>
+            <if test="endAzimuth != null">end_azimuth = #{endAzimuth},</if>
+            <if test="endTilt != null">end_tilt = #{endTilt},</if>
+            <if test="actualCoalAmountFlushed != null">actual_coal_amount_flushed = #{actualCoalAmountFlushed},</if>
+            <if test="exceptionConstruction != null">exception_construction = #{exceptionConstruction},</if>
+            <if test="terminalHoleDate != null">terminal_hole_date = #{terminalHoleDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTActDirectionalBoreholeById" parameterType="Integer">
+        delete from t_act_directional_borehole where id = #{id}
+    </delete>
+
+    <delete id="deleteTActDirectionalBoreholeByIds" parameterType="String">
+        delete from t_act_directional_borehole where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

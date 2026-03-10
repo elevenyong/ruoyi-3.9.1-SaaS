@@ -144,7 +144,126 @@ public class SysMenuServiceImpl implements ISysMenuService
         {
             menus = menuMapper.selectMenuTreeByUserId(userId);
         }
-        return getChildPerms(menus, MENU_ROOT_ID);
+        // 构建树
+        List<SysMenu> tree = getChildPerms(menus, MENU_ROOT_ID);
+
+        // 方案：仅平台超级管理员可管理租户；租户管理员默认不展示“租户管理”菜单
+        if (!SecurityUtils.isAdmin(userId))
+        {
+            filterTenantManagementMenus(tree);
+        }
+        return tree;
+    }
+
+    /**
+     * 递归过滤“租户管理”菜单。
+     * 说明：该过滤只影响前端路由/菜单展示，不影响后端鉴权（后端仍应通过权限控制接口访问）。
+     */
+    /**
+     * 递归过滤“租户管理”菜单。
+     * 说明：该过滤只影响前端路由/菜单展示，不替代后端鉴权（后端接口权限仍需控制）。
+     */
+    private void filterTenantManagementMenus(List<SysMenu> menus)
+    {
+        if (menus == null || menus.isEmpty())
+        {
+            return;
+        }
+
+        for (Iterator<SysMenu> it = menus.iterator(); it.hasNext();)
+        {
+            SysMenu m = it.next();
+
+            // 先递归处理子节点
+            if (m.getChildren() != null && !m.getChildren().isEmpty())
+            {
+                filterTenantManagementMenus(m.getChildren());
+            }
+
+            // 过滤租户管理菜单（包含目录/菜单/按钮，只要识别到“租户管理”就移除）
+            if (isTenantManagementMenu(m))
+            {
+                it.remove();
+                continue;
+            }
+
+            // 目录节点在过滤子菜单后可能变空：若该目录明显属于租户管理，则移除空目录，避免出现“空菜单”
+            if (m.getChildren() != null && m.getChildren().isEmpty() && UserConstants.TYPE_DIR.equals(m.getMenuType()))
+            {
+                if (isTenantManagementDirHint(m))
+                {
+                    it.remove();
+                }
+            }
+        }
+    }
+
+    /**
+     * 判定是否为“租户管理”菜单节点（目录/菜单/按钮都算）。
+     */
+    private boolean isTenantManagementMenu(SysMenu menu)
+    {
+        if (menu == null)
+        {
+            return false;
+        }
+
+        // 你的 StringUtils.nvl 需要 2 个参数：nvl(value, defaultValue)
+        String perms = StringUtils.nvl(menu.getPerms(), "");
+
+        // 最稳：以 perms 前缀识别（建议你租户模块权限都以 system:tenant* 开头）
+        if (StringUtils.isNotEmpty(perms) && perms.toLowerCase().startsWith("system:tenant"))
+        {
+            return true;
+        }
+
+        // 兜底：一些菜单可能未配置 perms，但 path/component/menuName 能反映租户管理
+        String menuName = StringUtils.nvl(menu.getMenuName(), "");
+        String path = StringUtils.nvl(menu.getPath(), "");
+        String component = StringUtils.nvl(menu.getComponent(), "");
+
+        String pathLower = path.toLowerCase();
+        String compLower = component.toLowerCase();
+
+        if ("tenant".equalsIgnoreCase(path) || pathLower.contains("/tenant") || pathLower.contains("tenant/"))
+        {
+            return true;
+        }
+        if (compLower.contains("/tenant") || compLower.contains("tenant/"))
+        {
+            return true;
+        }
+        if (menuName.contains("租户"))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 仅用于判断“空目录”是否明显属于租户管理（避免误删其它目录）。
+     */
+    private boolean isTenantManagementDirHint(SysMenu menu)
+    {
+        if (menu == null)
+        {
+            return false;
+        }
+
+        String menuName = StringUtils.nvl(menu.getMenuName(), "");
+        String path = StringUtils.nvl(menu.getPath(), "");
+        String component = StringUtils.nvl(menu.getComponent(), "");
+
+        String pathLower = path.toLowerCase();
+        String compLower = component.toLowerCase();
+
+        return menuName.contains("租户")
+                || "tenant".equalsIgnoreCase(path)
+                || pathLower.contains("/tenant")
+                || pathLower.contains("tenant/")
+                || compLower.contains("/tenant")
+                || compLower.contains("tenant/");
     }
 
     /**
@@ -157,6 +276,10 @@ public class SysMenuServiceImpl implements ISysMenuService
     public List<Long> selectMenuListByRoleId(Long roleId)
     {
         SysRole role = roleMapper.selectRoleById(roleId);
+        if (role == null)
+        {
+            return new ArrayList<>();
+        }
         return menuMapper.selectMenuListByRoleId(roleId, role.isMenuCheckStrictly());
     }
 
@@ -340,7 +463,7 @@ public class SysMenuServiceImpl implements ISysMenuService
      * @return 结果
      */
     @Override
-    public boolean checkMenuNameUnique(SysMenu menu)
+    public String checkMenuNameUnique(SysMenu menu)
     {
         Long menuId = StringUtils.isNull(menu.getMenuId()) ? -1L : menu.getMenuId();
         SysMenu info = menuMapper.checkMenuNameUnique(menu.getMenuName(), menu.getParentId());
@@ -358,7 +481,7 @@ public class SysMenuServiceImpl implements ISysMenuService
      * @return 结果
      */
     @Override
-    public boolean checkRouteConfigUnique(SysMenu menu)
+    public String checkRouteConfigUnique(SysMenu menu)
     {
         Long menuId = StringUtils.isNull(menu.getMenuId()) ? -1L : menu.getMenuId();
         Long parentId = menu.getParentId();
@@ -507,6 +630,17 @@ public class SysMenuServiceImpl implements ISysMenuService
         return menu.getIsFrame().equals(UserConstants.NO_FRAME) && StringUtils.ishttp(menu.getPath());
     }
 
+//    /**
+//     * 是否为parent_view组件
+//     *
+//     * @param menu 菜单信息
+//     * @return 结果
+//     */
+//    public boolean isParentView(SysMenu menu)
+//    {
+//        return menu.getParentId().intValue() != 0 && UserConstants.TYPE_DIR.equals(menu.getMenuType());
+//    }
+
     /**
      * 根据父节点的ID获取所有子节点
      * 
@@ -586,4 +720,5 @@ public class SysMenuServiceImpl implements ISysMenuService
         return StringUtils.replaceEach(path, new String[] { Constants.HTTP, Constants.HTTPS, Constants.WWW, ".", ":" },
                 new String[] { "", "", "", "/", "/" });
     }
+
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ruoyi.hh.demo.mapper.DrillproductionbillDao">
+    <!-- 获取所有钻场编号 -->
+    <select id="getDrillsiteCode" resultType="string">
+        select DrillSiteCode
+        from drillproductionbill
+        GROUP BY DrillSiteCode
+    </select>
+    <!-- 获取所有钻孔地点 -->
+    <select id="getDrillsiteLocal" resultType="string">
+        select DrillSiteLocal
+        from drillproductionbill
+        GROUP BY DrillSiteLocal
+    </select>
+    <!-- 获取钻孔用途 -->
+    <select id="getDrillpurpose" resultType="string">
+        select DrillPurpose
+        from drillproductionbill
+        GROUP BY DrillPurpose
+    </select>
+    <!-- 获取钻孔编号 -->
+    <select id="getHoleNO" resultType="string">
+        select HoleNo
+        from drillproductionbill
+        GROUP BY HoleNo
+    </select>
+</mapper>

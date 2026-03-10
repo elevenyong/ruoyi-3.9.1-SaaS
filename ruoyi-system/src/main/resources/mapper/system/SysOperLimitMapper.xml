@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysOperLimitMapper">
+
+    <resultMap type="SysOperLimit" id="SysOperLimitResult">
+        <result property="userid" column="userid"/>
+        <result property="desBoreholeLimit" column="des_borehole_limit"/>
+    </resultMap>
+
+    <sql id="selectSysOperLimitVo">
+        select userid, des_borehole_limit
+        from sys_oper_limit
+    </sql>
+
+    <select id="selectSysOperLimitList" parameterType="SysOperLimit" resultMap="SysOperLimitResult">
+        <include refid="selectSysOperLimitVo"/>
+        <where>
+            <if test="desBoreholeLimit != null ">and des_borehole_limit = #{desBoreholeLimit}</if>
+        </where>
+    </select>
+
+    <select id="selectSysOperLimitByUserid" parameterType="Long" resultMap="SysOperLimitResult">
+        <include refid="selectSysOperLimitVo"/>
+        where userid = #{userid}
+    </select>
+
+    <insert id="insertSysOperLimit" parameterType="SysOperLimit">
+        insert into sys_oper_limit
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userid != null">userid,</if>
+            <if test="desBoreholeLimit != null">des_borehole_limit,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userid != null">#{userid},</if>
+            <if test="desBoreholeLimit != null">#{desBoreholeLimit},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysOperLimit" parameterType="SysOperLimit">
+        update sys_oper_limit
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="desBoreholeLimit != null">des_borehole_limit = #{desBoreholeLimit},</if>
+        </trim>
+        where userid = #{userid}
+    </update>
+
+    <delete id="deleteSysOperLimitByUserid" parameterType="Long">
+        delete
+        from sys_oper_limit
+        where userid = #{userid}
+    </delete>
+
+    <delete id="deleteSysOperLimitByUserids" parameterType="String">
+        delete from sys_oper_limit where userid in
+        <foreach item="userid" collection="array" open="(" separator="," close=")">
+            #{userid}
+        </foreach>
+    </delete>
+</mapper>

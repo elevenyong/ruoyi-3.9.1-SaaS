@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Calendar;
 import java.util.Date;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -24,7 +25,11 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
 
     public static String YYYY_MM_DD = "yyyy-MM-dd";
 
+    public static String YYYY_MM_DD2="yyyy_MM_dd";
+
     public static String YYYYMMDDHHMMSS = "yyyyMMddHHmmss";
+
+    public static String YYYYMMDD="yyyyMMdd";
 
     public static String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
 
@@ -53,6 +58,17 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         return dateTimeNow(YYYY_MM_DD);
     }
 
+    /**
+     * 获取昨天的时间，返回格式为YYYY-MM-dd
+     * @return
+     */
+    public static String getYesToday(){
+        return dateTimeYestoday(YYYY_MM_DD);
+    }
+
+
+
+    public static String get_Date(){return dateTimeNow(YYYY_MM_DD2);}
     public static final String getTime()
     {
         return dateTimeNow(YYYY_MM_DD_HH_MM_SS);
@@ -63,11 +79,23 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         return dateTimeNow(YYYYMMDDHHMMSS);
     }
 
+    public static final String ymdNow(){return dateTimeNow(YYYYMMDD);}
     public static final String dateTimeNow(final String format)
     {
         return parseDateToStr(format, new Date());
     }
 
+    public static final String dateTimeYestoday(final String format){
+        Date nowDate=new Date();
+        Calendar calendar = Calendar.getInstance();
+        // 设置日期为当前时间
+        calendar.setTime(nowDate);
+        // 将日期减去一天
+        calendar.add(Calendar.DAY_OF_YEAR, -1);
+        // 获取前一天的日期
+        Date previousDay = calendar.getTime();
+        return parseDateToStr(format, previousDay);
+    }
     public static final String dateTime(final Date date)
     {
         return parseDateToStr(YYYY_MM_DD, date);
@@ -187,5 +215,85 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         LocalDateTime localDateTime = LocalDateTime.of(temporalAccessor, LocalTime.of(0, 0, 0));
         ZonedDateTime zdt = localDateTime.atZone(ZoneId.systemDefault());
         return Date.from(zdt.toInstant());
+    }
+    /**
+     * string转Date 格式YYYY-MM-dd HH:mm:ss
+     * @param time string类型时间
+     * @return Date类型时间
+     * @throws ParseException
+     */
+    public static Date strToDate(String time) throws ParseException {
+        SimpleDateFormat sdf=new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
+        return sdf.parse(time);
+    }
+    /**
+     * string转Date
+     * @param time string类型时间
+     * @return Date类型时间
+     * @throws ParseException
+     */
+    public static Date strToDateDay(String time) throws ParseException {
+        SimpleDateFormat sdf=new SimpleDateFormat(YYYY_MM_DD);
+        return sdf.parse(time);
+    }
+
+    /**
+     * yyyy-MM-dd --> yyyy-MM
+     * @param time
+     * @return
+     */
+    public static String getMonth(String time){
+        return time.substring(0, 7);
+    }
+
+    /**
+     * 对比两个时间的大小 开始时间小于等于结束时间，返回true，否则返回false
+     * @param startDate 开始时间，格式：YYYY-MM-dd
+     * @param endDate 结束时间，格式：YYYY-MM-dd
+     * @return
+     */
+    public static boolean contrastDate(String startDate,String endDate) throws ParseException {
+        if(strToDateDay(startDate).compareTo(strToDateDay(endDate))>0){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 获取给定日期的前一天
+     * @param time 格式2023-07-31
+     * @return
+     * @throws ParseException
+     */
+    public static String getYesToday(String time) throws ParseException {
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        Date nowDate=sdf.parse(time);
+        Calendar calendar = Calendar.getInstance();
+        // 设置日期为当前时间
+        calendar.setTime(nowDate);
+        // 将日期减去一天
+        calendar.add(Calendar.DAY_OF_YEAR, -1);
+        // 获取前一天的日期
+        Date previousDay = calendar.getTime();
+        return sdf.format(previousDay);
+    }
+
+    /**
+     * 获取给定日期的后一天
+     * @param time
+     * @return
+     * @throws ParseException
+     */
+    public static String getTomorrow(String time) throws ParseException {
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        Date nowDate=sdf.parse(time);
+        Calendar calendar = Calendar.getInstance();
+        // 设置日期为当前时间
+        calendar.setTime(nowDate);
+        // 将日期加上一天
+        calendar.add(Calendar.DAY_OF_YEAR, +1);
+        // 获取后一天的日期
+        Date previousDay = calendar.getTime();
+        return sdf.format(previousDay);
     }
 }

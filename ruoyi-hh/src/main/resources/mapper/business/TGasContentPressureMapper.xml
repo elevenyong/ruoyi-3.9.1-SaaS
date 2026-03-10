@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.business.mapper.TGasContentPressureMapper">
+
+    <resultMap type="TGasContentPressure" id="TGasContentPressureResult">
+        <result property="id"    column="id"    />
+        <result property="roadwayId"    column="roadway_id"    />
+        <result property="boreholeId"    column="borehole_id"    />
+        <result property="samplingProt"    column="sampling_prot"    />
+        <result property="inclinationAngle"    column="inclination_angle"    />
+        <result property="angle"    column="angle"    />
+        <result property="purposeBoreholeId"    column="purpose_borehole_id"    />
+        <result property="samplingDepth"    column="sampling_depth"    />
+        <result property="gasContent"    column="gas_content"    />
+        <result property="gasPressure"    column="gas_pressure"    />
+        <result property="measureDate"    column="measure_date"    />
+        <result property="measurer"    column="measurer"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTGasContentPressureVo">
+        select r.roadway,a.borehole_code,p.purpose_borehole,g.*
+        from t_gas_content_pressure g
+        LEFT JOIN t_roadway r ON r.id =g.roadway_id
+        LEFT JOIN t_purpose_borehole p ON p.id=g.purpose_borehole_id
+        LEFT JOIN t_bk_act_borehole_info a ON a.id=g.borehole_id
+    </sql>
+
+    <select id="selectTGasContentPressureList" parameterType="TGasContentPressure"
+            resultMap="TGasContentPressureResult">
+        <include refid="selectTGasContentPressureVo"/>
+        <where>
+            <if test="id!=null and id!=0">and g.id=#{id}</if>
+            <if test="roadwayId != null and roadwayId != 0 "> and g.roadway_id = #{roadwayId}</if>
+            <if test="boreholeId != null and boreholeId != 0 "> and g.borehole_id = #{boreholeId}</if>
+            <if test="samplingProt != null  and samplingProt != ''"> and g.sampling_prot = #{samplingProt}</if>
+            <if test="inclinationAngle != null and inclinationAngle!=0 "> and g.inclination_angle = #{inclinationAngle}</if>
+            <if test="angle != null and angle!= 0 "> and g.angle = #{angle}</if>
+            <if test="purposeBoreholeId != null and purposeBoreholeId != 0 "> and g.purpose_borehole_id = #{purposeBoreholeId}</if>
+            <if test="samplingDepth != null "> and g.sampling_depth = #{samplingDepth}</if>
+            <if test="gasContent != null "> and g.gas_content = #{gasContent}</if>
+            <if test="gasPressure != null "> and g.gas_pressure = #{gasPressure}</if>
+            <if test="measureDate != null "> and g.measure_date = #{measureDate}</if>
+            <if test="measurer != null  and measurer != ''"> and g.measurer = #{measurer}</if>
+        </where>
+    </select>
+
+    <select id="selectTGasContentPressureById" parameterType="Integer" resultMap="TGasContentPressureResult">
+        <include refid="selectTGasContentPressureVo"/>
+        where g.id = #{id}
+    </select>
+
+    <insert id="insertTGasContentPressure" parameterType="TGasContentPressure" useGeneratedKeys="true" keyProperty="id">
+        insert into t_gas_content_pressure
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">roadway_id,</if>
+            <if test="boreholeId != null and boreholeId != 0">borehole_id,</if>
+            <if test="samplingProt != null">sampling_prot,</if>
+            <if test="inclinationAngle != null">inclination_angle,</if>
+            <if test="angle != null">angle,</if>
+            <if test="purposeBoreholeId != null and purposeBoreholeId != 0">purpose_borehole_id,</if>
+            <if test="samplingDepth != null">sampling_depth,</if>
+            <if test="gasContent != null">gas_content,</if>
+            <if test="gasPressure != null">gas_pressure,</if>
+            <if test="measureDate != null">measure_date,</if>
+            <if test="measurer != null">measurer,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">#{roadwayId},</if>
+            <if test="boreholeId != null and boreholeId != 0">#{boreholeId},</if>
+            <if test="samplingProt != null">#{samplingProt},</if>
+            <if test="inclinationAngle != null">#{inclinationAngle},</if>
+            <if test="angle != null">#{angle},</if>
+            <if test="purposeBoreholeId != null and purposeBoreholeId != 0">#{purposeBoreholeId},</if>
+            <if test="samplingDepth != null">#{samplingDepth},</if>
+            <if test="gasContent != null">#{gasContent},</if>
+            <if test="gasPressure != null">#{gasPressure},</if>
+            <if test="measureDate != null">#{measureDate},</if>
+            <if test="measurer != null">#{measurer},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTGasContentPressure" parameterType="TGasContentPressure">
+        update t_gas_content_pressure
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roadwayId != null and roadwayId != 0">roadway_id = #{roadwayId},</if>
+            <if test="boreholeId != null and boreholeId != 0">borehole_id = #{boreholeId},</if>
+            <if test="samplingProt != null">sampling_prot = #{samplingProt},</if>
+            <if test="inclinationAngle != null">inclination_angle = #{inclinationAngle},</if>
+            <if test="angle != null">angle = #{angle},</if>
+            <if test="purposeBoreholeId != null and purposeBoreholeId != 0">purpose_borehole_id = #{purposeBoreholeId},</if>
+            <if test="samplingDepth != null">sampling_depth = #{samplingDepth},</if>
+            <if test="gasContent != null">gas_content = #{gasContent},</if>
+            <if test="gasPressure != null">gas_pressure = #{gasPressure},</if>
+            <if test="measureDate != null">measure_date = #{measureDate},</if>
+            <if test="measurer != null">measurer = #{measurer},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where Id = #{id}
+    </update>
+
+    <delete id="deleteTGasContentPressureById" parameterType="Integer">
+        delete from t_gas_content_pressure where id = #{id}
+    </delete>
+
+    <select id="getData" resultType="com.ruoyi.hh.business.domain.TGasContentPressure">
+        <include refid="selectTGasContentPressureVo"/>
+        where 1=1
+        <if test="roadwayId!=null">
+            AND g.roadway_id = #{roadwayId}
+        </if>
+        <if test="purposeboreholeid!=null">AND g.purpose_borehole_id IN
+            <foreach collection="purposeboreholeid" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="startdate!=null and enddate!=null">
+            AND g.measure_date BETWEEN #{startdate} and #{enddate}
+        </if>
+    </select>
+
+    <!--瓦斯含量压力台账-->
+    <delete id="deleteTGasContentPressureByIds" parameterType="java.util.List">
+        delete from t_gas_content_pressure where id in
+        <foreach item="id" collection="List" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!--根据钻孔ID删除钻瓦斯含量信息-->
+    <delete id="delByBoreholeId" parameterType="java.lang.Integer">
+        delete from t_gas_content_pressure where borehole_id=#{boreholeId}
+    </delete>
+    <delete id="delByBoreholeIds" parameterType="java.util.List">
+        delete from t_gas_content_pressure where borehole_id in
+        <foreach item="boreholeIds" collection="list" open="(" separator="," close=")">
+            #{boreholeIds}
+        </foreach>
+    </delete>
+
+</mapper>

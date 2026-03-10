@@ -53,6 +53,10 @@ public class DruidProperties
 
     public DruidDataSource dataSource(DruidDataSource datasource)
     {
+        /** 定义数据文件位置 20250617更换数据库*/
+        String cRoot = System.getProperty("java.class.path").split(":")[0];
+        String url = "jdbc:sqlite:" + cRoot + ":\\HHHZDB\\hhhz-sys.db?date_string_format=yyyy-MM-dd HH:mm:ss";
+        datasource.setUrl(url);
         /** 配置初始化大小、最小、最大 */
         datasource.setInitialSize(initialSize);
         datasource.setMaxActive(maxActive);

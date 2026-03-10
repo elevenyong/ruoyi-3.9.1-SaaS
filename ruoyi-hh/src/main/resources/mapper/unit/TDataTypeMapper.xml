@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.util.mapper.TDataTypeMapper">
+
+    <resultMap type="TDataType" id="TDataTypeResult">
+        <result property="id"    column="id"    />
+        <result property="dataType"    column="data_type"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTDataTypeVo">
+        select id, data_type, create_by, create_time, update_by, update_time, remark from t_data_type
+    </sql>
+
+    <select id="selectTDataTypeList" parameterType="TDataType" resultMap="TDataTypeResult">
+        <include refid="selectTDataTypeVo"/>
+        <where>
+            <if test="id!=null and id!=0">and id=#{id}</if>
+            <if test="dataType != null  and dataType != ''"> and data_type = #{dataType}</if>
+        </where>
+    </select>
+
+    <select id="selectTDataTypeById" parameterType="Integer" resultMap="TDataTypeResult">
+        <include refid="selectTDataTypeVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertTDataType" parameterType="TDataType" useGeneratedKeys="true" keyProperty="id">
+        insert into t_data_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="dataType != null">data_type,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="dataType != null">#{dataType},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+    </insert>
+
+    <update id="updateTDataType" parameterType="TDataType">
+        update t_data_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="dataType != null">data_type = #{dataType},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time =
+            <!-- 根据数据库类型选择时间函数 -->
+            <if test="_databaseId.contains('mysql')">NOW()</if>
+            <if test="_databaseId.contains('sqlite')">datetime('now', 'localtime')</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTDataTypeById" parameterType="java.lang.Integer">
+        delete from t_data_type where id = #{id}
+    </delete>
+
+    <delete id="deleteTDataTypeByIds" parameterType="java.util.List">
+        delete from t_data_type where id in
+        <foreach item="id" collection="List" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="getPageList" resultType="com.ruoyi.hh.util.domain.TDataType">
+        select * from t_data_type
+    </select>
+
+    <insert id="insertTDataTypeList" parameterType="java.util.List">
+        insert IGNORE into t_data_type (data_type)
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.dataType}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

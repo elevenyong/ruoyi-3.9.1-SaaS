@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.hh.physical.mapper.TRiskAreaMapper">
+
+    <resultMap type="TRiskArea" id="TRiskAreaResult">
+        <result property="id" column="id"/>
+        <result property="riskAreaName" column="risk_area_name"/>
+        <result property="workfaceId" column="workface_id"/>
+        <result property="coalinfoId" column="coalinfo_id"/>
+        <result property="riskLevel" column="risk_level"/>
+        <result property="riskType" column="risk_type"/>
+        <result property="influenceRange" column="influence_range"/>
+        <result property="riskInfo" column="risk_info"/>
+        <result property="boundaryPoints" column="boundary_points" jdbcType="VARCHAR" typeHandler="com.ruoyi.hh.util.handler.JsonPointArrayTypeHandler"/>
+    </resultMap>
+
+    <sql id="selectTRiskAreaVo">
+        select id,
+               risk_area_name,
+               workface_id,
+               coalinfo_id,
+               risk_level,
+               risk_type,
+               influence_range,
+               risk_info,
+               boundary_points
+        from t_risk_area
+    </sql>
+
+    <select id="selectTRiskAreaList" parameterType="TRiskArea" resultMap="TRiskAreaResult">
+        <include refid="selectTRiskAreaVo"/>
+        <where>
+            <if test="riskAreaName != null ">and risk_area_name = #{riskAreaName}</if>
+            <if test="workfaceId != null">and workface_id = #{workfaceId}</if>
+            <if test="coalinfoId != null">and coalinfo_id = #{coalinfoId}</if>
+            <if test="riskLevel != null ">and risk_level = #{riskLevel}</if>
+            <if test="riskType != null ">and risk_type = #{riskType}</if>
+            <if test="influenceRange != null ">and influence_range = #{influenceRange}</if>
+            <if test="riskInfo != null ">and risk_info = #{riskInfo}</if>
+            <if test="boundaryPoints != null ">and boundary_points = #{boundaryPoints}</if>
+        </where>
+    </select>
+
+    <select id="selectTRiskAreaById" parameterType="Long" resultMap="TRiskAreaResult">
+        <include refid="selectTRiskAreaVo"/>
+        where id = #{id}
+    </select>
+
+
+    <insert id="insertTRiskArea" parameterType="TRiskArea" useGeneratedKeys="true" keyProperty="id">
+        insert into t_risk_area
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="riskAreaName != null">risk_area_name,</if>
+            <if test="workfaceId != null">workface_id,</if>
+            <if test="coalinfoId != null">coalinfo_id,</if>
+            <if test="riskLevel != null">risk_level,</if>
+            <if test="riskType != null">risk_type,</if>
+            <if test="influenceRange != null">influence_range,</if>
+            <if test="riskInfo != null">risk_info,</if>
+            <if test="boundaryPoints != null">boundary_points,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="riskAreaName != null">#{riskAreaName},</if>
+            <if test="workfaceId != null">#{workfaceId},</if>
+            <if test="coalinfoId != null">#{coalinfoId},</if>
+            <if test="riskLevel != null">#{riskLevel},</if>
+            <if test="riskType != null">#{riskType},</if>
+            <if test="influenceRange != null">#{influenceRange},</if>
+            <if test="riskInfo != null">#{riskInfo},</if>
+            <if test="boundaryPoints != null">#{boundaryPoints,jdbcType=VARCHAR,typeHandler=com.ruoyi.hh.util.handler.JsonPointArrayTypeHandler},</if>
+        </trim>
+    </insert>
+
+    <update id="updateTRiskArea" parameterType="TRiskArea">
+        update t_risk_area
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="riskAreaName != null">risk_area_name = #{riskAreaName},</if>
+            <if test="workfaceId != null">workface_id = #{workfaceId},</if>
+            <if test="coalinfoId != null">coalinfo_id = #{coalinfoId},</if>
+            <if test="riskLevel != null">risk_level = #{riskLevel},</if>
+            <if test="riskType != null">risk_type = #{riskType},</if>
+            <if test="influenceRange != null">influence_range = #{influenceRange},</if>
+            <if test="riskInfo != null">risk_info = #{riskInfo},</if>
+            <if test="boundaryPoints != null">boundary_points=#{boundaryPoints,jdbcType=VARCHAR,typeHandler=com.ruoyi.hh.util.handler.JsonPointArrayTypeHandler},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTRiskAreaById" parameterType="Long">
+        delete
+        from t_risk_area
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTRiskAreaByIds" parameterType="String">
+        delete from t_risk_area where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

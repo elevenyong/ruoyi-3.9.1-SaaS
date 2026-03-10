@@ -60,7 +60,20 @@ public class SysTenantServiceImpl implements ISysTenantService
     @Override
     public List<SysTenant> selectTenantList(SysTenant tenant)
     {
+        checkPlatformTenant();
         return tenantMapper.selectTenantList(tenant);
+    }
+
+    /**
+     * 仅平台租户(tenant_id=1, tenant_code=default)允许管理租户
+     */
+    private void checkPlatformTenant()
+    {
+        Long tenantId = TenantContextHolder.getTenantId();
+        if (tenantId == null || tenantId.longValue() != 1L)
+        {
+            throw new ServiceException("无权限：仅平台超级管理员可执行租户管理操作");
+        }
     }
 
     @Override
@@ -77,6 +90,7 @@ public class SysTenantServiceImpl implements ISysTenantService
     @Transactional(rollbackFor = Exception.class)
     public Long createTenantWithAdmin(TenantCreateReq req)
     {
+        checkPlatformTenant();
         // 0) 校验 tenantCode 是否已存在（sys_tenant 是全局表）
         SysTenant exist = tenantMapper.selectTenantByCode(req.getTenantCode());
         if (exist != null)
@@ -93,6 +107,7 @@ public class SysTenantServiceImpl implements ISysTenantService
         String oper = SecurityUtils.getUsername();
         tenant.setCreateBy(oper);
         tenant.setUpdateBy(oper);
+        tenant.setExpireTime(req.getAdminExpireTime());
 
         int rows = tenantMapper.insertTenant(tenant);
         if (rows <= 0 || tenant.getTenantId() == null)
@@ -160,10 +175,11 @@ public class SysTenantServiceImpl implements ISysTenantService
             admin.setPassword(SecurityUtils.encryptPassword(req.getAdminPassword()));
             admin.setCreateBy(oper);
             admin.setUpdateBy(oper);
+            admin.setExpireTime(req.getAdminExpireTime());
             admin.setRoleIds(new Long[] { adminRole.getRoleId() });
 
             // 租户内用户唯一性校验（此时 tenantId 已切换为新租户）
-            if (!userService.checkUserNameUnique(admin))
+            if (!userService.checkUserNameUnique(admin).equals("0"))
             {
                 throw new ServiceException("租户管理员账号已存在：" + req.getAdminUserName());
             }
@@ -188,6 +204,7 @@ public class SysTenantServiceImpl implements ISysTenantService
     @Transactional(rollbackFor = Exception.class)
     public void initTenantBase(Long tenantId, Long templateTenantId)
     {
+        checkPlatformTenant();
         if (tenantId == null)
         {
             throw new ServiceException("tenantId 不能为空");
@@ -365,6 +382,7 @@ public class SysTenantServiceImpl implements ISysTenantService
     @Transactional(rollbackFor = Exception.class)
     public void resetTenantAdminPassword(Long tenantId, String adminUserName, String newPassword)
     {
+        checkPlatformTenant();
         if (tenantId == null)
         {
             throw new ServiceException("tenantId 不能为空");
@@ -405,6 +423,56 @@ public class SysTenantServiceImpl implements ISysTenantService
     @Transactional(rollbackFor = Exception.class)
     public int updateTenantStatus(Long tenantId, String status)
     {
+        checkPlatformTenant();
         return tenantMapper.updateTenantStatus(tenantId, status);
+    }
+
+    @Override
+    public SysTenant selectTenantById(Long tenantId)
+    {
+        return tenantMapper.selectTenantById(tenantId);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int updateTenant(SysTenant tenant)
+    {
+        checkPlatformTenant();
+
+        if (tenant.getTenantId() == null)
+        {
+            throw new ServiceException("tenantId不能为空");
+        }
+
+        SysTenant db = tenantMapper.selectTenantById(tenant.getTenantId());
+        if (db == null)
+        {
+            throw new ServiceException("租户不存在: " + tenant.getTenantId());
+        }
+
+        tenant.setUpdateBy(SecurityUtils.getUsername());
+        return tenantMapper.updateTenant(tenant);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int deleteTenantByIds(Long[] tenantIds)
+    {
+        checkPlatformTenant();
+
+        if (tenantIds == null || tenantIds.length == 0)
+        {
+            return 0;
+        }
+
+        for (Long id : tenantIds)
+        {
+            if (id == 1L)
+            {
+                throw new ServiceException("平台默认租户不允许删除");
+            }
+        }
+
+        return tenantMapper.deleteTenantByIds(tenantIds);
     }
 }
