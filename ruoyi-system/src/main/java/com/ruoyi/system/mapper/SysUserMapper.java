@@ -144,4 +144,14 @@ public interface SysUserMapper
      * @return 结果
      */
     public SysUser checkEmailUnique(String email);
+
+
+    /**
+     * 将指定租户下用户的有效期收敛到租户有效期
+     *
+     * @param tenantId 租户ID
+     * @param expireTime 租户有效期
+     * @return 结果
+     */
+    public int clampUserExpireTimeByTenantId(@Param("tenantId") Long tenantId, @Param("expireTime") Date expireTime);
 }

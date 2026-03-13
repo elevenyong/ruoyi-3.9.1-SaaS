@@ -57,6 +57,10 @@ public class SysTenantServiceImpl implements ISysTenantService
     @Autowired
     private SysConfigMapper configMapper;
 
+
+    @Autowired
+    private SysUserMapper userMapper;
+
     @Override
     public List<SysTenant> selectTenantList(SysTenant tenant)
     {
@@ -443,15 +447,19 @@ public class SysTenantServiceImpl implements ISysTenantService
         {
             throw new ServiceException("tenantId不能为空");
         }
-
         SysTenant db = tenantMapper.selectTenantById(tenant.getTenantId());
         if (db == null)
         {
             throw new ServiceException("租户不存在: " + tenant.getTenantId());
         }
-
         tenant.setUpdateBy(SecurityUtils.getUsername());
-        return tenantMapper.updateTenant(tenant);
+        int rows = tenantMapper.updateTenant(tenant);
+        if (rows > 0 && tenant.getExpireTime() != null
+                && (db.getExpireTime() == null || tenant.getExpireTime().before(db.getExpireTime())))
+        {
+            userMapper.clampUserExpireTimeByTenantId(tenant.getTenantId(), tenant.getExpireTime());
+        }
+        return rows;
     }
 
     @Override

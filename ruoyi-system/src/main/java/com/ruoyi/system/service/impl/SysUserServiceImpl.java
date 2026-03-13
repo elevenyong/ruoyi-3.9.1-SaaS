@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Validator;
+
+import com.ruoyi.system.domain.SysTenant;
+import com.ruoyi.system.mapper.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +26,6 @@ import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.system.domain.SysPost;
 import com.ruoyi.system.domain.SysUserPost;
 import com.ruoyi.system.domain.SysUserRole;
-import com.ruoyi.system.mapper.SysPostMapper;
-import com.ruoyi.system.mapper.SysRoleMapper;
-import com.ruoyi.system.mapper.SysUserMapper;
-import com.ruoyi.system.mapper.SysUserPostMapper;
-import com.ruoyi.system.mapper.SysUserRoleMapper;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysDeptService;
 import com.ruoyi.system.service.ISysUserService;
@@ -65,6 +63,10 @@ public class SysUserServiceImpl implements ISysUserService
 
     @Autowired
     protected Validator validator;
+
+
+    @Autowired
+    private SysTenantMapper tenantMapper;
 
     /**
      * 根据条件分页查询用户列表
@@ -263,6 +265,7 @@ public class SysUserServiceImpl implements ISysUserService
     @Transactional
     public int insertUser(SysUser user)
     {
+        fillDefaultAndCheckExpireTime(user, false);
         // 新增用户信息
         int rows = userMapper.insertUser(user);
         // 新增用户岗位关联
@@ -295,6 +298,7 @@ public class SysUserServiceImpl implements ISysUserService
     @Transactional
     public int updateUser(SysUser user)
     {
+        fillDefaultAndCheckExpireTime(user, true);
         Long userId = user.getUserId();
         // 删除用户与角色关联
         userRoleMapper.deleteUserRoleByUserId(userId);
@@ -568,5 +572,82 @@ public class SysUserServiceImpl implements ISysUserService
             successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
         }
         return successMsg.toString();
+    }
+
+    /**
+     * 回填并校验用户有效期：
+     * 1. 新增时未传，则默认等于租户 expire_time
+     * 2. 修改时未传，则沿用原值
+     * 3. 用户有效期不能超过租户有效期
+     */
+    private void fillDefaultAndCheckExpireTime(SysUser user, boolean isUpdate)
+    {
+        SysUser dbUser = null;
+        if (isUpdate)
+        {
+            if (user.getUserId() == null)
+            {
+                throw new ServiceException("用户ID不能为空");
+            }
+            dbUser = userMapper.selectUserById(user.getUserId());
+            if (dbUser == null)
+            {
+                throw new ServiceException("用户不存在");
+            }
+            // 兼容旧前端：如果编辑时前端没传 expireTime，则沿用库里原值，避免影响原有功能
+            if (user.getExpireTime() == null)
+            {
+                user.setExpireTime(dbUser.getExpireTime());
+            }
+        }
+
+        Long tenantId = resolveTenantId(user, dbUser);
+        if (tenantId == null)
+        {
+            return;
+        }
+
+        SysTenant tenant = tenantMapper.selectTenantById(tenantId);
+        if (tenant == null || tenant.getExpireTime() == null)
+        {
+            return;
+        }
+
+        // 新增时如果前端没传，默认等于租户有效期
+        if (user.getExpireTime() == null)
+        {
+            user.setExpireTime(tenant.getExpireTime());
+        }
+
+        if (user.getExpireTime() != null && user.getExpireTime().after(tenant.getExpireTime()))
+        {
+            throw new ServiceException("用户失效时间不能晚于租户失效时间："
+                    + com.ruoyi.common.utils.DateUtils.parseDateToStr(
+                    com.ruoyi.common.utils.DateUtils.YYYY_MM_DD_HH_MM_SS, tenant.getExpireTime()));
+        }
+    }
+
+    private Long resolveTenantId(SysUser user, SysUser dbUser)
+    {
+        if (user != null && user.getTenantId() != null)
+        {
+            return user.getTenantId();
+        }
+        if (dbUser != null && dbUser.getTenantId() != null)
+        {
+            return dbUser.getTenantId();
+        }
+        try
+        {
+            if (SecurityUtils.getLoginUser() != null)
+            {
+                return SecurityUtils.getLoginUser().getTenantId();
+            }
+        }
+        catch (Exception e)
+        {
+            log.warn("获取当前登录租户失败，跳过用户有效期租户校验");
+        }
+        return null;
     }
 }

@@ -193,15 +193,13 @@
               </el-select>
             </el-form-item>
           </el-col>
-        </el-row>
-        <el-row> -->
+        </el-row>-->
+        <el-row> 
           <el-col :span="16">
             <el-form-item label="账号失效时间" prop="expireTime">
-              <el-date-picker :disabled="banEditExpire" v-model="form.expireTime" type="datetime" placeholder="选择日期时间"
+              <el-date-picker v-model="form.expireTime" type="datetime" placeholder="选择日期时间"
                 align="right" :picker-options="pickerOptions" value-format="yyyy-MM-dd HH:mm:ss">
               </el-date-picker>
-              <i class="el-icon-edit" style="margin-left:5px" v-hasPermi="['system:user:expire']"
-                @click="editExpire"></i>
             </el-form-item>
           </el-col>
         </el-row>
@@ -275,15 +273,27 @@ export default {
   dicts: ['sys_normal_disable', 'sys_user_sex', 'sys_user_expire'],
   components: { Treeselect },
   data() {
+    const vm = this;
     return {
-      banEditExpire: true,
+      banEditExpire: false,
+      tenantMaxExpireTime: undefined,
       // 日期时间选择器快捷选项
       pickerOptions: {
+        disabledDate(time) {
+          if (!vm.tenantMaxExpireTime) {
+            return false;
+          }
+          return time.getTime() > new Date(vm.tenantMaxExpireTime).getTime();
+        },
         shortcuts: [{
           text: '三天',
           onClick(picker) {
             const date = new Date();
             date.setTime(date.getTime() + 3600 * 1000 * 24 * 3);
+            if (vm.tenantMaxExpireTime && date.getTime() > new Date(vm.tenantMaxExpireTime).getTime()) {
+              picker.$emit('pick', new Date(vm.tenantMaxExpireTime));
+              return;
+            }
             picker.$emit('pick', date);
           }
         }, {
@@ -291,6 +301,10 @@ export default {
           onClick(picker) {
             const date = new Date();
             date.setTime(date.getTime() + 3600 * 1000 * 24 * 7);
+            if (vm.tenantMaxExpireTime && date.getTime() > new Date(vm.tenantMaxExpireTime).getTime()) {
+              picker.$emit('pick', new Date(vm.tenantMaxExpireTime));
+              return;
+            }
             picker.$emit('pick', date);
           }
         }, {
@@ -298,6 +312,10 @@ export default {
           onClick(picker) {
             const date = new Date();
             date.setTime(date.getTime() + 3600 * 1000 * 24 * 31);
+            if (vm.tenantMaxExpireTime && date.getTime() > new Date(vm.tenantMaxExpireTime).getTime()) {
+              picker.$emit('pick', new Date(vm.tenantMaxExpireTime));
+              return;
+            }
             picker.$emit('pick', date);
           }
         }, {
@@ -305,6 +323,10 @@ export default {
           onClick(picker) {
             const date = new Date();
             date.setTime(date.getTime() + 3600 * 1000 * 24 * 180);
+            if (vm.tenantMaxExpireTime && date.getTime() > new Date(vm.tenantMaxExpireTime).getTime()) {
+              picker.$emit('pick', new Date(vm.tenantMaxExpireTime));
+              return;
+            }
             picker.$emit('pick', date);
           }
         }, {
@@ -312,13 +334,16 @@ export default {
           onClick(picker) {
             const date = new Date();
             date.setTime(date.getTime() + 3600 * 1000 * 24 * 366);
+            if (vm.tenantMaxExpireTime && date.getTime() > new Date(vm.tenantMaxExpireTime).getTime()) {
+              picker.$emit('pick', new Date(vm.tenantMaxExpireTime));
+              return;
+            }
             picker.$emit('pick', date);
           }
         }, {
           text: '永久',
           onClick(picker) {
-            const date = new Date('2100-01-01 00:00:00');
-            date.setTime(date.getTime());
+            const date = vm.tenantMaxExpireTime ? new Date(vm.tenantMaxExpireTime) : new Date('2100-01-01 00:00:00');
             picker.$emit('pick', date);
           }
         }]
@@ -359,7 +384,7 @@ export default {
 
       // 权限菜单列表
       menuOptions: [],
-      //{ "id": 1, "label": "系统管理", "children": [{ "id": 100, "label": "用户管理", "children": [{ "id": 1001, "label": "用户查询" }, { "id": 1002, "label": "用户新增" }, { "id": 1003, "label": "用户修改" }, { "id": 1004, "label": "用户删除" }, { "id": 1005, "label": "用户导出" }, { "id": 1006, "label": "用户导入" }, { "id": 1007, "label": "重置密码" }] }, { "id": 101, "label": "角色管理", "children": [{ "id": 1008, "label": "角色查询" }, { "id": 1009, "label": "角色新增" }, { "id": 1010, "label": "角色修改" }, { "id": 1011, "label": "角色删除" }, { "id": 1012, "label": "角色导出" }] }, { "id": 102, "label": "菜单管理", "children": [{ "id": 1013, "label": "菜单查询" }, { "id": 1014, "label": "菜单新增" }, { "id": 1015, "label": "菜单修改" }, { "id": 1016, "label": "菜单删除" }] }, { "id": 103, "label": "部门管理", "children": [{ "id": 1017, "label": "部门查询" }, { "id": 1018, "label": "部门新增" }, { "id": 1019, "label": "部门修改" }, { "id": 1020, "label": "部门删除" }] }, { "id": 104, "label": "岗位管理", "children": [{ "id": 1021, "label": "岗位查询" }, { "id": 1022, "label": "岗位新增" }, { "id": 1023, "label": "岗位修改" }, { "id": 1024, "label": "岗位删除" }, { "id": 1025, "label": "岗位导出" }] }, { "id": 105, "label": "字典管理", "children": [{ "id": 1026, "label": "字典查询" }, { "id": 1027, "label": "字典新增" }, { "id": 1028, "label": "字典修改" }, { "id": 1029, "label": "字典删除" }, { "id": 1030, "label": "字典导出" }] }, { "id": 106, "label": "参数设置", "children": [{ "id": 1031, "label": "参数查询" }, { "id": 1032, "label": "参数新增" }, { "id": 1033, "label": "参数修改" }, { "id": 1034, "label": "参数删除" }, { "id": 1035, "label": "参数导出" }] }, { "id": 107, "label": "通知公告", "children": [{ "id": 1036, "label": "公告查询" }, { "id": 1037, "label": "公告新增" }, { "id": 1038, "label": "公告修改" }, { "id": 1039, "label": "公告删除" }] }, { "id": 108, "label": "日志管理", "children": [{ "id": 500, "label": "操作日志", "children": [{ "id": 1040, "label": "操作查询" }, { "id": 1041, "label": "操作删除" }, { "id": 1042, "label": "日志导出" }] }, { "id": 501, "label": "登录日志", "children": [{ "id": 1043, "label": "登录查询" }, { "id": 1044, "label": "登录删除" }, { "id": 1045, "label": "日志导出" }] }] }] }, { "id": 2070, "label": "U3D数字孪生系统管理", "children": [{ "id": 2071, "label": "用户管理", "children": [{ "id": 2072, "label": "用户查询" }, { "id": 2073, "label": "用户新增" }, { "id": 2074, "label": "用户修改" }, { "id": 2075, "label": "用户删除" }, { "id": 2076, "label": "用户导出" }, { "id": 2077, "label": "用户导入" }, { "id": 2078, "label": "重置密码" }] }, { "id": 2079, "label": "菜单管理", "children": [{ "id": 2080, "label": "菜单查询" }, { "id": 2081, "label": "菜单新增" }, { "id": 2082, "label": "菜单修改" }, { "id": 2083, "label": "菜单删除" }] }, { "id": 2084, "label": "热更新" }] }, { "id": 2, "label": "系统监控", "children": [{ "id": 109, "label": "在线用户", "children": [{ "id": 1046, "label": "在线查询" }, { "id": 1047, "label": "批量强退" }, { "id": 1048, "label": "单条强退" }] }, { "id": 2000, "label": "KJ370Monitor", "children": [{ "id": 2001, "label": "KJ370Monitor查询" }, { "id": 2002, "label": "KJ370Monitor新增" }, { "id": 2003, "label": "KJ370Monitor修改" }, { "id": 2004, "label": "KJ370Monitor删除" }, { "id": 2005, "label": "KJ370Monitor导出" }] }, { "id": 110, "label": "定时任务", "children": [{ "id": 1049, "label": "任务查询" }, { "id": 1050, "label": "任务新增" }, { "id": 1051, "label": "任务修改" }, { "id": 1052, "label": "任务删除" }, { "id": 1053, "label": "状态修改" }, { "id": 1054, "label": "任务导出" }] }, { "id": 111, "label": "数据监控" }, { "id": 112, "label": "服务监控" }, { "id": 113, "label": "缓存监控" }] }, { "id": 2085, "label": "Web数字孪生系统管理" }, { "id": 3, "label": "系统工具", "children": [{ "id": 114, "label": "表单构建" }, { "id": 115, "label": "代码生成", "children": [{ "id": 1055, "label": "生成查询" }, { "id": 1056, "label": "生成修改" }, { "id": 1058, "label": "导入代码" }, { "id": 1057, "label": "生成删除" }, { "id": 1059, "label": "预览代码" }, { "id": 1060, "label": "生成代码" }] }, { "id": 116, "label": "系统接口" }, { "id": 2067, "label": "甘特图1" }, { "id": 2068, "label": "甘特图2" }, { "id": 2069, "label": "甘特图3" }] }, { "id": 2086, "label": "系统设置" }, { "id": 2006, "label": "HHHZ", "children": [{ "id": 2007, "label": "首页", "children": [{ "id": 2024, "label": "矿井总览" }, { "id": 2025, "label": "抽采报表" }, { "id": 2026, "label": "抽采系统运行图" }, { "id": 2027, "label": "瓦斯治理人员信息" }, { "id": 2028, "label": "施工信息汇总" }] }, { "id": 2008, "label": "漫游导航", "children": [{ "id": 2018, "label": "矿井总览" }, { "id": 2029, "label": "巷道漫游" }, { "id": 2030, "label": "抽采站漫游" }, { "id": 2031, "label": "管网系统漫游" }] }, { "id": 2009, "label": "精细地质", "children": [{ "id": 2032, "label": "工作面地质" }, { "id": 2033, "label": "瓦斯地质图" }, { "id": 2034, "label": "地质单元划分" }, { "id": 2035, "label": "构造带分布" }, { "id": 2036, "label": "地质资料汇集" }] }, { "id": 2010, "label": "抽采设计", "children": [{ "id": 2019, "label": "单独钻孔设计" }, { "id": 2020, "label": "条带治理钻孔组设计" }, { "id": 2021, "label": "定向钻孔通用设计" }, { "id": 2022, "label": "高位钻孔设计" }, { "id": 2042, "label": "短定向孔设计" }, { "id": 2043, "label": "揭煤设计" }] }, { "id": 2011, "label": "工程集控", "children": [{ "id": 2037, "label": "抽采站监控" }, { "id": 2038, "label": "抽采管网监控" }, { "id": 2039, "label": "抽采施工集控" }, { "id": 2040, "label": "钻孔施工管理" }, { "id": 2041, "label": "智能化设备监控" }] }, { "id": 2044, "label": "抽采动态", "children": [{ "id": 2045, "label": "条带抽采" }, { "id": 2046, "label": "工作面中部抽采" }, { "id": 2065, "label": "采空区抽采" }, { "id": 2047, "label": "揭煤与特殊抽采" }, { "id": 2048, "label": "抽采管网动态监控" }, { "id": 2051, "label": "瓦斯抽采云图" }] }, { "id": 2052, "label": "信息管理", "children": [{ "id": 2053, "label": "数据分析与管理" }, { "id": 2054, "label": "人员管理" }, { "id": 2055, "label": "用户管理" }, { "id": 2066, "label": "报表管理" }] }, { "id": 2014, "label": "达标评判", "children": [{ "id": 2061, "label": "抽采数据" }, { "id": 2062, "label": "抽采钻孔数据" }, { "id": 2063, "label": "取样钻孔数据" }, { "id": 2064, "label": "报告辅助生成" }] }, { "id": 2056, "label": "异常告警", "children": [{ "id": 2057, "label": "异常信息告警" }, { "id": 2058, "label": "安全生产信息管理" }, { "id": 2059, "label": "处理预案" }, { "id": 2060, "label": "推送通知管理" }] }] }      
+      //{ "id": 1, "label": "系统管理", "children": [{ "id": 100, "label": "用户管理", "children": [{ "id": 1001, "label": "用户查询" }, { "id": 1002, "label": "用户新增" }, { "id": 1003, "label": "用户修改" }, { "id": 1004, "label": "用户删除" }, { "id": 1005, "label": "用户导出" }, { "id": 1006, "label": "用户导入" }, { "id": 1007, "label": "重置密码" }] }, { "id": 101, "label": "角色管理", "children": [{ "id": 1008, "label": "角色查询" }, { "id": 1009, "label": "角色新增" }, { "id": 1010, "label": "角色修改" }, { "id": 1011, "label": "角色删除" }, { "id": 1012, "label": "角色导出" }] }, { "id": 102, "label": "菜单管理", "children": [{ "id": 1013, "label": "菜单查询" }, { "id": 1014, "label": "菜单新增" }, { "id": 1015, "label": "菜单修改" }, { "id": 1016, "label": "菜单删除" }] }, { "id": 103, "label": "部门管理", "children": [{ "id": 1017, "label": "部门查询" }, { "id": 1018, "label": "部门新增" }, { "id": 1019, "label": "部门修改" }, { "id": 1020, "label": "部门删除" }] }, { "id": 104, "label": "岗位管理", "children": [{ "id": 1021, "label": "岗位查询" }, { "id": 1022, "label": "岗位新增" }, { "id": 1023, "label": "岗位修改" }, { "id": 1024, "label": "岗位删除" }, { "id": 1025, "label": "岗位导出" }] }, { "id": 105, "label": "字典管理", "children": [{ "id": 1026, "label": "字典查询" }, { "id": 1027, "label": "字典新增" }, { "id": 1028, "label": "字典修改" }, { "id": 1029, "label": "字典删除" }, { "id": 1030, "label": "字典导出" }] }, { "id": 106, "label": "参数设置", "children": [{ "id": 1031, "label": "参数查询" }, { "id": 1032, "label": "参数新增" }, { "id": 1033, "label": "参数修改" }, { "id": 1034, "label": "参数删除" }, { "id": 1035, "label": "参数导出" }] }, { "id": 107, "label": "通知公告", "children": [{ "id": 1036, "label": "公告查询" }, { "id": 1037, "label": "公告新增" }, { "id": 1038, "label": "公告修改" }, { "id": 1039, "label": "公告删除" }] }, { "id": 108, "label": "日志管理", "children": [{ "id": 500, "label": "操作日志", "children": [{ "id": 1040, "label": "操作查询" }, { "id": 1041, "label": "操作删除" }, { "id": 1042, "label": "日志导出" }] }, { "id": 501, "label": "登录日志", "children": [{ "id": 1043, "label": "登录查询" }, { "id": 1044, "label": "登录删除" }, { "id": 1045, "label": "日志导出" }] }] }] }, { "id": 2070, "label": "U3D数字孪生系统管理", "children": [{ "id": 2071, "label": "用户管理", "children": [{ "id": 2072, "label": "用户查询" }, { "id": 2073, "label": "用户新增" }, { "id": 2074, "label": "用户修改" }, { "id": 2075, "label": "用户删除" }, { "id": 2076, "label": "用户导出" }, { "id": 2077, "label": "用户导入" }, { "id": 2078, "label": "重置密码" }] }, { "id": 2079, "label": "菜单管理", "children": [{ "id": 2080, "label": "菜单查询" }, { "id": 2081, "label": "菜单新增" }, { "id": 2082, "label": "菜单修改" }, { "id": 2083, "label": "菜单删除" }] }, { "id": 2084, "label": "热更新" }] }, { "id": 2, "label": "系统监控", "children": [{ "id": 109, "label": "在线用户", "children": [{ "id": 1046, "label": "在线查询" }, { "id": 1047, "label": "批量强退" }, { "id": 1048, "label": "单条强退" }] }, { "id": 2000, "label": "KJ370Monitor", "children": [{ "id": 2001, "label": "KJ370Monitor查询" }, { "id": 2002, "label": "KJ370Monitor新增" }, { "id": 2003, "label": "KJ370Monitor修改" }, { "id": 2004, "label": "KJ370Monitor删除" }, { "id": 2005, "label": "KJ370Monitor导出" }] }, { "id": 110, "label": "定时任务", "children": [{ "id": 1049, "label": "任务查询" }, { "id": 1050, "label": "任务新增" }, { "id": 1051, "label": "任务修改" }, { "id": 1052, "label": "任务删除" }, { "id": 1053, "label": "状态修改" }, { "id": 1054, "label": "任务导出" }] }, { "id": 111, "label": "数据监控" }, { "id": 112, "label": "服务监控" }, { "id": 113, "label": "缓存监控" }] }, { "id": 2085, "label": "Web数字孪生系统管理" }, { "id": 3, "label": "系统工具", "children": [{ "id": 114, "label": "表单构建" }, { "id": 115, "label": "代码生成", "children": [{ "id": 1055, "label": "生成查询" }, { "id": 1056, "label": "生成修改" }, { "id": 1058, "label": "导入代码" }, { "id": 1057, "label": "生成删除" }, { "id": 1059, "label": "预览代码" }, { "id": 1060, "label": "生成代码" }] }, { "id": 116, "label": "系统接口" }, { "id": 2067, "label": "甘特图1" }, { "id": 2068, "label": "甘特图2" }, { "id": 2069, "label": "甘特图3" }] }, { "id": 2086, "label": "系统设置" }, { "id": 2006, "label": "HHHZ", "children": [{ "id": 2007, "label": "首页", "children": [{ "id": 2024, "label": "矿井总览" }, { "id": 2025, "label": "抽采报表" }, { "id": 2026, "label": "抽采系统运行图" }, { "id": 2027, "label": "瓦斯治理人员信息" }, { "id": 2028, "label": "施工信息汇总" }] }, { "id": 2008, "label": "漫游导航", "children": [{ "id": 2018, "label": "矿井总览" }, { "id": 2029, "label": "巷道漫游" }, { "id": 2030, "label": "抽采站漫游" }, { "id": 2031, "label": "管网系统漫游" }] }, { "id": 2009, "label": "精细地质", "children": [{ "id": 2032, "label": "工作面地质" }, { "id": 2033, "label": "瓦斯地质图" }, { "id": 2034, "label": "地质单元划分" }, { "id": 2035, "label": "构造带分布" }, { "id": 2036, "label": "地质资料汇集" }] }, { "id": 2010, "label": "抽采设计", "children": [{ "id": 2019, "label": "单独钻孔设计" }, { "id": 2020, "label": "条带治理钻孔组设计" }, { "id": 2021, "label": "定向钻孔通用设计" }, { "id": 2022, "label": "高位钻孔设计" }, { "id": 2042, "label": "短定向孔设计" }, { "id": 2043, "label": "揭煤设计" }] }, { "id": 2011, "label": "工程集控", "children": [{ "id": 2037, "label": "抽采站监控" }, { "id": 2038, "label": "抽采管网监控" }, { "id": 2039, "label": "抽采施工集控" }, { "id": 2040, "label": "钻孔施工管理" }, { "id": 2041, "label": "智能化设备监控" }] }, { "id": 2044, "label": "抽采动态", "children": [{ "id": 2045, "label": "条带抽采" }, { "id": 2046, "label": "工作面中部抽采" }, { "id": 2065, "label": "采空区抽采" }, { "id": 2047, "label": "揭煤与特殊抽采" }, { "id": 2048, "label": "抽采管网动态监控" }, { "id": 2051, "label": "瓦斯抽采云图" }] }, { "id": 2052, "label": "信息管理", "children": [{ "id": 2053, "label": "数据分析与管理" }, { "id": 2054, "label": "人员管理" }, { "id": 2055, "label": "用户管理" }, { "id": 2066, "label": "报表管理" }] }, { "id": 2014, "label": "达标评判", "children": [{ "id": 2061, "label": "抽采数据" }, { "id": 2062, "label": "抽采钻孔数据" }, { "id": 2063, "label": "取样钻孔数据" }, { "id": 2064, "label": "报告辅助生成" }] }, { "id": 2056, "label": "异常告警", "children": [{ "id": 2057, "label": "异常信息告警" }, { "id": 2058, "label": "安全生产信息管理" }, { "id": 2059, "label": "处理预案" }, { "id": 2060, "label": "推送通知管理" }] }] }
       // 表单参数
       form: {},
       menuDefaultProps: {
@@ -467,9 +492,20 @@ export default {
     });
   },
   methods: {
-    // 修改过期时间
-    editExpire() {
-      this.banEditExpire = false;
+    validateExpireTime() {
+      if (!this.form.expireTime) {
+        this.$modal.msgError("账号失效时间不能为空");
+        return false;
+      }
+      if (this.tenantMaxExpireTime) {
+        const expire = new Date(this.form.expireTime).getTime();
+        const maxExpire = new Date(this.tenantMaxExpireTime).getTime();
+        if (expire > maxExpire) {
+          this.$modal.msgError("账号失效时间不能晚于租户失效时间");
+          return false;
+        }
+      }
+      return true;
     },
     /** 查询用户列表 */
     getList() {
@@ -536,7 +572,8 @@ export default {
         ////
         menuOptions: []
       };
-      this.banEditExpire = true;
+      this.banEditExpire = false;
+      this.tenantMaxExpireTime = undefined;
       this.resetForm("form");
     },
     /** 搜索按钮操作 */
@@ -574,10 +611,8 @@ export default {
       this.reset();
       this.getTreeselect();
       getUser().then(response => {
-        // 设置默认有效期1个月
-        let date = new Date();
-        date.setTime(date.getTime() + 3600 * 1000 * 24 * 31);
-        this.form.expireTime = date.toLocaleString().replaceAll("/", "-");
+        this.tenantMaxExpireTime = response.maxExpireTime;
+        this.form.expireTime = response.defaultExpireTime;
         //20260309禁用岗位管理
         // this.postAllOptions = response.posts;
         // this.postOptions = [];
@@ -610,6 +645,10 @@ export default {
         // //this.form.postId = this.form.postIds[0];
         let tform = response.data || {};
         tform.roleIds = response.roleIds || [];
+        this.tenantMaxExpireTime = response.maxExpireTime;
+        if (!tform.expireTime) {
+          tform.expireTime = response.defaultExpireTime;
+        }
         this.form = tform;
         if (this.form.deptId) {
           this.onDeptSelected(this.form.deptId);
@@ -644,6 +683,9 @@ export default {
     submitForm: function () {
       this.$refs["form"].validate(valid => {
         if (valid) {
+          if (!this.validateExpireTime()) {
+            return;
+          }
           this.form.roleIds = this.form.deptId ? [this.form.deptId] : [];
           delete this.form.postIds;
           if (this.form.userId != undefined) {

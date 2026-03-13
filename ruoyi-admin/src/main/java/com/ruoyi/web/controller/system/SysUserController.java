@@ -2,7 +2,12 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.system.domain.SysTenant;
+import com.ruoyi.system.service.*;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,28 +32,28 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.system.service.ISysDeptService;
-import com.ruoyi.system.service.ISysPostService;
-import com.ruoyi.system.service.ISysRoleService;
-import com.ruoyi.system.service.ISysUserService;
 
 /**
  * 用户信息
- * 
+ *
  * @author ruoyi
  */
 @RestController
 @RequestMapping("/system/user")
 public class SysUserController extends BaseController
 {
-    @Autowired
+    @Resource
     private ISysUserService userService;
 
-    @Autowired
+    @Resource
     private ISysRoleService roleService;
 
-    @Autowired
+    @Resource
     private ISysDeptService deptService;
+
+
+    @Resource
+    private ISysTenantService tenantService;
 //20260309禁用岗位管理
 //    @Autowired
 //    private ISysPostService postService;
@@ -110,6 +115,11 @@ public class SysUserController extends BaseController
             //20260309禁用岗位管理
 //            ajax.put("postIds", postService.selectPostListByUserId(userId));
             ajax.put("roleIds", sysUser.getRoles().stream().map(SysRole::getRoleId).collect(Collectors.toList()));
+            appendTenantExpireInfo(ajax, sysUser.getTenantId());
+        }
+        else
+        {
+            appendTenantExpireInfo(ajax, null);
         }
         List<SysRole> roles = roleService.selectRoleAll();
         ajax.put("roles", SecurityUtils.isAdmin(userId) ? roles : roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
@@ -254,5 +264,29 @@ public class SysUserController extends BaseController
     public AjaxResult deptTree(SysDept dept)
     {
         return success(deptService.selectDeptTreeList(dept));
+    }
+
+
+    private void appendTenantExpireInfo(AjaxResult ajax, Long targetTenantId)
+    {
+        Long tenantId = targetTenantId;
+        if (tenantId == null)
+        {
+            LoginUser loginUser = SecurityUtils.getLoginUser();
+            if (loginUser != null)
+            {
+                tenantId = loginUser.getTenantId();
+            }
+        }
+        if (tenantId == null)
+        {
+            return;
+        }
+        SysTenant tenant = tenantService.selectTenantById(tenantId);
+        if (tenant != null && tenant.getExpireTime() != null)
+        {
+            ajax.put("maxExpireTime", tenant.getExpireTime());
+            ajax.put("defaultExpireTime", tenant.getExpireTime());
+        }
     }
 }
