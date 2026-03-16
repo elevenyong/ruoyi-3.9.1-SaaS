@@ -49,11 +49,14 @@ server:
 logging:
   config: classpath:logback.xml
   level:
-    com.ruoyi: debug
-    org.springframework: debug
-    druid:
-      sql:
-        Statement: debug
+    com.ruoyi: info
+    org.springframework: warn
+    org.mybatis: info
+    com.baomidou: info
+    com.ruoyi.system.mapper: info
+    com.ruoyi.framework.mapper: info
+    com.ruoyi.quartz.mapper: info
+    com.ruoyi.generator.mapper: info
 
 # 用户配置
 user:
@@ -133,21 +136,6 @@ token:
 #    configLocation: classpath:mybatis/mybatis-config.xml
 
 mybatis-plus:
-  typeAliasesPackage: com.ruoyi.**.domain
-    #mapper-locations: classpath*:mapper/**/*Mapper.xml
-  #configuration:
-  # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
-  #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  # 该配置就是将带有下划线的表字段映射为驼峰格式的实体类属性
-  #    map-underscore-to-camel-case: true
-  #如果查询结果中包含空值的列，则 MyBatis 在映射的时候，不会映射这个字段
-  #call-setters-on-nulls: true
-  global-config:
-    db-config:
-      logic-delete-field: deleted
-      logic-delete-value: 1
-      logic-not-delete-value: 0
-  mapper-locations: classpath*:mapper/**/*Mapper.xml
   configuration:
     # 数据库类型识别（关键：让MyBatis-Plus知道当前数据库类型）
     #    database-id: sqlite  # 用驱动类名作为标识
@@ -156,12 +144,16 @@ mybatis-plus:
     use-generated-keys: true
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
     default-executor-type: SIMPLE
-  #type-aliases-package: com.ruoyi.**.domain,;com.d3code.**.domain
-  #type-aliases-package: com.ruoyi.**.domain
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  typeAliasesPackage: com.ruoyi.**.domain
+  global-config:
+    db-config:
+      id-type: auto
 
 # PageHelper分页插件
 pagehelper:
   helperDialect: mysql
+  reasonable: true
   supportMethodsArguments: true
   params: count=countSql
 

@@ -492,6 +492,25 @@ export default {
     });
   },
   methods: {
+    formatExpireTime(value) {
+      if (!value) {
+        return value;
+      }
+      if (typeof value === "string") {
+        if (/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(value)) {
+          return value;
+        }
+        const d = new Date(value);
+        if (!isNaN(d.getTime())) {
+          return this.parseTime(d, "{y}-{m}-{d} {h}:{i}:{s}");
+        }
+        return value;
+      }
+      if (value instanceof Date) {
+        return this.parseTime(value, "{y}-{m}-{d} {h}:{i}:{s}");
+      }
+      return value;
+    },
     validateExpireTime() {
       if (!this.form.expireTime) {
         this.$modal.msgError("账号失效时间不能为空");
@@ -687,6 +706,7 @@ export default {
             return;
           }
           this.form.roleIds = this.form.deptId ? [this.form.deptId] : [];
+          this.form.expireTime = this.formatExpireTime(this.form.expireTime);
           delete this.form.postIds;
           if (this.form.userId != undefined) {
             //20260309禁用岗位管理
